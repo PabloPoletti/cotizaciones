@@ -1,0 +1,27 @@
+{
+  "url": "https://pablopoletti.github.io/cotizaciones/",
+  "checks": {
+    "ultimaActualizacion": "27 jun 2026, 6:46 p. m.",
+    "loadingVisible": false,
+    "loadingText": "Cargando cotizaciones…",
+    "bannerVisible": true,
+    "bannerText": "Mercado cerrado. Mostrando últimos cierres disponibles (16/16 instrumentos).",
+    "bannerClass": "alert alert--warning",
+    "numSectores": 6,
+    "numFilasTabla": 16,
+    "numEtiquetasCierre": 16,
+    "numFilasCalculadora": 16,
+    "tirPonderada": "—",
+    "titulo": "Cotizaciones ONs & Soberanos"
+  },
+  "calcResult": {
+    "sumaPct": "100.0%",
+    "tirPond": "9.10%",
+    "renta": "910,00 USD",
+    "filasCalc": 16,
+    "calcWarning": ""
+  },
+  "consoleErrors": [],
+  "consoleWarnings": [],
+  "timestamp": "2026-06-27T21:47:45.263Z"
+}

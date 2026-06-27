@@ -26,7 +26,6 @@
   </header>
 
   <main class="container">
-    <!-- Configuración del PAT (solo localStorage) -->
     <details class="config-panel">
       <summary>Configuración — token para &quot;Actualizar ahora&quot;</summary>
       <div class="config-panel__grid">
@@ -39,8 +38,6 @@
           <input type="password" id="github-token" placeholder="ghp_…" autocomplete="off">
           <small>
             Se guarda solo en localStorage de tu navegador. Nunca se sube al repositorio.
-            Creá un token en GitHub → Settings → Developer settings → Personal access tokens,
-            con permiso <strong>workflow</strong> (o Actions write) sobre este repo.
           </small>
         </div>
         <button type="button" class="btn" id="btn-guardar-config">Guardar configuración</button>
@@ -53,35 +50,156 @@
       <span id="status-actualizar" class="header__meta" aria-live="polite"></span>
     </div>
 
-    <!-- Pestañas -->
     <nav class="tabs" role="tablist">
-      <button type="button" class="tab tab--active" data-tab="cotizaciones" role="tab" aria-selected="true">
-        Cotizaciones
-      </button>
-      <button type="button" class="tab" data-tab="calculadora" role="tab" aria-selected="false">
-        Calculadora de cartera
-      </button>
+      <button type="button" class="tab tab--active" data-tab="cotizaciones" role="tab">Cotizaciones</button>
+      <button type="button" class="tab" data-tab="analisis" role="tab">Análisis</button>
+      <button type="button" class="tab" data-tab="resumen" role="tab">Resumen</button>
+      <button type="button" class="tab" data-tab="calculadora" role="tab">Calculadora</button>
+      <button type="button" class="tab" data-tab="observaciones" role="tab">Observaciones</button>
     </nav>
 
-    <!-- Panel cotizaciones -->
+    <!-- Cotizaciones -->
     <div id="panel-cotizaciones" class="tab-panel tab-panel--active" role="tabpanel">
       <div id="loading" class="loading">Cargando cotizaciones…</div>
+
+      <div id="cotiz-toolbar" class="cotiz-toolbar hidden">
+        <details class="filter-panel" open>
+          <summary>Filtrar y ordenar</summary>
+          <div class="filter-grid">
+            <div>
+              <label for="filtro-busqueda">Buscar</label>
+              <input type="search" id="filtro-busqueda" placeholder="Ticker o nombre…" autocomplete="off">
+            </div>
+            <div>
+              <label for="filtro-tipo">Tipo</label>
+              <select id="filtro-tipo">
+                <option value="todos">Todos</option>
+                <option value="on">ON corporativa</option>
+                <option value="soberano">Soberano</option>
+              </select>
+            </div>
+            <div>
+              <label for="filtro-sector">Sector</label>
+              <select id="filtro-sector"><option value="todos">Todos</option></select>
+            </div>
+            <div>
+              <label for="filtro-orden">Ordenar por</label>
+              <select id="filtro-orden">
+                <option value="ticker">Ticker</option>
+                <option value="tir">TIR efectiva</option>
+                <option value="tirRef">TIR referencia</option>
+                <option value="vencimiento">Vencimiento</option>
+                <option value="variacion">Variación %</option>
+                <option value="precio">Precio</option>
+              </select>
+            </div>
+            <div>
+              <label for="filtro-orden-dir">Dirección</label>
+              <select id="filtro-orden-dir">
+                <option value="asc">Ascendente</option>
+                <option value="desc">Descendente</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <div class="view-toggle">
+          <span class="header__meta">Vista:</span>
+          <button type="button" class="btn btn--sm btn--active" id="btn-vista-cards">Cards</button>
+          <button type="button" class="btn btn--sm" id="btn-vista-tabla">Tabla</button>
+        </div>
+      </div>
+
+      <div id="cotiz-mini-kpi" class="kpi-row hidden"></div>
       <div id="sectores-container"></div>
+      <div id="tabla-container" class="hidden"></div>
     </div>
 
-    <!-- Panel calculadora -->
+    <!-- Análisis -->
+    <div id="panel-analisis" class="tab-panel" role="tabpanel">
+      <div class="chart-grid">
+        <section class="chart-card">
+          <h2>TIR de referencia por instrumento</h2>
+          <div class="chart-box"><canvas id="chart-tir-barras"></canvas></div>
+        </section>
+        <section class="chart-card">
+          <h2>Curva de rendimientos (TIR vs plazo)</h2>
+          <div class="chart-box"><canvas id="chart-scatter"></canvas></div>
+        </section>
+        <section class="chart-card">
+          <h2>Composición por sector</h2>
+          <div class="chart-box chart-box--sm"><canvas id="chart-sectores"></canvas></div>
+        </section>
+        <section class="chart-card chart-card--wide">
+          <h2>Evolución de precio (historial local)</h2>
+          <div class="alert alert--info historico-disclaimer">
+            <strong>Historial local de este navegador/dispositivo.</strong>
+            Los puntos se acumulan desde la primera vez que abrís el panel en este dispositivo (máximo uno por día).
+            No es historial de mercado oficial, no está sincronizado entre dispositivos ni reemplaza series de BYMA.
+            El archivo <code>historico.json</code> del repo está reservado para un historial global futuro.
+          </div>
+          <div class="historico-controls">
+            <label for="historico-ticker-select">Instrumento</label>
+            <select id="historico-ticker-select"></select>
+            <span id="historico-meta" class="header__meta"></span>
+          </div>
+          <div id="historico-empty" class="historico-empty hidden" role="status">
+            <p><strong>Sin historial todavía</strong> — se empieza a acumular desde hoy que visitás el panel en este navegador (un punto por día, solo en este dispositivo).</p>
+          </div>
+          <div id="historico-chart-wrap" class="chart-box"><canvas id="chart-historico"></canvas></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Resumen -->
+    <div id="panel-resumen" class="tab-panel" role="tabpanel">
+      <div id="resumen-kpis" class="kpi-grid"></div>
+      <section class="panel-section">
+        <h2>Mejor TIR efectiva por sector</h2>
+        <div class="table-wrap"><table id="tabla-ranking-sector"><thead><tr><th>Sector</th><th>Ticker</th><th class="num">TIR eff.</th><th>Vencimiento</th></tr></thead><tbody></tbody></table></div>
+      </section>
+      <div class="two-col">
+        <section class="panel-section">
+          <h2>Próximos vencimientos</h2>
+          <ul id="lista-vencimientos" class="timeline-list"></ul>
+        </section>
+        <section class="panel-section">
+          <h2>Próximos cupones (estimados)</h2>
+          <p class="header__meta">Fechas inferidas desde frecuencia y vencimiento; verificar en prospecto oficial.</p>
+          <ul id="lista-cupones" class="timeline-list"></ul>
+        </section>
+      </div>
+    </div>
+
+    <!-- Calculadora -->
     <div id="panel-calculadora" class="tab-panel" role="tabpanel">
       <div class="calc-card">
         <h2>Calculadora de cartera</h2>
         <p class="header__meta">
-          Ingresá tu capital en USD y el porcentaje que querés asignar a cada instrumento.
-          La TIR ponderada usa los valores de referencia de <code>info_fija.json</code>.
+          La TIR ponderada prioriza TIR mercado (aprox.); si no está disponible, usa referencia jun 2026.
         </p>
 
-        <div class="calc-inputs">
-          <div>
-            <label for="capital-usd">Capital total (USD)</label>
-            <input type="number" id="capital-usd" min="0" step="100" value="10000" placeholder="10000">
+        <div class="calc-toolbar">
+          <div class="calc-inputs">
+            <div>
+              <label for="capital-usd">Capital total (USD)</label>
+              <input type="number" id="capital-usd" min="0" step="100" value="10000">
+            </div>
+          </div>
+          <div class="calc-actions">
+            <label for="preset-cartera">Cartera sugerida (ejemplo)</label>
+            <div class="calc-actions__row">
+              <select id="preset-cartera">
+                <option value="">— Elegir preset —</option>
+                <option value="conservador">Conservador (TIR &lt; 8%)</option>
+                <option value="balanceado">Balanceado (top 2/sector)</option>
+                <option value="mayor-tir">Mayor TIR</option>
+              </select>
+              <button type="button" class="btn btn--sm" id="btn-aplicar-preset">Aplicar</button>
+              <button type="button" class="btn btn--sm" id="btn-guardar-cartera">Guardar</button>
+              <button type="button" class="btn btn--sm" id="btn-restaurar-cartera">Restaurar</button>
+            </div>
+            <p id="preset-nota" class="header__meta hidden"></p>
           </div>
         </div>
 
@@ -91,7 +209,7 @@
               <tr>
                 <th>Instrumento</th>
                 <th>Ticker</th>
-                <th class="num">TIR ref.</th>
+                <th class="num">TIR ref. / mercado</th>
                 <th class="num">% cartera</th>
                 <th class="num">Monto (USD)</th>
               </tr>
@@ -101,31 +219,57 @@
         </div>
 
         <div class="calc-results">
-          <div class="calc-results__item">
-            <span>Suma asignada</span>
-            <strong id="suma-porcentajes">0%</strong>
-          </div>
-          <div class="calc-results__item">
-            <span>TIR ponderada</span>
-            <strong id="tir-ponderada">—</strong>
-          </div>
-          <div class="calc-results__item">
-            <span>Renta anual estimada</span>
-            <strong id="renta-anual">—</strong>
-          </div>
+          <div class="calc-results__item"><span>Suma asignada</span><strong id="suma-porcentajes">0%</strong></div>
+          <div class="calc-results__item"><span>TIR ponderada</span><strong id="tir-ponderada">—</strong></div>
+          <div class="calc-results__item"><span>Renta anual estimada</span><strong id="renta-anual">—</strong></div>
         </div>
 
+        <div class="calc-charts two-col">
+          <section>
+            <h3>Composición de la cartera</h3>
+            <div class="chart-box chart-box--sm"><canvas id="chart-cartera-pie"></canvas></div>
+          </section>
+          <section>
+            <h3>Proyección con reinversión de cupones</h3>
+            <p class="header__meta">Interés compuesto al TIR ponderada; escenario ilustrativo, no garantía de retorno.</p>
+            <div class="chart-box chart-box--sm"><canvas id="chart-proyeccion"></canvas></div>
+          </section>
+        </div>
+
+        <div class="table-wrap">
+          <table id="tabla-proyeccion">
+            <thead><tr><th>Horizonte</th><th class="num">Capital proyectado (USD)</th></tr></thead>
+            <tbody id="proyeccion-body"></tbody>
+          </table>
+        </div>
+
+        <p id="calc-nota-tir" class="header__meta hidden"></p>
         <p id="calc-warning" class="calc-warning hidden"></p>
       </div>
+    </div>
+
+    <!-- Observaciones -->
+    <div id="panel-observaciones" class="tab-panel" role="tabpanel">
+      <div class="alert alert--legal">
+        <strong>Descargo importante.</strong>
+        Esto es información generada automáticamente a partir de datos públicos del panel.
+        No es asesoramiento financiero ni una recomendación de inversión personalizada.
+        Verificá siempre con fuentes oficiales y profesionales calificados antes de operar.
+      </div>
+      <div id="observaciones-list" class="obs-list"></div>
     </div>
   </main>
 
   <footer class="footer container">
     Datos provistos por BYMA Open Data vía PyOBD, con difusión diferida (no tiempo real exacto).
     Este panel es informativo y <strong>no constituye asesoramiento financiero</strong>.
-    Operá bajo tu propio criterio y consultá fuentes oficiales antes de tomar decisiones.
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" crossorigin="anonymous"></script>
+  <script src="js/core.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/charts.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

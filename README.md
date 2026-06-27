@@ -98,35 +98,76 @@ python -m http.server 8080
 
 ---
 
-## Completar datos fijos (TIR, vencimiento, etc.)
+## Datos fijos (`info_fija.json`)
 
-Editá `docs/data/info_fija.json` con los valores de referencia de cada ticker:
+`docs/data/info_fija.json` complementa `cotizaciones.json` con datos que BYMA no expone en el panel gratuito: vencimiento, cupón, amortización, sector, ley y **TIR de referencia** (valores aproximados verificados abr–jun 2026, no en tiempo real).
+
+Cada entrada incluye `tir_fecha_referencia` (p. ej. `"2026-06"`) para dejar claro el origen temporal. Contrastá siempre con la **TIR mercado (aprox.)** que calcula el panel a partir del precio del JSON cuando hay cotización disponible.
+
+Ejemplo de campos:
 
 ```json
 {
   "YMCIO": {
-    "tir_referencia": 8.5,
-    "vencimiento": "2029-07-01",
-    "cupon": "8.75% semestral",
-    "amortizacion": "Bullet"
+    "nombre": "YPF ON 2029",
+    "tipo": "ON corporativa",
+    "sector": "Petróleo y gas",
+    "moneda": "USD",
+    "ley": "Nueva York (Reg S)",
+    "tir_referencia": 6.9,
+    "tir_rango": "6.7%–7.1%",
+    "tir_fecha_referencia": "2026-06",
+    "vencimiento": "2029-06-30",
+    "cupon": "9% semestral",
+    "cupon_tasa_anual": 9.0,
+    "cupon_frecuencia": "semestral",
+    "amortizacion": "7 cuotas semestrales 14,2857% desde jun 2026",
+    "amortizacion_tipo": "amortizacion_parcial"
   }
 }
 ```
 
-La página combina este archivo con `cotizaciones.json` para mostrar la tabla y alimentar la calculadora de cartera.
+La página combina ambos JSON para la tabla de cotizaciones y la calculadora de cartera.
 
 ---
 
-## Instrumentos monitoreados
+## TIR de referencia vs TIR mercado
+
+| Concepto | Origen | Uso en el panel |
+|----------|--------|-----------------|
+| **TIR de referencia** | `info_fija.json` (`tir_referencia`, jun 2026) | Línea superior en la columna “TIR ref. / mercado”; fallback en la calculadora |
+| **TIR mercado (aprox.)** | Calculada en el navegador desde el precio BYMA | Línea inferior (color acento); priorizada en la TIR ponderada |
+
+### Cómo se calcula la TIR mercado
+
+En `docs/js/app.js`, la función `calcularTirMercado()` resuelve una **YTM aproximada** (yield to maturity) por bisección sobre el flujo de un bono **bullet** con cupón fijo:
+
+- Precio BYMA → precio limpio por 100 nominal: `precio / 1000` (ej. 96300 → 96,30)
+- Cupón periódico según `cupon_tasa_anual` y `cupon_frecuencia` (`semestral` = 2 pagos/año, `anual` = 1)
+- Amortización única al vencimiento (`amortizacion_tipo: "bullet"`)
+
+**Limitaciones actuales (mejora futura):**
+
+- **Amortización parcial** (YMCIO, YFCJO): no se modela el calendario de amortizaciones; se muestra solo la TIR de referencia.
+- No se descuentan días exactos al próximo cupón ni accrued interest; es una aproximación educativa, no un pricing profesional.
+- Bonos con estructuras complejas (dual, callables, etc.) pueden requerir un motor de flujos dedicado.
+
+Si la TIR mercado difiere más de ~0,3 pp de la ponderada por referencia, la calculadora muestra una advertencia.
+
+---
+
+## Instrumentos monitoreados (16)
 
 | Ticker | Sector |
 |--------|--------|
-| YMCIO, YMCUO, PN35O, PNDCO | Petróleo y gas |
+| YMCIO, PN35O, PNDCO | Petróleo y gas |
 | TTC9O, TTCDO | Gas natural |
 | DNC7O, RAC5O, YFCJO, GN49O | Utilities |
 | IRCFO, RUCDO | Real estate |
 | TSC3O, TLCMO | Telecomunicaciones |
 | AL30, GD30, GD35 | Soberanos |
+
+`YMCUO` no está en BYMA Open Data gratuito y fue excluido del panel.
 
 ---
 

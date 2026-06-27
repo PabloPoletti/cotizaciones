@@ -25,7 +25,7 @@ async function main() {
   });
   page.on("pageerror", (err) => consoleErrors.push(`PAGE ERROR: ${err.message}`));
 
-  await page.goto(URL, { waitUntil: "networkidle", timeout: 60000 });
+  await page.goto(`${URL}?v=${Date.now()}`, { waitUntil: "networkidle", timeout: 60000 });
   await page.waitForTimeout(2000);
 
   const checks = await page.evaluate(() => {
@@ -69,6 +69,19 @@ async function main() {
     await calcInputs.first().fill("100");
     await page.waitForTimeout(300);
   }
+
+  // Probar lógica de TIR con valores de prueba inyectados (sin modificar info_fija.json)
+  await page.evaluate(() => {
+    const inputs = document.querySelectorAll("#calc-body .pct-input");
+    if (inputs.length >= 2) {
+      inputs[0].value = "60";
+      inputs[0].dataset.tir = "8.5";
+      inputs[1].value = "40";
+      inputs[1].dataset.tir = "10.0";
+      inputs[0].dispatchEvent(new Event("input", { bubbles: true }));
+    }
+  });
+  await page.waitForTimeout(300);
 
   const calcResult = await page.evaluate(() => ({
     sumaPct: document.getElementById("suma-porcentajes")?.textContent?.trim(),
