@@ -6,9 +6,11 @@ __pycache__/
 venv/
 .env
 
-# IDE
+# IDE / herramientas locales
 .vscode/
 .idea/
+.specstory/
+.cursorindexingignore
 
 # OS
 .DS_Store
