@@ -15,3 +15,7 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Node (verificación local con Playwright)
+node_modules/
+package-lock.json

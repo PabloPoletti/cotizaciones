@@ -37,9 +37,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Especies a consultar con nombre y sector para el panel
+# YMCUO (ON YPF Clase XXVIII, venc. 2031, hard dollar) fue removido de la lista:
+# el ticker existe en el mercado (BYMA/brokers) pero NO figura en BYMA Open Data
+# gratuito — get_corporate_bonds(), get_current_quote() e histórico devuelven 0
+# filas (verificado 2026-06-27). Sin fuente pública gratuita, no se puede cotizar.
+
 INSTRUMENTOS = [
     {"ticker": "YMCIO", "nombre": "YPF 2029", "sector": "Petróleo y gas"},
-    {"ticker": "YMCUO", "nombre": "YPF 2029 (dual)", "sector": "Petróleo y gas"},
     {"ticker": "TTC9O", "nombre": "TGS 2029", "sector": "Gas natural"},
     {"ticker": "TTCDO", "nombre": "TGS (dual)", "sector": "Gas natural"},
     {"ticker": "PN35O", "nombre": "Pan American 2035", "sector": "Petróleo y gas"},
