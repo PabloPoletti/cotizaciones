@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Panel de cotizaciones de ONs y bonos soberanos argentinos en USD — datos BYMA Open Data">
+  <title>Cotizaciones ONs &amp; Soberanos</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <div>
+        <h1>Cotizaciones ONs &amp; Soberanos (USD)</h1>
+        <p class="header__meta">
+          Última actualización:
+          <strong id="ultima-actualizacion">Cargando…</strong>
+        </p>
+        <div id="alerta-antiguedad" class="alert alert--warning hidden" role="status">
+          Los datos tienen más de 2 horas de antigüedad. El mercado puede estar cerrado o el workflow de actualización pudo fallar.
+        </div>
+        <div id="alerta-error" class="alert alert--error hidden" role="alert"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Configuración del PAT (solo localStorage) -->
+    <details class="config-panel">
+      <summary>Configuración — token para &quot;Actualizar ahora&quot;</summary>
+      <div class="config-panel__grid">
+        <div>
+          <label for="github-repo">Repositorio (usuario/nombre)</label>
+          <input type="text" id="github-repo" value="PabloPoletti/cotizaciones" autocomplete="off">
+        </div>
+        <div>
+          <label for="github-token">GitHub Personal Access Token</label>
+          <input type="password" id="github-token" placeholder="ghp_…" autocomplete="off">
+          <small>
+            Se guarda solo en localStorage de tu navegador. Nunca se sube al repositorio.
+            Creá un token en GitHub → Settings → Developer settings → Personal access tokens,
+            con permiso <strong>workflow</strong> (o Actions write) sobre este repo.
+          </small>
+        </div>
+        <button type="button" class="btn" id="btn-guardar-config">Guardar configuración</button>
+      </div>
+    </details>
+
+    <div class="toolbar">
+      <button type="button" class="btn btn--primary" id="btn-actualizar">Actualizar ahora</button>
+      <button type="button" class="btn" id="btn-recargar">Recargar datos</button>
+      <span id="status-actualizar" class="header__meta" aria-live="polite"></span>
+    </div>
+
+    <!-- Pestañas -->
+    <nav class="tabs" role="tablist">
+      <button type="button" class="tab tab--active" data-tab="cotizaciones" role="tab" aria-selected="true">
+        Cotizaciones
+      </button>
+      <button type="button" class="tab" data-tab="calculadora" role="tab" aria-selected="false">
+        Calculadora de cartera
+      </button>
+    </nav>
+
+    <!-- Panel cotizaciones -->
+    <div id="panel-cotizaciones" class="tab-panel tab-panel--active" role="tabpanel">
+      <div id="loading" class="loading">Cargando cotizaciones…</div>
+      <div id="sectores-container"></div>
+    </div>
+
+    <!-- Panel calculadora -->
+    <div id="panel-calculadora" class="tab-panel" role="tabpanel">
+      <div class="calc-card">
+        <h2>Calculadora de cartera</h2>
+        <p class="header__meta">
+          Ingresá tu capital en USD y el porcentaje que querés asignar a cada instrumento.
+          La TIR ponderada usa los valores de referencia de <code>info_fija.json</code>.
+        </p>
+
+        <div class="calc-inputs">
+          <div>
+            <label for="capital-usd">Capital total (USD)</label>
+            <input type="number" id="capital-usd" min="0" step="100" value="10000" placeholder="10000">
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Instrumento</th>
+                <th>Ticker</th>
+                <th class="num">TIR ref.</th>
+                <th class="num">% cartera</th>
+                <th class="num">Monto (USD)</th>
+              </tr>
+            </thead>
+            <tbody id="calc-body"></tbody>
+          </table>
+        </div>
+
+        <div class="calc-results">
+          <div class="calc-results__item">
+            <span>Suma asignada</span>
+            <strong id="suma-porcentajes">0%</strong>
+          </div>
+          <div class="calc-results__item">
+            <span>TIR ponderada</span>
+            <strong id="tir-ponderada">—</strong>
+          </div>
+          <div class="calc-results__item">
+            <span>Renta anual estimada</span>
+            <strong id="renta-anual">—</strong>
+          </div>
+        </div>
+
+        <p id="calc-warning" class="calc-warning hidden"></p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer container">
+    Datos provistos por BYMA Open Data vía PyOBD, con difusión diferida (no tiempo real exacto).
+    Este panel es informativo y <strong>no constituye asesoramiento financiero</strong>.
+    Operá bajo tu propio criterio y consultá fuentes oficiales antes de tomar decisiones.
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

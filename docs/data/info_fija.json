@@ -1,0 +1,105 @@
+{
+  "_comentario": "Completá los valores de referencia para cada ticker. La página los combina con cotizaciones.json.",
+  "YMCIO": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "YMCUO": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "TTC9O": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "TTCDO": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "PN35O": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "PNDCO": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "TSC3O": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "DNC7O": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "IRCFO": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "RAC5O": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "TLCMO": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "YFCJO": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "GN49O": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "RUCDO": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "AL30": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "GD30": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  },
+  "GD35": {
+    "tir_referencia": null,
+    "vencimiento": "",
+    "cupon": "",
+    "amortizacion": ""
+  }
+}
