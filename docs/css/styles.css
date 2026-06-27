@@ -82,10 +82,24 @@ body {
   border: 1px solid #f5c08a;
 }
 
-.alert--error {
+.alert--info {
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid #b8d4f0;
+}
+
+.alert--fetch-error {
   background: #fef2f2;
   color: var(--negative);
   border: 1px solid #fecaca;
+}
+
+.precio-ref {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 0.15rem;
 }
 
 /* Pestañas */

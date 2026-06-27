@@ -30,6 +30,7 @@
 
   // Referencias DOM
   const elUltimaAct = document.getElementById("ultima-actualizacion");
+  const elAlertaFetchStatus = document.getElementById("alerta-fetch-status");
   const elAlertaAntiguedad = document.getElementById("alerta-antiguedad");
   const elAlertaError = document.getElementById("alerta-error");
   const elSectores = document.getElementById("sectores-container");
@@ -134,8 +135,45 @@
   }
 
   /**
-   * Renderiza la tabla de cotizaciones agrupadas por sector.
+   * Formatea precio con etiqueta de tipo (intradiario vs cierre anterior).
    */
+  function formatearPrecioConTipo(item) {
+    if (item.error || item.precio === null || item.precio === undefined) {
+      return escapeHtml(item.mensaje_error || "Sin dato");
+    }
+    const precio = formatearPrecio(item.precio);
+    if (item.precio_tipo === "ultimo_cierre") {
+      return `${precio}<span class="precio-ref">(cierre anterior)</span>`;
+    }
+    return precio;
+  }
+
+  /**
+   * Muestra banner según fetch_status global del JSON.
+   */
+  function renderizarEstadoFetch() {
+    if (!elAlertaFetchStatus || !cotizaciones) return;
+
+    const status = cotizaciones.fetch_status;
+    const mensaje = cotizaciones.fetch_mensaje || "";
+
+    elAlertaFetchStatus.className = "alert hidden";
+    if (!status) return;
+
+    elAlertaFetchStatus.textContent = mensaje;
+    elAlertaFetchStatus.classList.remove("hidden");
+
+    if (status === "error") {
+      elAlertaFetchStatus.classList.add("alert--fetch-error");
+    } else if (status === "mercado_cerrado") {
+      elAlertaFetchStatus.classList.add("alert--warning");
+    } else if (status === "parcial") {
+      elAlertaFetchStatus.classList.add("alert--warning");
+    } else {
+      elAlertaFetchStatus.classList.add("alert--info");
+    }
+  }
+
   function renderizarCotizaciones() {
     if (!cotizaciones || !Array.isArray(cotizaciones.instrumentos)) {
       return;
@@ -148,6 +186,8 @@
     } else {
       elAlertaAntiguedad.classList.add("hidden");
     }
+
+    renderizarEstadoFetch();
 
     const grupos = agruparPorSector(cotizaciones.instrumentos);
     elSectores.innerHTML = "";
@@ -199,7 +239,7 @@
         tr.innerHTML = `
           <td>${escapeHtml(item.nombre || item.ticker)}</td>
           <td class="ticker">${escapeHtml(item.ticker)}</td>
-          <td class="num">${item.error ? escapeHtml(item.mensaje_error || "Sin dato") : formatearPrecio(item.precio)}</td>
+          <td class="num">${item.error ? escapeHtml(item.mensaje_error || "Sin dato") : formatearPrecioConTipo(item)}</td>
           <td class="num ${varFmt.clase}">${varFmt.texto}</td>
           <td class="num">${tir}</td>
           <td>${escapeHtml(info.vencimiento || "—")}</td>
@@ -233,7 +273,7 @@
     }
 
     elCalcBody.innerHTML = "";
-    const instrumentos = cotizaciones.instrumentos.filter((i) => !i.error);
+    const instrumentos = cotizaciones.instrumentos.filter((i) => !i.error && i.precio != null);
 
     for (const item of instrumentos) {
       const info = infoDeTicker(item.ticker);
