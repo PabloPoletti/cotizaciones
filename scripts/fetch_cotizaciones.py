@@ -154,9 +154,37 @@ def valor_positivo(fila: pd.Series, columna: str) -> float | None:
     return None
 
 
+def valor_numerico(fila: pd.Series, columna: str) -> float | None:
+    """Lee una columna numérica BYMA (puede ser 0)."""
+    if columna not in fila.index:
+        return None
+    valor = fila[columna]
+    if valor is None:
+        return None
+    try:
+        return float(valor)
+    except (TypeError, ValueError):
+        return None
+
+
+def hay_actividad_intradia(fila: pd.Series) -> bool:
+    """
+    Evidencia de operación en la rueda del día (no basta settlement/closing sin volumen).
+    Issue #1: evitar marcar intradía cuando BYMA devuelve ceros de precio pero campos de cierre.
+    """
+    for columna in ("volume", "tradeVolume", "volumeAmount", "numberOfOrders"):
+        v = valor_numerico(fila, columna)
+        if v is not None and v > 0:
+            return True
+    trade = valor_numerico(fila, "trade")
+    return trade is not None and trade > 0
+
+
 def extraer_precio_intradia(fila: pd.Series) -> float | None:
-    """Precio de rueda / intradiario (sin cierres anteriores)."""
-    for columna in ("settlementPrice", "trade", "closingPrice", "vwap"):
+    """Precio intradiario solo si hubo actividad real; no usa closingPrice (suele arrastrar cierre)."""
+    if not hay_actividad_intradia(fila):
+        return None
+    for columna in ("trade", "settlementPrice", "vwap"):
         precio = valor_positivo(fila, columna)
         if precio is not None:
             return precio

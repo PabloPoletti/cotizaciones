@@ -669,6 +669,29 @@ tr:hover td {
   color: var(--warning);
 }
 
+.badge--vencido {
+  background: #f1f5f9;
+  color: #64748b;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
+}
+
+.filtro-checkbox-wrap {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0.15rem;
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  user-select: none;
+}
+
 .badge--moneda {
   background: #ecfdf5;
   color: var(--positive);

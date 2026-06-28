@@ -126,6 +126,22 @@
     return Number.isNaN(fecha.getTime()) ? null : fecha;
   }
 
+  function estadoVigencia(info) {
+    const raw = info?.vencimiento;
+    if (!raw || String(raw).includes("Perpetuo")) return "sin_fecha";
+    const venc = parsearVencimiento(raw);
+    if (!venc) return "sin_fecha";
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const v = new Date(venc);
+    v.setHours(0, 0, 0, 0);
+    return v < hoy ? "vencido" : "vigente";
+  }
+
+  function esVigente(row) {
+    return (row.estadoVigencia || estadoVigencia(row.info)) !== "vencido";
+  }
+
   function normalizarPrecioByma(precioRaw) {
     if (precioRaw == null || Number.isNaN(precioRaw)) return null;
     return precioRaw / 1000;
@@ -320,6 +336,7 @@
       colorSector: COLORES_SECTOR[sector] || COLORES_SECTOR.Otros,
       hp,
       liquidez: window.CotizHistorico?.nivelLiquidez(item.ticker) || null,
+      estadoVigencia: estadoVigencia(info),
     };
   }
 
@@ -441,6 +458,9 @@
         }
       });
     }
+    if (!filtros.mostrarVencidos) {
+      rows = rows.filter((r) => esVigente(r));
+    }
 
     const sort = filtros.orden || "ticker";
     const dir = filtros.ordenDir === "desc" ? -1 : 1;
@@ -513,5 +533,7 @@
     badgeConfirmacionPrecioHtml,
     diferenciaPctEntreFuentes,
     detalleConfirmacionPrecio,
+    estadoVigencia,
+    esVigente,
   };
 })();

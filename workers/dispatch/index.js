@@ -1,49 +1,73 @@
 /**
  * Cloudflare Worker: dispara workflow_dispatch de GitHub sin exponer el PAT al navegador.
- * Rate limit: 1 dispatch exitoso cada RATE_LIMIT_SECONDS (default 300).
+ * Rate limit: 1 dispatch exitoso cada RATE_LIMIT_SECONDS (default 300) por IP de origen.
  */
 
-const CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Accept",
-};
+const ALLOWED_ORIGIN = "https://pablopoletti.github.io";
 
-function jsonResponse(data, status = 200) {
+function corsHeaders(request) {
+  const origin = request.headers.get("Origin");
+  if (origin !== ALLOWED_ORIGIN) return {};
+  return {
+    "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Accept",
+    Vary: "Origin",
+  };
+}
+
+function jsonResponse(request, data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { "Content-Type": "application/json", ...CORS },
+    headers: { "Content-Type": "application/json", ...corsHeaders(request) },
   });
+}
+
+function clientIp(request) {
+  return request.headers.get("CF-Connecting-IP") || "unknown";
 }
 
 export default {
   async fetch(request, env) {
+    const cors = corsHeaders(request);
+
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers: CORS });
+      if (!cors["Access-Control-Allow-Origin"]) {
+        return new Response(null, { status: 403 });
+      }
+      return new Response(null, { headers: cors });
     }
 
     const url = new URL(request.url);
     if (request.method !== "POST" || (url.pathname !== "/dispatch" && url.pathname !== "/")) {
-      return jsonResponse({ error: "Usá POST /dispatch" }, 404);
+      return jsonResponse(request, { error: "Usá POST /dispatch" }, 404);
+    }
+
+    const origin = request.headers.get("Origin");
+    if (origin !== ALLOWED_ORIGIN) {
+      return jsonResponse(request, { error: "origin_not_allowed" }, 403);
     }
 
     if (!env.GITHUB_TOKEN) {
-      return jsonResponse({ error: "Worker sin GITHUB_TOKEN configurado" }, 500);
+      return jsonResponse(request, { error: "Worker sin GITHUB_TOKEN configurado" }, 500);
     }
 
     const rateLimit = parseInt(env.RATE_LIMIT_SECONDS || "300", 10);
     const kv = env.RATE_LIMIT_KV;
     const now = Math.floor(Date.now() / 1000);
+    const ip = clientIp(request);
+    const ipKey = `last_dispatch_ok:${ip}`;
 
     if (kv) {
-      const lastRaw = await kv.get("last_dispatch_ok");
+      const lastRaw = await kv.get(ipKey);
       if (lastRaw) {
         const elapsed = now - parseInt(lastRaw, 10);
         if (elapsed < rateLimit) {
           const wait = rateLimit - elapsed;
           return jsonResponse(
+            request,
             {
-              message: `Esperá ${wait}s antes de volver a actualizar (límite del servidor).`,
+              message: `Esperá ${wait}s antes de volver a actualizar (límite por IP).`,
               retry_after_seconds: wait,
             },
             429
@@ -80,14 +104,18 @@ export default {
         const text = await ghResp.text();
         if (text) message = text.slice(0, 280);
       }
-      return jsonResponse({ error: "dispatch_failed", message }, ghResp.status >= 500 ? 502 : ghResp.status);
+      return jsonResponse(
+        request,
+        { error: "dispatch_failed", message },
+        ghResp.status >= 500 ? 502 : ghResp.status
+      );
     }
 
     if (kv) {
-      await kv.put("last_dispatch_ok", String(now));
+      await kv.put(ipKey, String(now));
     }
 
-    return jsonResponse({
+    return jsonResponse(request, {
       ok: true,
       message: "Workflow iniciado. Recargá el panel en unos minutos.",
     });

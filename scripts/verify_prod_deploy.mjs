@@ -8,9 +8,10 @@ import { chromium } from "playwright";
 const BASE = "https://pablopoletti.github.io/cotizaciones/";
 const CONFIG_JS = `${BASE}js/config.js`;
 const PANEL_TOTAL = 59;
+const PANEL_VIGENTES = 57;
 
 const FILTER_EXPECTATIONS = [
-  { tipo: "todos", subtipo: null, count: PANEL_TOTAL, label: "sin filtro" },
+  { tipo: "todos", subtipo: null, count: PANEL_VIGENTES, label: "sin filtro (vigentes)" },
   { tipo: "on", subtipo: null, count: 25, label: "ON corporativa" },
   {
     tipo: "on",
@@ -27,8 +28,8 @@ const FILTER_EXPECTATIONS = [
     label: "ON + sector Gas natural",
   },
   { tipo: "Soberano USD", subtipo: null, count: 10, label: "Soberano USD" },
-  { tipo: "Soberano ARS", subtipo: null, count: 12, label: "Soberano ARS" },
-  { tipo: "Provincial", subtipo: null, count: 8, label: "Provincial" },
+  { tipo: "Soberano ARS", subtipo: null, count: 11, label: "Soberano ARS" },
+  { tipo: "Provincial", subtipo: null, count: 7, label: "Provincial" },
   { tipo: "BCRA", subtipo: null, count: 3, label: "BCRA" },
   { tipo: "CEDEAR", subtipo: null, count: 1, label: "CEDEAR" },
 ];
@@ -121,6 +122,13 @@ async function verifyFiltersTwoLevel(browser) {
   }
 
   await applyFilter(page, "todos", null);
+  const vencidosCheck = await page.evaluate(() => {
+    const cb = document.getElementById("filtro-mostrar-vencidos");
+    if (cb) cb.click();
+    return document.querySelectorAll("#sectores-container .inst-card").length;
+  });
+  await page.waitForTimeout(400);
+
   const resumen = await page.evaluate(() => {
     const btn = document.querySelector('button[data-tab="resumen"]');
     btn?.click();
@@ -142,6 +150,8 @@ async function verifyFiltersTwoLevel(browser) {
   return {
     results,
     allOk: results.every((r) => r.ok),
+    vencidosVisible: vencidosCheck,
+    vencidosOk: vencidosCheck === PANEL_TOTAL,
     resumenArsUsd: resumenAfter,
     confirmBadgesTotal: allCards.confirmBadges,
     tipoCambioHeaderOk: allCards.tipoCambio.includes("Oficial:") && allCards.tipoCambio.includes("MEP:"),
@@ -224,7 +234,7 @@ async function main() {
     cooldownMs: config.cooldownMs,
     cooldownOk: config.cooldownMs === 300000,
     workerUrlOk: config.workerUrl.includes("cotizaciones-dispatch.lic-poletti.workers.dev/dispatch"),
-    panelCardsOk: panel.cards === PANEL_TOTAL,
+    panelCardsOk: panel.cards === PANEL_VIGENTES,
     filtersTwoLevel: filters,
     fichaFlow,
     panel,
@@ -242,7 +252,11 @@ async function main() {
     process.exit(1);
   }
   if (!checks.panelCardsOk) {
-    console.error(`FAIL: se esperaban ${PANEL_TOTAL} cards, obtuvo ${panel.cards}`);
+    console.error(`FAIL: se esperaban ${PANEL_VIGENTES} cards vigentes, obtuvo ${panel.cards}`);
+    process.exit(1);
+  }
+  if (!filters.vencidosOk) {
+    console.error(`FAIL: con «Mostrar vencidos» se esperaban ${PANEL_TOTAL}, obtuvo ${filters.vencidosVisible}`);
     process.exit(1);
   }
   if (!filters.allOk) {
@@ -268,7 +282,7 @@ async function main() {
   }
 
   console.log(
-    `OK: prod con ${PANEL_TOTAL} instrumentos, filtros 2 niveles (Telecom x4), DolarAPI, badge confirmación (${filters.confirmBadgesTotal} visibles).`
+    `OK: prod con ${PANEL_VIGENTES} vigentes (${PANEL_TOTAL} con vencidos), filtros 2 niveles, DolarAPI, badge confirmación (${filters.confirmBadgesTotal} visibles).`
   );
 }
 

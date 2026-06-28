@@ -20,6 +20,7 @@
   const F = window.CotizFicha;
 
   let enriquecidos = [];
+  let enriquecidosVigentes = [];
   let semaforos = new Map();
   let fichaTicker = null;
   let filtros = {
@@ -28,6 +29,7 @@
     moneda: "todos",
     subtipo: "todos",
     confiabilidad: "todos",
+    mostrarVencidos: false,
     orden: "ticker",
     ordenDir: "asc",
   };
@@ -138,9 +140,14 @@
     const amort = row.esBullet ? "Bullet" : "Amort. parcial";
     const liq = window.CotizHistorico?.badgeLiquidezHtml(row.item.ticker) || "";
     const confirm = C.badgeConfirmacionPrecioHtml(row.item);
+    const vencido =
+      row.estadoVigencia === "vencido"
+        ? `<span class="badge badge--vencido" title="Vencimiento ya cumplido — referencia histórica">Vencido</span>`
+        : "";
     return `
       ${liq}
       ${confirm}
+      ${vencido}
       <span class="badge badge--moneda">${C.escapeHtml(moneda)}</span>
       <span class="badge badge--tipo">${C.escapeHtml(tipo)}</span>
       <span class="badge badge--amort ${row.esBullet ? "" : "badge--warn"}">${C.escapeHtml(amort)}</span>
@@ -362,6 +369,7 @@
       };
       partes.push(labels[filtros.confiabilidad] || filtros.confiabilidad);
     }
+    if (filtros.mostrarVencidos) partes.push("incl. vencidos");
     return partes.length ? `Filtros: ${partes.join(" · ")}` : "Sin filtros activos";
   }
 
@@ -573,7 +581,9 @@
     calcSoloPreset = false;
     document.getElementById("btn-calc-mostrar-todos")?.classList.add("hidden");
     elCalcBody.innerHTML = "";
-    const instrumentos = cot.instrumentos.filter((i) => !i.error && i.precio != null);
+    const instrumentos = cot.instrumentos.filter(
+      (i) => !i.error && i.precio != null && C.estadoVigencia(C.infoDeTicker(i.ticker)) !== "vencido"
+    );
 
     for (const item of instrumentos) {
       const info = C.infoDeTicker(item.ticker);
@@ -837,9 +847,10 @@
   function aplicarPreset(tipo) {
     const elNota = document.getElementById("preset-nota");
     let result;
-    if (tipo === "conservador") result = A.presetConservador(enriquecidos);
-    else if (tipo === "balanceado") result = A.presetBalanceado(enriquecidos);
-    else if (tipo === "mayor-tir") result = A.presetMayorTir(enriquecidos);
+    const base = enriquecidosVigentes.length ? enriquecidosVigentes : enriquecidos.filter(C.esVigente);
+    if (tipo === "conservador") result = A.presetConservador(base);
+    else if (tipo === "balanceado") result = A.presetBalanceado(base);
+    else if (tipo === "mayor-tir") result = A.presetMayorTir(base);
     else return;
 
     aplicarPesosEnInputs(result.pesos);
@@ -855,6 +866,22 @@
     calcSoloPreset = true;
     document.getElementById("btn-calc-mostrar-todos")?.classList.remove("hidden");
     recalcularCartera();
+  }
+
+  function actualizarConteoInstrumentos() {
+    const total = Object.keys(C.state.infoFija || {}).filter((k) => !k.startsWith("_")).length;
+    const vigentes = enriquecidosVigentes.length || enriquecidos.filter(C.esVigente).length;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute(
+        "content",
+        `Panel de cotizaciones BYMA — ${total} instrumentos (${vigentes} vigentes): ONs, soberanos ARS/USD, provinciales, BCRA y CEDEAR`
+      );
+    }
+    const elHist = document.getElementById("historico-universo-count");
+    if (elHist) {
+      elHist.textContent = `${total} instrumentos (${vigentes} vigentes en panel)`;
+    }
   }
 
   async function cargarDatos() {
@@ -879,7 +906,9 @@
       S.registrarSnapshotDiario(dataCotiz.instrumentos);
 
       enriquecidos = C.enriquecerTodos();
+      enriquecidosVigentes = enriquecidos.filter(C.esVigente);
       semaforos = C.calcularSemaforos(enriquecidos);
+      actualizarConteoInstrumentos();
 
       elUltimaAct.textContent = C.formatearFecha(dataCotiz.ultima_actualizacion);
       elAlertaAntiguedad.classList.toggle("hidden", !C.esDatosAntiguos(dataCotiz.ultima_actualizacion));
@@ -946,6 +975,14 @@
     if (elConf) {
       elConf.addEventListener("change", () => {
         filtros.confiabilidad = elConf.value;
+        renderCotizacionesView();
+      });
+    }
+
+    const elVenc = document.getElementById("filtro-mostrar-vencidos");
+    if (elVenc) {
+      elVenc.addEventListener("change", () => {
+        filtros.mostrarVencidos = elVenc.checked;
         renderCotizacionesView();
       });
     }

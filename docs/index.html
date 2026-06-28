@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Panel de cotizaciones BYMA — 47 instrumentos ONs, soberanos ARS/USD, provinciales, BCRA y CEDEAR">
+  <meta name="description" content="Panel de cotizaciones BYMA — instrumentos ONs, soberanos ARS/USD, provinciales, BCRA y CEDEAR">
   <title>Cotizaciones ONs, Soberanos y Provinciales (ARS/USD)</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -125,6 +125,12 @@
                 <option value="ambos">Confirmados + liquidez alta</option>
               </select>
             </div>
+            <div class="filtro-checkbox-wrap">
+              <label class="checkbox-label">
+                <input type="checkbox" id="filtro-mostrar-vencidos">
+                Mostrar vencidos
+              </label>
+            </div>
             <div class="hidden" id="filtro-sector-legacy-wrap" aria-hidden="true">
               <label for="filtro-sector">Sector</label>
               <select id="filtro-sector"><option value="todos">Todos</option></select>
@@ -191,7 +197,7 @@
           <div class="alert alert--info historico-disclaimer">
             <strong>Serie diaria BYMA Open Data</strong> desde <code>historico_precios.json</code>.
             Requiere ejecutar una vez el workflow manual «Bootstrap histórico precios».
-            Liquidez y volatilidad son relativas al universo del panel (47 instrumentos), no al mercado completo.
+            Liquidez y volatilidad son relativas al universo del panel (<span id="historico-universo-count">…</span>), no al mercado completo.
           </div>
           <div class="historico-controls">
             <label for="historico-ticker-select">Instrumento</label>
