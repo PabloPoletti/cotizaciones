@@ -71,18 +71,21 @@
       });
     }
 
-    const scatterRows = enriquecidos.filter((r) => r.tirEff != null && r.anosVto != null);
+    const scatterRows = enriquecidos.filter(
+      (r) => r.tirEff != null && r.anosVto != null && C().esTirComparable(r)
+    );
     destruir("scatter");
     const ctx2 = document.getElementById("chart-scatter");
     if (ctx2) {
-      const sectores = [...new Set(scatterRows.map((r) => r.sector))];
+      const grupos = C()
+        .ORDEN_GRUPOS_TIR.filter((g) => scatterRows.some((r) => r.tirComparableGrupo === g));
       const manyPoints = scatterRows.length > 24;
-      const datasets = sectores.map((sector) => ({
-        label: sector,
+      const datasets = grupos.map((grupo) => ({
+        label: C().GRUPO_TIR_LABELS[grupo] || grupo,
         data: scatterRows
-          .filter((r) => r.sector === sector)
+          .filter((r) => r.tirComparableGrupo === grupo)
           .map((r) => ({ x: r.anosVto, y: r.tirEff, ticker: r.item.ticker })),
-        backgroundColor: C().COLORES_SECTOR[sector] || C().COLORES_SECTOR.Otros,
+        backgroundColor: C().COLORES_GRUPO_TIR[grupo] || C().COLORES_SECTOR.Otros,
         pointRadius: manyPoints ? 4 : 7,
         pointHoverRadius: manyPoints ? 6 : 9,
       }));
@@ -97,7 +100,7 @@
               position: "bottom",
               labels: {
                 boxWidth: 10,
-                font: { size: sectores.length > 8 ? 9 : 11 },
+                font: { size: grupos.length > 4 ? 9 : 11 },
                 padding: 8,
               },
             },

@@ -142,6 +142,53 @@
     return (row.estadoVigencia || estadoVigencia(row.info)) !== "vencido";
   }
 
+  const GRUPOS_TIR_COMPARABLE = [
+    "USD_HARD",
+    "ARS_NOMINAL",
+    "ARS_CER_REAL",
+    "ARS_DOLLAR_LINKED",
+    "NO_COMPARABLE",
+  ];
+
+  const GRUPO_TIR_LABELS = {
+    USD_HARD: "USD nominal",
+    ARS_NOMINAL: "ARS nominal",
+    ARS_CER_REAL: "ARS real (CER)",
+    ARS_DOLLAR_LINKED: "Dollar-linked",
+    NO_COMPARABLE: "No comparable",
+  };
+
+  const COLORES_GRUPO_TIR = {
+    USD_HARD: "#1e4d8c",
+    ARS_NOMINAL: "#b54708",
+    ARS_CER_REAL: "#0d7a4a",
+    ARS_DOLLAR_LINKED: "#7c3aed",
+  };
+
+  const ORDEN_GRUPOS_TIR = ["USD_HARD", "ARS_NOMINAL", "ARS_CER_REAL", "ARS_DOLLAR_LINKED"];
+
+  function inferirTirComparableGrupo(info) {
+    if (estadoVigencia(info) === "vencido") return "NO_COMPARABLE";
+    const cat = categoriaDe(info);
+    if (cat === "CEDEAR" || cat === "BCRA") return "NO_COMPARABLE";
+    const moneda = info.moneda || "USD";
+    if (moneda === "USD") return "USD_HARD";
+    if (moneda === "ARS-CER") return "ARS_CER_REAL";
+    if (moneda === "ARS dollar-linked") return "ARS_DOLLAR_LINKED";
+    if (moneda === "ARS") return "ARS_NOMINAL";
+    return "NO_COMPARABLE";
+  }
+
+  function tirComparableGrupo(info) {
+    const g = info?.tir_comparable_grupo;
+    if (g && GRUPOS_TIR_COMPARABLE.includes(g)) return g;
+    return inferirTirComparableGrupo(info);
+  }
+
+  function esTirComparable(row) {
+    return row.tirComparableGrupo && row.tirComparableGrupo !== "NO_COMPARABLE";
+  }
+
   function normalizarPrecioByma(precioRaw) {
     if (precioRaw == null || Number.isNaN(precioRaw)) return null;
     return precioRaw / 1000;
@@ -375,6 +422,7 @@
       hp,
       liquidez: window.CotizHistorico?.nivelLiquidez(item.ticker) || null,
       estadoVigencia: estadoVigencia(info),
+      tirComparableGrupo: tirComparableGrupo(info),
     };
   }
 
@@ -383,14 +431,15 @@
   }
 
   function calcularSemaforos(enriquecidos) {
-    const porSector = new Map();
+    const porBucket = new Map();
     for (const row of enriquecidos) {
-      if (row.tirEff == null) continue;
-      if (!porSector.has(row.sector)) porSector.set(row.sector, []);
-      porSector.get(row.sector).push(row);
+      if (row.tirEff == null || !esTirComparable(row)) continue;
+      const key = `${row.sector}\0${row.tirComparableGrupo}`;
+      if (!porBucket.has(key)) porBucket.set(key, []);
+      porBucket.get(key).push(row);
     }
     const mapa = new Map();
-    for (const [, rows] of porSector) {
+    for (const [, rows] of porBucket) {
       const sorted = [...rows].sort((a, b) => a.tirEff - b.tirEff);
       sorted.forEach((row, idx) => {
         const pct = sorted.length <= 1 ? 0.5 : idx / (sorted.length - 1);
@@ -574,5 +623,12 @@
     detalleConfirmacionPrecio,
     estadoVigencia,
     esVigente,
+    GRUPOS_TIR_COMPARABLE,
+    GRUPO_TIR_LABELS,
+    COLORES_GRUPO_TIR,
+    ORDEN_GRUPOS_TIR,
+    inferirTirComparableGrupo,
+    tirComparableGrupo,
+    esTirComparable,
   };
 })();

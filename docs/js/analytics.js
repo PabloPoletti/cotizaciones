@@ -45,22 +45,66 @@
     return { porMoneda, total: enriquecidos.length };
   }
 
+  function calcularKPIsPorGrupoTir(enriquecidos) {
+    const porGrupo = {};
+    for (const g of C().ORDEN_GRUPOS_TIR) {
+      const rows = enriquecidos.filter((r) => r.tirComparableGrupo === g);
+      if (!rows.length) continue;
+      const kpis = calcularKPIs(rows);
+      porGrupo[g] = {
+        ...kpis,
+        grupo: g,
+        label: C().GRUPO_TIR_LABELS[g] || g,
+        count: rows.length,
+      };
+    }
+    const noComparable = enriquecidos.filter((r) => r.tirComparableGrupo === "NO_COMPARABLE").length;
+    return { porGrupo, total: enriquecidos.length, noComparable };
+  }
+
   function mejorTirPorSector(enriquecidos) {
+    return mejorTirPorSectorGrupo(enriquecidos);
+  }
+
+  function mejorTirPorSectorGrupo(enriquecidos) {
+    const gruposPorSector = new Map();
+    for (const row of enriquecidos) {
+      if (!C().esTirComparable(row) || row.tirEff == null) continue;
+      if (!gruposPorSector.has(row.sector)) gruposPorSector.set(row.sector, new Set());
+      gruposPorSector.get(row.sector).add(row.tirComparableGrupo);
+    }
+
     const mapa = new Map();
     for (const row of enriquecidos) {
-      if (row.tirEff == null) continue;
-      const prev = mapa.get(row.sector);
-      if (!prev || row.tirEff > prev.tirEff) mapa.set(row.sector, row);
+      if (!C().esTirComparable(row) || row.tirEff == null) continue;
+      const key = `${row.sector}\0${row.tirComparableGrupo}`;
+      const prev = mapa.get(key);
+      if (!prev || row.tirEff > prev.tirEff) mapa.set(key, row);
     }
+
     return [...mapa.entries()]
-      .map(([sector, row]) => ({
-        sector,
-        ticker: row.item.ticker,
-        nombre: row.item.nombre || row.info.nombre,
-        tirEff: row.tirEff,
-        vencimiento: row.info.vencimiento,
-      }))
-      .sort((a, b) => a.sector.localeCompare(b.sector));
+      .map(([key, row]) => {
+        const [sector, grupo] = key.split("\0");
+        const multiGrupo = (gruposPorSector.get(sector)?.size || 0) > 1;
+        const grupoLabel = C().GRUPO_TIR_LABELS[grupo] || grupo;
+        return {
+          sector,
+          grupo,
+          sectorLabel: multiGrupo ? `${sector} · ${grupoLabel}` : sector,
+          ticker: row.item.ticker,
+          nombre: row.item.nombre || row.info.nombre,
+          tirEff: row.tirEff,
+          tirFuente: row.tirCalc?.fuente || null,
+          vencimiento: row.info.vencimiento,
+        };
+      })
+      .sort((a, b) => {
+        const s = a.sector.localeCompare(b.sector);
+        if (s !== 0) return s;
+        const ia = C().ORDEN_GRUPOS_TIR.indexOf(a.grupo);
+        const ib = C().ORDEN_GRUPOS_TIR.indexOf(b.grupo);
+        return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+      });
   }
 
   function proximosVencimientos(enriquecidos, limite = 10) {
@@ -137,10 +181,11 @@
     const parciales = enriquecidos.filter((r) => !r.esBullet);
     const bulletsOnly = enriquecidos.filter((r) => r.esBullet);
 
-    for (const row of mejorTirPorSector(enriquecidos)) {
+    for (const row of mejorTirPorSectorGrupo(enriquecidos)) {
+      const refMark = row.tirFuente === "referencia" ? " (ref.)" : "";
       bullets.push(
-        `En <strong>${C().escapeHtml(row.sector)}</strong>, la TIR efectiva más alta del panel es ` +
-          `<strong>${row.ticker}</strong> (~${row.tirEff.toFixed(2)}%). Comparación relativa dentro del sector, no calidad crediticia.`
+        `En <strong>${C().escapeHtml(row.sectorLabel)}</strong>, la TIR efectiva más alta del panel es ` +
+          `<strong>${row.ticker}</strong> (~${row.tirEff.toFixed(2)}%${refMark}). Comparación relativa dentro del mismo grupo TIR, no calidad crediticia.`
       );
     }
 
@@ -198,6 +243,7 @@
 
       const tirAltaLiqBaja = enriquecidos.filter(
         (r) =>
+          r.tirComparableGrupo === "USD_HARD" &&
           r.tirEff != null &&
           r.tirEff >= 9 &&
           r.liquidez?.nivel === "baja" &&
@@ -305,7 +351,9 @@
   window.CotizAnalytics = {
     calcularKPIs,
     calcularKPIsPorMoneda,
+    calcularKPIsPorGrupoTir,
     mejorTirPorSector,
+    mejorTirPorSectorGrupo,
     estimarProximoCupon,
     plazoRestante,
     proximosVencimientos,

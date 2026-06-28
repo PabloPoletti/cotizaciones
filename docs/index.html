@@ -152,6 +152,7 @@
         </section>
         <section class="chart-card">
           <h2>Curva de rendimientos (TIR vs plazo)</h2>
+          <p class="header__meta">Puntos agrupados por grupo TIR comparable; no mezclar colores entre grupos (USD nominal, ARS nominal, etc.).</p>
           <div class="chart-box"><canvas id="chart-scatter"></canvas></div>
         </section>
         <section class="chart-card">
@@ -209,8 +210,9 @@
         </div>
       </section>
       <section class="panel-section">
-        <h2>Mejor TIR efectiva por sector</h2>
-        <div class="table-wrap"><table id="tabla-ranking-sector"><thead><tr><th>Sector</th><th>Ticker</th><th class="num">TIR eff.</th><th>Vencimiento</th></tr></thead><tbody></tbody></table></div>
+        <h2>Mejor TIR efectiva por sector / grupo</h2>
+        <p class="header__meta">Comparación solo dentro del mismo grupo TIR (USD nominal, ARS nominal, etc.). <span class="meta">(ref.)</span> = TIR de referencia, no cálculo de mercado.</p>
+        <div class="table-wrap"><table id="tabla-ranking-sector"><thead><tr><th>Sector / grupo TIR</th><th>Ticker</th><th class="num">TIR eff.</th><th>Vencimiento</th></tr></thead><tbody></tbody></table></div>
       </section>
       <div class="two-col">
         <section class="panel-section">

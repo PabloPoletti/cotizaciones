@@ -11,11 +11,12 @@
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2029-06-30",
     "cupon": "9% semestral",
-    "cupon_tasa_anual": 9.0,
+    "cupon_tasa_anual": 9,
     "cupon_frecuencia": "semestral",
     "amortizacion": "7 cuotas semestrales 14,2857% desde jun 2026",
     "amortizacion_tipo": "amortizacion_parcial",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "YMCXO": {
     "nombre": "YPF ON 2031 (Clase XXXI)",
@@ -31,7 +32,8 @@
     "amortizacion": "3 cuotas anuales: 20%, 20% y 60% desde sep 2029",
     "amortizacion_tipo": "amortizacion_parcial",
     "notas": "Cupón y amortización: Suplemento ON Clase XXXI (inversores.ypf.com, sep 2024). TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "YM39O": {
     "nombre": "YPF ON 2030 (Clase XXXIX)",
@@ -47,7 +49,8 @@
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
     "notas": "Tasa fija 8,75% y bullet: ficha técnica BYMA / prospecto YPF (jul 2025). TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "YM42O": {
     "nombre": "YPF ON 2029 (Clase XLII)",
@@ -58,12 +61,13 @@
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2029-03-02",
     "cupon": "7% semestral",
-    "cupon_tasa_anual": 7.0,
+    "cupon_tasa_anual": 7,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
     "notas": "Tasa 7% y bullet: ficha técnica BYMA / prospecto YPF (dic 2025). TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "PNICO": {
     "nombre": "Pan American ON 2032 (Clase XVII)",
@@ -79,7 +83,8 @@
     "amortizacion": "14 cuotas: 8 de 5% y 6 de 10%",
     "amortizacion_tipo": "amortizacion_parcial",
     "notas": "Cupón y amortización: ficha técnica BYMA (emisión feb 2022). TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "PNECO": {
     "nombre": "Pan American ON 2031 (Clase XIII)",
@@ -90,12 +95,13 @@
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2031-07-12",
     "cupon": "5% (frecuencia según prospecto PAE)",
-    "cupon_tasa_anual": 5.0,
+    "cupon_tasa_anual": 5,
     "cupon_frecuencia": "semestral",
     "amortizacion": "14 cuotas: 8 de 5% y 6 de 10%",
     "amortizacion_tipo": "amortizacion_parcial",
     "notas": "Cupón y amortización: ficha técnica BYMA (emisión jul 2021). TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "PNRCO": {
     "nombre": "Pan American ON 2028 (Clase XXVI)",
@@ -106,12 +112,13 @@
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2028-08-07",
     "cupon": "1% (frecuencia según prospecto PAE)",
-    "cupon_tasa_anual": 1.0,
+    "cupon_tasa_anual": 1,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
     "notas": "Cupón 1% bullet: ficha técnica BYMA (emisión ago 2023). TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "TTC9O": {
     "nombre": "Tecpetrol ON 2029 (Clase IX)",
@@ -129,7 +136,8 @@
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
     "notas": "Ticker TTC9O: «9» = Clase IX, no el año de vencimiento.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "TTCDO": {
     "nombre": "Tecpetrol ON 2030 (Clase XII)",
@@ -147,7 +155,8 @@
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
     "notas": "Ticker TTCDO: emisión internacional Clase XII (dic 2025); el vencimiento sale del prospecto, no del código.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "PN35O": {
     "nombre": "Pan American ON 2029 (Clase XXXV)",
@@ -155,17 +164,18 @@
     "sector": "Petróleo y gas",
     "moneda": "USD",
     "ley": "Nueva York",
-    "tir_referencia": 6.0,
+    "tir_referencia": 6,
     "tir_rango": "5.0%–7.0%",
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2029-09-27",
     "cupon": "7% semestral",
-    "cupon_tasa_anual": 7.0,
+    "cupon_tasa_anual": 7,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
     "notas": "Ticker PN35O: «35» = Clase XXXV, no el año 2035.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "PNDCO": {
     "nombre": "Pan American ON 2027 (Clase XII)",
@@ -173,7 +183,7 @@
     "sector": "Petróleo y gas",
     "moneda": "USD",
     "ley": "Nueva York",
-    "tir_referencia": 6.0,
+    "tir_referencia": 6,
     "tir_rango": "5.0%–7.0%",
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2027-04-30",
@@ -183,7 +193,8 @@
     "amortizacion": "5 cuotas semestrales 20% desde oct 2025",
     "amortizacion_tipo": "amortizacion_parcial",
     "notas": "No es dual de PN35O: PNDCO es Clase XII con vencimiento 2027.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "TSC3O": {
     "nombre": "TGS ON 2031 (Clase 3)",
@@ -201,7 +212,8 @@
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
     "notas": "Ticker TSC3O: «3» = Clase 3; vencimiento 24/07/2031 (prospecto Bruchou/BYMA).",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "DNC7O": {
     "nombre": "Edenor ON 2030 (Clase VII)",
@@ -219,7 +231,8 @@
     "amortizacion": "Bullet (única al vencimiento)",
     "amortizacion_tipo": "bullet",
     "notas": "Ticker DNC7O: «7» = Clase VII, no el año de vencimiento.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "IRCFO": {
     "nombre": "IRSA ON 2028 (Clase XIV)",
@@ -237,7 +250,8 @@
     "amortizacion": "Cuotas parciales jun 2026, jun 2027 y 30% al vencimiento",
     "amortizacion_tipo": "amortizacion_parcial",
     "notas": "Ticker IRCFO: Clase XIV; «F»/código no es el año. Canje parcial a Clase XXIV (2035) en 2025.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "RAC5O": {
     "nombre": "Raghsa ON 2030 (Clase V)",
@@ -255,7 +269,8 @@
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
     "notas": "Ticker RAC5O: «5» = Clase V (emisión 24/04/2023), no el año 2030 del vencimiento.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "TLCMO": {
     "nombre": "Telecom ON 2031 (Clase XXI)",
@@ -272,7 +287,8 @@
     "cupon_frecuencia": "anual",
     "amortizacion": "3 cuotas anuales 33% desde jul 2029",
     "amortizacion_tipo": "amortizacion_parcial",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "YFCJO": {
     "nombre": "YPF Luz ON 2032",
@@ -289,7 +305,8 @@
     "cupon_frecuencia": "semestral",
     "amortizacion": "3 cuotas anuales 33,3% desde oct 2030",
     "amortizacion_tipo": "amortizacion_parcial",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "GN49O": {
     "nombre": "Genneia ON 2033 (Clase XLIX)",
@@ -297,7 +314,7 @@
     "sector": "Utilities",
     "moneda": "USD",
     "ley": "Nueva York",
-    "tir_referencia": 8.0,
+    "tir_referencia": 8,
     "tir_rango": "~8%",
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2033-12-02",
@@ -307,7 +324,8 @@
     "amortizacion": "3 cuotas anuales 33%, 33% y 34% (dic 2031–dic 2033)",
     "amortizacion_tipo": "amortizacion_parcial",
     "notas": "Ticker GN49O: «49» = Clase XLIX (números romanos), no 2049. Vencimiento según prospecto/emisor: 2 dic 2033 (genneia.com.ar/ir).",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "RUCDO": {
     "nombre": "MSU Energy ON 2030",
@@ -324,7 +342,8 @@
     "cupon_frecuencia": "semestral",
     "amortizacion": "17,5% (2028), 17,5% (2029) y 65% (2030)",
     "amortizacion_tipo": "amortizacion_parcial",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "AL30": {
     "nombre": "Bono AL30",
@@ -368,59 +387,60 @@
     "cronograma_amortizacion": [
       {
         "fecha": "2024-07-09",
-        "porcentaje": 4.0
+        "porcentaje": 4
       },
       {
         "fecha": "2025-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2025-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2026-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2026-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2027-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2027-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2028-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2028-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2029-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2029-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2030-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2030-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       }
     ],
     "fuente_cronograma": "Ley 27.556 Anexo III + condiciones Step Up USD (Argentina.gob.ar); calendario 9 ene/9 jul alineado a serie Global (Dec701)",
-    "fecha_emision": "2020-09-04"
+    "fecha_emision": "2020-09-04",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "GD30": {
     "nombre": "Bono GD30",
@@ -464,59 +484,60 @@
     "cronograma_amortizacion": [
       {
         "fecha": "2024-07-09",
-        "porcentaje": 4.0
+        "porcentaje": 4
       },
       {
         "fecha": "2025-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2025-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2026-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2026-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2027-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2027-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2028-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2028-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2029-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2029-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2030-01-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       },
       {
         "fecha": "2030-07-09",
-        "porcentaje": 8.0
+        "porcentaje": 8
       }
     ],
     "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
-    "fecha_emision": "2020-09-04"
+    "fecha_emision": "2020-09-04",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "GD35": {
     "nombre": "Bono GD35",
@@ -569,53 +590,54 @@
       {
         "desde": "2028-07-09",
         "hasta": "2035-07-09",
-        "tasa_anual": 5.0
+        "tasa_anual": 5
       }
     ],
     "cronograma_amortizacion": [
       {
         "fecha": "2031-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2031-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2032-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2032-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2033-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2033-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2034-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2034-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2035-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2035-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       }
     ],
     "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
-    "fecha_emision": "2020-09-04"
+    "fecha_emision": "2020-09-04",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "AL29": {
     "nombre": "Bono AL29",
@@ -624,11 +646,11 @@
     "sector": "Soberanos USD",
     "moneda": "USD",
     "ley": "Argentina",
-    "tir_referencia": 8.0,
+    "tir_referencia": 8,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2029-07-09",
     "cupon": "1% anual fijo",
-    "cupon_tasa_anual": 1.0,
+    "cupon_tasa_anual": 1,
     "cupon_frecuencia": "semestral",
     "amortizacion": "10 cuotas semestrales iguales (10% c/u, ene/jul 2025–2029)",
     "amortizacion_tipo": "parcial_cronograma",
@@ -638,53 +660,54 @@
       {
         "desde": "2020-09-04",
         "hasta": "2029-07-09",
-        "tasa_anual": 1.0
+        "tasa_anual": 1
       }
     ],
     "cronograma_amortizacion": [
       {
         "fecha": "2025-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2025-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2026-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2026-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2027-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2027-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2028-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2028-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2029-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2029-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       }
     ],
     "fuente_cronograma": "Ley 27.556 Anexo III + condiciones Step Up USD (Argentina.gob.ar); calendario 9 ene/9 jul alineado a serie Global (Dec701)",
-    "fecha_emision": "2020-09-04"
+    "fecha_emision": "2020-09-04",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "AL35": {
     "nombre": "Bono AL35",
@@ -693,7 +716,7 @@
     "sector": "Soberanos USD",
     "moneda": "USD",
     "ley": "Argentina",
-    "tir_referencia": 9.0,
+    "tir_referencia": 9,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2035-07-09",
     "cupon": "Step-up (ver cronograma)",
@@ -736,53 +759,54 @@
       {
         "desde": "2028-07-09",
         "hasta": "2035-07-09",
-        "tasa_anual": 5.0
+        "tasa_anual": 5
       }
     ],
     "cronograma_amortizacion": [
       {
         "fecha": "2031-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2031-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2032-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2032-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2033-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2033-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2034-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2034-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2035-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2035-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       }
     ],
     "fuente_cronograma": "Ley 27.556 Anexo III + condiciones Step Up USD (Argentina.gob.ar); calendario 9 ene/9 jul alineado a serie Global (Dec701)",
-    "fecha_emision": "2020-09-04"
+    "fecha_emision": "2020-09-04",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "AL41": {
     "nombre": "Bono AL41",
@@ -937,7 +961,8 @@
       }
     ],
     "fuente_cronograma": "Ley 27.556 Anexo III + condiciones Step Up USD (Argentina.gob.ar); calendario 9 ene/9 jul alineado a serie Global (Dec701)",
-    "fecha_emision": "2020-09-04"
+    "fecha_emision": "2020-09-04",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "GD29": {
     "nombre": "Bono GD29",
@@ -946,11 +971,11 @@
     "sector": "Soberanos USD",
     "moneda": "USD",
     "ley": "Nueva York",
-    "tir_referencia": 8.0,
+    "tir_referencia": 8,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2029-07-09",
     "cupon": "1% anual fijo (Dec701 §K)",
-    "cupon_tasa_anual": 1.0,
+    "cupon_tasa_anual": 1,
     "cupon_frecuencia": "semestral",
     "amortizacion": "10 cuotas semestrales iguales (10% c/u, ene/jul 2025–2029)",
     "amortizacion_tipo": "parcial_cronograma",
@@ -960,53 +985,54 @@
       {
         "desde": "2020-09-04",
         "hasta": "2029-07-09",
-        "tasa_anual": 1.0
+        "tasa_anual": 1
       }
     ],
     "cronograma_amortizacion": [
       {
         "fecha": "2025-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2025-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2026-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2026-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2027-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2027-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2028-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2028-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2029-01-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       },
       {
         "fecha": "2029-07-09",
-        "porcentaje": 10.0
+        "porcentaje": 10
       }
     ],
     "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
-    "fecha_emision": "2020-09-04"
+    "fecha_emision": "2020-09-04",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "GD38": {
     "nombre": "Bono GD38",
@@ -1033,7 +1059,7 @@
       {
         "desde": "2021-07-09",
         "hasta": "2022-07-09",
-        "tasa_anual": 2.0
+        "tasa_anual": 2
       },
       {
         "desde": "2022-07-09",
@@ -1048,7 +1074,7 @@
       {
         "desde": "2024-07-09",
         "hasta": "2038-07-09",
-        "tasa_anual": 5.0
+        "tasa_anual": 5
       }
     ],
     "cronograma_amortizacion": [
@@ -1142,7 +1168,8 @@
       }
     ],
     "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
-    "fecha_emision": "2020-09-04"
+    "fecha_emision": "2020-09-04",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "GD41": {
     "nombre": "Bono GD41",
@@ -1151,7 +1178,7 @@
     "sector": "Soberanos USD",
     "moneda": "USD",
     "ley": "Nueva York",
-    "tir_referencia": 10.0,
+    "tir_referencia": 10,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2041-07-09",
     "cupon": "Step-up (ver cronograma)",
@@ -1297,7 +1324,8 @@
       }
     ],
     "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
-    "fecha_emision": "2020-09-04"
+    "fecha_emision": "2020-09-04",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "GD46": {
     "nombre": "Bono GD46",
@@ -1349,7 +1377,7 @@
       {
         "desde": "2028-07-09",
         "hasta": "2046-07-09",
-        "tasa_anual": 5.0
+        "tasa_anual": 5
       }
     ],
     "cronograma_amortizacion": [
@@ -1531,7 +1559,8 @@
       }
     ],
     "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
-    "fecha_emision": "2020-09-04"
+    "fecha_emision": "2020-09-04",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "TX26": {
     "nombre": "Bono TX26 (Boncer)",
@@ -1544,11 +1573,12 @@
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2026-03-15",
     "cupon": "0% (ajuste CER)",
-    "cupon_tasa_anual": 0.0,
+    "cupon_tasa_anual": 0,
     "cupon_frecuencia": "anual",
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
-    "notas": "TIR ref. en pesos reales (CER); no comparable con USD."
+    "notas": "TIR ref. en pesos reales (CER); no comparable con USD.",
+    "tir_comparable_grupo": "NO_COMPARABLE"
   },
   "TX28": {
     "nombre": "Bono TX28 (Boncer)",
@@ -1557,14 +1587,15 @@
     "sector": "Soberanos ARS",
     "moneda": "ARS-CER",
     "ley": "Argentina",
-    "tir_referencia": 4.0,
+    "tir_referencia": 4,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2028-06-15",
     "cupon": "2% anual + CER",
-    "cupon_tasa_anual": 2.0,
+    "cupon_tasa_anual": 2,
     "cupon_frecuencia": "anual",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "ARS_CER_REAL"
   },
   "TZX26": {
     "nombre": "Bono TZX26 (Boncer cupón cero)",
@@ -1573,14 +1604,15 @@
     "sector": "Soberanos ARS",
     "moneda": "ARS-CER",
     "ley": "Argentina",
-    "tir_referencia": 3.0,
+    "tir_referencia": 3,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2026-06-30",
     "cupon": "0% (ajuste CER)",
-    "cupon_tasa_anual": 0.0,
+    "cupon_tasa_anual": 0,
     "cupon_frecuencia": "anual",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "ARS_CER_REAL"
   },
   "TZXD6": {
     "nombre": "Bono TZXD6 (Boncer)",
@@ -1593,10 +1625,11 @@
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2026-12-15",
     "cupon": "0% (ajuste CER)",
-    "cupon_tasa_anual": 0.0,
+    "cupon_tasa_anual": 0,
     "cupon_frecuencia": "anual",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "ARS_CER_REAL"
   },
   "S31L6": {
     "nombre": "Lecap S31L6 (jul 2026)",
@@ -1605,15 +1638,16 @@
     "sector": "Soberanos ARS",
     "moneda": "ARS",
     "ley": "Argentina",
-    "tir_referencia": 13.0,
+    "tir_referencia": 13,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2026-07-31",
     "cupon": "Capitalizable mensual (~33% TNA ref.)",
-    "cupon_tasa_anual": 33.0,
+    "cupon_tasa_anual": 33,
     "cupon_frecuencia": "mensual",
     "amortizacion": "Bullet al vencimiento",
     "amortizacion_tipo": "bullet",
-    "notas": "Lecap de tasa fija capitalizable; TIR mercado aprox. limitada en el panel."
+    "notas": "Lecap de tasa fija capitalizable; TIR mercado aprox. limitada en el panel.",
+    "tir_comparable_grupo": "ARS_NOMINAL"
   },
   "S31G6": {
     "nombre": "Lecap S31G6 (ago 2026)",
@@ -1622,14 +1656,15 @@
     "sector": "Soberanos ARS",
     "moneda": "ARS",
     "ley": "Argentina",
-    "tir_referencia": 25.0,
+    "tir_referencia": 25,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2026-08-31",
     "cupon": "Capitalizable mensual",
     "cupon_tasa_anual": 24.88,
     "cupon_frecuencia": "mensual",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "ARS_NOMINAL"
   },
   "S30O6": {
     "nombre": "Lecap S30O6 (oct 2026)",
@@ -1638,14 +1673,15 @@
     "sector": "Soberanos ARS",
     "moneda": "ARS",
     "ley": "Argentina",
-    "tir_referencia": 22.0,
+    "tir_referencia": 22,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2026-10-30",
     "cupon": "Capitalizable mensual",
-    "cupon_tasa_anual": 22.0,
+    "cupon_tasa_anual": 22,
     "cupon_frecuencia": "mensual",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "ARS_NOMINAL"
   },
   "S30N6": {
     "nombre": "Lecap S30N6 (nov 2026)",
@@ -1654,14 +1690,15 @@
     "sector": "Soberanos ARS",
     "moneda": "ARS",
     "ley": "Argentina",
-    "tir_referencia": 18.0,
+    "tir_referencia": 18,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2026-11-30",
     "cupon": "Capitalizable mensual",
-    "cupon_tasa_anual": 18.0,
+    "cupon_tasa_anual": 18,
     "cupon_frecuencia": "mensual",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "ARS_NOMINAL"
   },
   "S17L6": {
     "nombre": "Lecap S17L6 (jul 2026 corta)",
@@ -1670,14 +1707,15 @@
     "sector": "Soberanos ARS",
     "moneda": "ARS",
     "ley": "Argentina",
-    "tir_referencia": 15.0,
+    "tir_referencia": 15,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2026-07-17",
     "cupon": "Capitalizable mensual",
-    "cupon_tasa_anual": 15.0,
+    "cupon_tasa_anual": 15,
     "cupon_frecuencia": "mensual",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "ARS_NOMINAL"
   },
   "T30J6": {
     "nombre": "Letra / bono corto T30J6",
@@ -1686,14 +1724,15 @@
     "sector": "Soberanos ARS",
     "moneda": "ARS",
     "ley": "Argentina",
-    "tir_referencia": 20.0,
+    "tir_referencia": 20,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2026-06-30",
     "cupon": "Tasa fija",
-    "cupon_tasa_anual": 20.0,
+    "cupon_tasa_anual": 20,
     "cupon_frecuencia": "mensual",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "ARS_NOMINAL"
   },
   "TVPP": {
     "nombre": "Bono TVPP (dollar-linked)",
@@ -1702,15 +1741,16 @@
     "sector": "Soberanos ARS",
     "moneda": "ARS dollar-linked",
     "ley": "Argentina",
-    "tir_referencia": 5.0,
+    "tir_referencia": 5,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2028-07-09",
     "cupon": "Cupón en pesos indexado USD",
-    "cupon_tasa_anual": 1.0,
+    "cupon_tasa_anual": 1,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
-    "notas": "Precio en pesos ligado al tipo de cambio; TIR ref. no comparable con USD hard."
+    "notas": "Precio en pesos ligado al tipo de cambio; TIR ref. no comparable con USD hard.",
+    "tir_comparable_grupo": "ARS_DOLLAR_LINKED"
   },
   "DICP": {
     "nombre": "Bono DICP (dollar-linked)",
@@ -1723,10 +1763,11 @@
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2029-01-15",
     "cupon": "Cupón en pesos indexado USD",
-    "cupon_tasa_anual": 1.0,
+    "cupon_tasa_anual": 1,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "ARS_DOLLAR_LINKED"
   },
   "CO26D": {
     "nombre": "Bono Córdoba 2026 USD",
@@ -1735,14 +1776,15 @@
     "sector": "Provincial Córdoba",
     "moneda": "USD",
     "ley": "Nueva York / exterior",
-    "tir_referencia": 12.0,
+    "tir_referencia": 12,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2026-04-29",
     "cupon": "6,5% semestral",
     "cupon_tasa_anual": 6.5,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "NO_COMPARABLE"
   },
   "CO27D": {
     "nombre": "Bono Córdoba 2027 USD",
@@ -1751,14 +1793,15 @@
     "sector": "Provincial Córdoba",
     "moneda": "USD",
     "ley": "Nueva York / exterior",
-    "tir_referencia": 11.0,
+    "tir_referencia": 11,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2027-04-30",
     "cupon": "Semestral",
-    "cupon_tasa_anual": 6.0,
+    "cupon_tasa_anual": 6,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "PM29D": {
     "nombre": "Bono Mendoza 2029 USD",
@@ -1767,14 +1810,15 @@
     "sector": "Provincial Mendoza",
     "moneda": "USD",
     "ley": "Nueva York / exterior",
-    "tir_referencia": 18.0,
+    "tir_referencia": 18,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2029-03-15",
     "cupon": "Semestral",
-    "cupon_tasa_anual": 7.0,
+    "cupon_tasa_anual": 7,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "SA24D": {
     "nombre": "Bono Salta 2027 USD (reestructurado)",
@@ -1783,14 +1827,15 @@
     "sector": "Provincial Salta",
     "moneda": "USD",
     "ley": "Nueva York / exterior",
-    "tir_referencia": 20.0,
+    "tir_referencia": 20,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2027-12-15",
     "cupon": "Step-up USD",
-    "cupon_tasa_anual": 8.0,
+    "cupon_tasa_anual": 8,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "NDT5D": {
     "nombre": "Bono Neuquén 2030 USD",
@@ -1799,14 +1844,15 @@
     "sector": "Provincial Neuquén",
     "moneda": "USD",
     "ley": "Nueva York / exterior",
-    "tir_referencia": 16.0,
+    "tir_referencia": 16,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2030-04-30",
     "cupon": "Semestral",
     "cupon_tasa_anual": 7.5,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "BA37D": {
     "nombre": "Bono Pcia. Buenos Aires 2037 USD",
@@ -1815,14 +1861,15 @@
     "sector": "Provincial Buenos Aires",
     "moneda": "USD",
     "ley": "Nueva York / exterior",
-    "tir_referencia": 22.0,
+    "tir_referencia": 22,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2037-10-15",
     "cupon": "Semestral",
-    "cupon_tasa_anual": 6.0,
+    "cupon_tasa_anual": 6,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "BACAD": {
     "nombre": "Bono Ciudad de Buenos Aires (BACAD)",
@@ -1831,15 +1878,16 @@
     "sector": "Ciudad de Buenos Aires",
     "moneda": "USD",
     "ley": "Exterior",
-    "tir_referencia": 15.0,
+    "tir_referencia": 15,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2027-12-31",
     "cupon": "Semestral",
-    "cupon_tasa_anual": 6.0,
+    "cupon_tasa_anual": 6,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
-    "notas": "Clasificado como sub-soberano CABA; verificar prospecto en día hábil."
+    "notas": "Clasificado como sub-soberano CABA; verificar prospecto en día hábil.",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "BACAO": {
     "nombre": "Bono Ciudad de Buenos Aires (BACAO)",
@@ -1848,14 +1896,15 @@
     "sector": "Ciudad de Buenos Aires",
     "moneda": "USD",
     "ley": "Exterior",
-    "tir_referencia": 16.0,
+    "tir_referencia": 16,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2028-12-31",
     "cupon": "Semestral",
     "cupon_tasa_anual": 6.5,
     "cupon_frecuencia": "semestral",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "BPO27": {
     "nombre": "BOPREAL Serie 1 (BPO27)",
@@ -1864,15 +1913,16 @@
     "sector": "BCRA",
     "moneda": "USD",
     "ley": "Argentina (BCRA)",
-    "tir_referencia": 0.0,
+    "tir_referencia": 0,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2027-03-15",
     "cupon": "0% (certificado)",
-    "cupon_tasa_anual": 0.0,
+    "cupon_tasa_anual": 0,
     "cupon_frecuencia": "anual",
     "amortizacion": "Bullet",
     "amortizacion_tipo": "bullet",
-    "notas": "BOPREAL: instrumento BCRA, no bono soberano tradicional."
+    "notas": "BOPREAL: instrumento BCRA, no bono soberano tradicional.",
+    "tir_comparable_grupo": "NO_COMPARABLE"
   },
   "BPO28": {
     "nombre": "BOPREAL Serie 2 (BPO28)",
@@ -1881,14 +1931,15 @@
     "sector": "BCRA",
     "moneda": "USD",
     "ley": "Argentina (BCRA)",
-    "tir_referencia": 0.0,
+    "tir_referencia": 0,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2028-03-15",
     "cupon": "0%",
-    "cupon_tasa_anual": 0.0,
+    "cupon_tasa_anual": 0,
     "cupon_frecuencia": "anual",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "NO_COMPARABLE"
   },
   "BPOD7": {
     "nombre": "BOPREAL (BPOD7)",
@@ -1897,14 +1948,15 @@
     "sector": "BCRA",
     "moneda": "USD",
     "ley": "Argentina (BCRA)",
-    "tir_referencia": 0.0,
+    "tir_referencia": 0,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2027-12-31",
     "cupon": "0%",
-    "cupon_tasa_anual": 0.0,
+    "cupon_tasa_anual": 0,
     "cupon_frecuencia": "anual",
     "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion_tipo": "bullet",
+    "tir_comparable_grupo": "NO_COMPARABLE"
   },
   "SPYD": {
     "nombre": "CEDEAR SPYD (ETF S&P Dividend)",
@@ -1921,7 +1973,8 @@
     "cupon_frecuencia": "trimestral",
     "amortizacion": "N/A (equity ETF)",
     "amortizacion_tipo": "bullet",
-    "notas": "CEDEAR de ETF estadounidense; NO es bono argentino. TIR ref. ilustrativa."
+    "notas": "CEDEAR de ETF estadounidense; NO es bono argentino. TIR ref. ilustrativa.",
+    "tir_comparable_grupo": "NO_COMPARABLE"
   },
   "TSC4O": {
     "nombre": "TGS ON 2035 (Clase 4)",
@@ -1936,7 +1989,8 @@
     "amortizacion": "Ver prospecto",
     "amortizacion_tipo": "bullet",
     "notas": "Emisión nov 2025 (BYMA Clase 4). Cupón y amortización: ver prospecto. TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "DNCAO": {
     "nombre": "Edenor ON 2033 (Clase 10)",
@@ -1951,7 +2005,8 @@
     "amortizacion": "Ver prospecto",
     "amortizacion_tipo": "bullet",
     "notas": "Emisión abr 2026 (BYMA Clase 10). TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "TLCPO": {
     "nombre": "Telecom ON 2033 (Clase 24)",
@@ -1966,7 +2021,8 @@
     "amortizacion": "Ver prospecto",
     "amortizacion_tipo": "bullet",
     "notas": "Emisión may 2025 (BYMA Clase 24). TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "TLCFO": {
     "nombre": "Telecom ON 2028 (Clase 14)",
@@ -1981,7 +2037,8 @@
     "amortizacion": "Ver prospecto",
     "amortizacion_tipo": "bullet",
     "notas": "Emisión feb 2023 (BYMA Clase 14). TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "TLCTO": {
     "nombre": "Telecom ON 2036 (Clase 27)",
@@ -1996,7 +2053,8 @@
     "amortizacion": "Ver prospecto",
     "amortizacion_tipo": "bullet",
     "notas": "Emisión ene 2026 (BYMA Clase 27). TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   },
   "IRCPO": {
     "nombre": "IRSA ON 2035 (Clase XXIV)",
@@ -2011,6 +2069,7 @@
     "amortizacion": "Ver prospecto",
     "amortizacion_tipo": "amortizacion_parcial",
     "notas": "Canje desde Clase XIV (IRCFO) mar 2025. TIR ref. pendiente verificación día hábil.",
-    "categoria": "ON corporativa"
+    "categoria": "ON corporativa",
+    "tir_comparable_grupo": "USD_HARD"
   }
 }

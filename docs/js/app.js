@@ -37,6 +37,20 @@
   let calcSoloPreset = false;
   let tabsInited = { analisis: false, resumen: false, observaciones: false };
 
+  /** Universo vigente por defecto; completo solo si el usuario activó «mostrar vencidos». */
+  function universoActivo() {
+    const vigentes = enriquecidosVigentes.length ? enriquecidosVigentes : enriquecidos.filter(C.esVigente);
+    return filtros.mostrarVencidos ? enriquecidos : vigentes;
+  }
+
+  /** Recalcula semáforos y vistas que dependen del universo (Resumen, Observaciones, Análisis). */
+  function refrescarUniversoDependiente() {
+    semaforos = C.calcularSemaforos(universoActivo());
+    renderResumen();
+    renderObservaciones();
+    tabsInited.analisis = false;
+  }
+
   const elUltimaAct = document.getElementById("ultima-actualizacion");
   const elTipoCambioMeta = document.getElementById("tipo-cambio-meta");
   const elAlertaFetchStatus = document.getElementById("alerta-fetch-status");
@@ -323,21 +337,21 @@
       labelText = "Sector";
       options = [
         ...new Set(
-          enriquecidos.filter((r) => C.categoriaDe(r.info) === "ON corporativa").map((r) => r.sector)
+          universoActivo().filter((r) => C.categoriaDe(r.info) === "ON corporativa").map((r) => r.sector)
         ),
       ].sort();
     } else if (tipo === "Provincial") {
       show = true;
       labelText = "Provincia / emisor";
       options = [
-        ...new Set(enriquecidos.filter((r) => C.categoriaDe(r.info) === "Provincial").map((r) => r.sector)),
+        ...new Set(universoActivo().filter((r) => C.categoriaDe(r.info) === "Provincial").map((r) => r.sector)),
       ].sort();
     } else if (tipo === "Soberano USD" || tipo === "Soberano ARS" || tipo === "soberano") {
       show = true;
       labelText = "Ley aplicable";
       options = [
         ...new Set(
-          enriquecidos
+          universoActivo()
             .filter((r) => {
               const cat = C.categoriaDe(r.info);
               return cat.startsWith("Soberano") || C.esSoberano(r.info);
@@ -410,7 +424,7 @@
         return;
       }
       const card = e.target.closest(".inst-card");
-      if (card && !e.target.closest("details") && !e.target.closest("button")) {
+      if (card && !e.target.closest("summary") && !e.target.closest("button")) {
         abrirFicha(card.dataset.ticker);
       }
     });
@@ -496,42 +510,50 @@
   }
 
   function renderResumen() {
-    const porMoneda = A.calcularKPIsPorMoneda(enriquecidos);
+    const u = universoActivo();
+    const porGrupo = A.calcularKPIsPorGrupoTir(u);
     const el = document.getElementById("resumen-kpis");
     if (el) {
-      const monedaCards = Object.values(porMoneda.porMoneda)
-        .sort((a, b) => a.moneda.localeCompare(b.moneda))
-        .map(
-          (k) => `
+      const grupoCards = C.ORDEN_GRUPOS_TIR.filter((g) => porGrupo.porGrupo[g])
+        .map((g) => {
+          const k = porGrupo.porGrupo[g];
+          return `
         <div class="kpi-card kpi-card--moneda">
-          <span>TIR prom. (${C.escapeHtml(k.moneda)})</span>
+          <span>TIR prom. (${C.escapeHtml(k.label)})</span>
           <strong>${k.tirProm != null ? k.tirProm.toFixed(2) + "%" : "—"}</strong>
           <small>${k.count} instrumento(s)</small>
-        </div>`
-        )
+        </div>`;
+        })
         .join("");
+      const noCompCard =
+        porGrupo.noComparable > 0
+          ? `<div class="kpi-card"><span>Sin TIR comparable</span><strong>${porGrupo.noComparable}</strong><small>BOPREAL, CEDEAR, vencidos</small></div>`
+          : "";
       el.innerHTML = `
-        ${monedaCards}
-        <div class="kpi-card"><span>Instrumentos totales</span><strong>${porMoneda.total}</strong></div>
-        <div class="kpi-card"><span>Monedas distintas</span><strong>${Object.keys(porMoneda.porMoneda).length}</strong></div>
+        ${grupoCards}
+        ${noCompCard}
+        <div class="kpi-card"><span>Instrumentos totales</span><strong>${porGrupo.total}</strong></div>
+        <div class="kpi-card"><span>Grupos TIR comparables</span><strong>${Object.keys(porGrupo.porGrupo).length}</strong></div>
       `;
     }
     const tbody = document.querySelector("#tabla-ranking-sector tbody");
     if (tbody) {
-      tbody.innerHTML = A.mejorTirPorSector(enriquecidos)
-        .map(
-          (r) => `<tr>
-            <td>${C.escapeHtml(r.sector)}</td>
+      tbody.innerHTML = A.mejorTirPorSectorGrupo(u)
+        .map((r) => {
+          const refMark =
+            r.tirFuente === "referencia" ? ` <span class="meta">(ref.)</span>` : "";
+          return `<tr>
+            <td>${C.escapeHtml(r.sectorLabel)}</td>
             <td class="ticker">${C.escapeHtml(r.ticker)}</td>
-            <td class="num">${r.tirEff.toFixed(2)}%</td>
+            <td class="num">${r.tirEff.toFixed(2)}%${refMark}</td>
             <td>${C.escapeHtml(C.formatearFechaCorta(r.vencimiento))}</td>
-          </tr>`
-        )
+          </tr>`;
+        })
         .join("");
     }
     const ulV = document.getElementById("lista-vencimientos");
     if (ulV) {
-      ulV.innerHTML = A.proximosVencimientos(enriquecidos)
+      ulV.innerHTML = A.proximosVencimientos(u)
         .map(
           (v) =>
             `<li><strong>${C.escapeHtml(v.ticker)}</strong> — ${C.escapeHtml(C.formatearFechaCorta(v.vencimiento))} <span class="meta">${C.escapeHtml(v.nombre || "")}</span></li>`
@@ -540,20 +562,20 @@
     }
     const ulC = document.getElementById("lista-cupones");
     if (ulC) {
-      ulC.innerHTML = A.proximosCupones(enriquecidos)
+      ulC.innerHTML = A.proximosCupones(u)
         .map(
           (c) =>
             `<li><strong>${C.escapeHtml(c.ticker)}</strong> — ${c.fecha.toLocaleDateString("es-AR")} <span class="meta">${C.escapeHtml(c.cupon || "")}</span></li>`
         )
         .join("");
     }
-    renderConversionArsUsd(enriquecidos);
+    renderConversionArsUsd(u);
   }
 
   function renderObservaciones() {
     const el = document.getElementById("observaciones-list");
     if (!el) return;
-    const items = A.generarObservaciones(enriquecidos);
+    const items = A.generarObservaciones(universoActivo());
     el.innerHTML = items.map((html) => `<div class="obs-item">${html}</div>`).join("");
   }
 
@@ -907,7 +929,7 @@
 
       enriquecidos = C.enriquecerTodos();
       enriquecidosVigentes = enriquecidos.filter(C.esVigente);
-      semaforos = C.calcularSemaforos(enriquecidos);
+      semaforos = C.calcularSemaforos(universoActivo());
       actualizarConteoInstrumentos();
 
       elUltimaAct.textContent = C.formatearFecha(dataCotiz.ultima_actualizacion);
@@ -983,6 +1005,7 @@
     if (elVenc) {
       elVenc.addEventListener("change", () => {
         filtros.mostrarVencidos = elVenc.checked;
+        refrescarUniversoDependiente();
         renderCotizacionesView();
       });
     }
@@ -1015,7 +1038,7 @@
         document.getElementById(`panel-${target}`)?.classList.add("tab-panel--active");
 
         if (target === "analisis" && !tabsInited.analisis) {
-          CH.onTabAnalisis(enriquecidos);
+          CH.onTabAnalisis(universoActivo());
           tabsInited.analisis = true;
         }
         if (target === "calculadora") recalcularCartera();
