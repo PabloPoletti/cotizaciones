@@ -195,12 +195,41 @@
     };
   }
 
+  function soportaTirMercado(info) {
+    if (!info) return { ok: false, nota: "Sin datos del instrumento" };
+    if (info.amortizacion_tipo === "amortizacion_parcial") {
+      return { ok: false, nota: "Amortización parcial: ver TIR de referencia" };
+    }
+    if (info.amortizacion_tipo !== "bullet") {
+      return { ok: false, nota: "Ver TIR de referencia" };
+    }
+    const moneda = info.moneda || "";
+    if (moneda !== "USD" && moneda !== "ARS") {
+      const etiquetas = {
+        "ARS-CER": "Ajuste CER",
+        "ARS dollar-linked": "Dollar-linked",
+      };
+      const label = etiquetas[moneda] || moneda;
+      return { ok: false, nota: `${label}: ver TIR de referencia` };
+    }
+    const freq = info.cupon_frecuencia;
+    if (freq !== "anual" && freq !== "semestral") {
+      return { ok: false, nota: "Cupón no anual/semestral: ver TIR de referencia" };
+    }
+    const tasa = info.cupon_tasa_anual;
+    if (tasa == null || tasa <= 0) {
+      return { ok: false, nota: "Sin cupón fijo: ver TIR de referencia" };
+    }
+    return { ok: true, nota: "" };
+  }
+
   function calcularTirMercado(precioRaw, info) {
     if (precioRaw == null || !info) {
       return { valor: null, nota: "Sin precio de mercado" };
     }
-    if (info.amortizacion_tipo === "amortizacion_parcial") {
-      return { valor: null, nota: "Amortización parcial: ver TIR de referencia" };
+    const soporte = soportaTirMercado(info);
+    if (!soporte.ok) {
+      return { valor: null, nota: soporte.nota };
     }
     const vencimiento = parsearVencimiento(info.vencimiento);
     const tasaAnual = info.cupon_tasa_anual;
@@ -512,6 +541,7 @@
     infoDeTicker,
     parsearVencimiento,
     calcularTirMercado,
+    soportaTirMercado,
     tirParaCalculo,
     tirEfectiva,
     agruparPorSector,

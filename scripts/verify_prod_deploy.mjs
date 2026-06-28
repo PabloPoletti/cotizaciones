@@ -220,9 +220,48 @@ async function verifyFichaFlow(browser) {
   };
 }
 
+async function verifyWorkerCors(workerUrl) {
+  const badPost = await fetch(workerUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Origin: "https://otro-sitio.com" },
+    body: "{}",
+  });
+  const badBody = await badPost.json().catch(() => ({}));
+  const badPreflight = await fetch(workerUrl, {
+    method: "OPTIONS",
+    headers: { Origin: "https://otro-sitio.com", "Access-Control-Request-Method": "POST" },
+  });
+  return {
+    postStatus: badPost.status,
+    postError: badBody.error,
+    preflightStatus: badPreflight.status,
+    ok: badPost.status === 403 && badBody.error === "origin_not_allowed" && badPreflight.status === 403,
+  };
+}
+
+async function verifyConteoDinamico(browser) {
+  const page = await browser.newPage();
+  await page.goto(`${BASE}?v=${Date.now()}`, { waitUntil: "networkidle", timeout: 60000 });
+  await page.waitForSelector("#sectores-container .inst-card", { timeout: 30000 });
+  const texts = await page.evaluate(() => ({
+    meta: document.querySelector('meta[name="description"]')?.getAttribute("content") || "",
+    historico: document.getElementById("historico-universo-count")?.textContent?.trim() || "",
+  }));
+  await page.close();
+  const ok =
+    texts.meta.includes("59 instrumentos") &&
+    texts.meta.includes("57 vigentes") &&
+    !texts.meta.includes("47 instrumentos") &&
+    texts.historico.includes("59 instrumentos") &&
+    texts.historico.includes("57 vigentes");
+  return { ...texts, ok };
+}
+
 async function main() {
   const config = await fetchConfigFromProd();
+  const workerCors = await verifyWorkerCors(config.workerUrl);
   const browser = await chromium.launch({ headless: true });
+  const conteoDinamico = await verifyConteoDinamico(browser);
   const panel = await verifyPanel(browser);
   const filters = await verifyFiltersTwoLevel(browser);
   const fichaFlow = await verifyFichaFlow(browser);
@@ -234,6 +273,10 @@ async function main() {
     cooldownMs: config.cooldownMs,
     cooldownOk: config.cooldownMs === 300000,
     workerUrlOk: config.workerUrl.includes("cotizaciones-dispatch.lic-poletti.workers.dev/dispatch"),
+    workerCors,
+    workerCorsOk: workerCors.ok,
+    conteoDinamico,
+    conteoDinamicoOk: conteoDinamico.ok,
     panelCardsOk: panel.cards === PANEL_VIGENTES,
     filtersTwoLevel: filters,
     fichaFlow,
@@ -249,6 +292,14 @@ async function main() {
   }
   if (!checks.workerUrlOk) {
     console.error(`FAIL: worker URL en prod no coincide: ${config.workerUrl}`);
+    process.exit(1);
+  }
+  if (!checks.workerCorsOk) {
+    console.error("FAIL: Worker no rechaza Origin no autorizado", workerCors);
+    process.exit(1);
+  }
+  if (!checks.conteoDinamicoOk) {
+    console.error("FAIL: meta/disclaimer sin conteo dinámico 59/57", conteoDinamico);
     process.exit(1);
   }
   if (!checks.panelCardsOk) {

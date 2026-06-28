@@ -27,41 +27,6 @@
   </header>
 
   <main class="container">
-    <details class="config-panel">
-      <summary>Actualizar cotizaciones — configuración</summary>
-      <div class="config-panel__intro">
-        <p>
-          <strong>Método principal:</strong> el botón «Actualizar ahora» llama a un Cloudflare Worker que dispara el workflow en GitHub.
-          No necesitás token en el dispositivo si la URL del Worker está configurada.
-          Límite: <strong>1 actualización cada 5 minutos</strong> (panel y servidor).
-        </p>
-      </div>
-      <div class="config-panel__grid">
-        <div class="config-panel__full">
-          <label for="worker-url">URL del Worker (POST)</label>
-          <input type="url" id="worker-url" placeholder="https://cotizaciones-dispatch….workers.dev/dispatch" autocomplete="off">
-          <small>Tras deploy en Cloudflare, pegá acá la URL y guardá. También podés fijarla en <code>docs/js/config.js</code>.</small>
-        </div>
-        <button type="button" class="btn" id="btn-guardar-worker">Guardar URL del Worker</button>
-      </div>
-      <details class="config-panel__advanced">
-        <summary>Opciones avanzadas — token GitHub local (fallback)</summary>
-        <div class="config-panel__grid">
-          <div>
-            <label for="github-repo">Repositorio (usuario/nombre)</label>
-            <input type="text" id="github-repo" value="PabloPoletti/cotizaciones" autocomplete="off">
-          </div>
-          <div>
-            <label for="github-token">GitHub Personal Access Token</label>
-            <input type="password" id="github-token" placeholder="ghp_…" autocomplete="off">
-            <small>Solo si no hay Worker. Se guarda en localStorage de este navegador; nunca se sube al repo.</small>
-          </div>
-          <button type="button" class="btn" id="btn-guardar-config">Guardar token local</button>
-          <button type="button" class="btn" id="btn-probar-token">Probar token</button>
-        </div>
-      </details>
-    </details>
-
     <div class="toolbar">
       <button type="button" class="btn btn--primary" id="btn-actualizar">Actualizar ahora</button>
       <button type="button" class="btn" id="btn-recargar">Recargar datos</button>
@@ -349,6 +314,41 @@
       </div>
       <div id="observaciones-list" class="obs-list"></div>
     </div>
+
+    <details class="config-panel config-panel--footer">
+      <summary>Configuración avanzada — Worker y token</summary>
+      <div class="config-panel__intro">
+        <p>
+          Opcional: la mayoría de usuarios solo necesitan «Actualizar ahora» arriba (Worker ya configurado en
+          <code>docs/js/config.js</code>). Expandí esta sección solo si cambiás la URL del Worker o usás token local.
+          Límite: <strong>1 actualización cada 5 minutos</strong> por IP.
+        </p>
+      </div>
+      <div class="config-panel__grid">
+        <div class="config-panel__full">
+          <label for="worker-url">URL del Worker (POST)</label>
+          <input type="url" id="worker-url" placeholder="https://cotizaciones-dispatch….workers.dev/dispatch" autocomplete="off">
+          <small>Tras deploy en Cloudflare, pegá acá la URL y guardá.</small>
+        </div>
+        <button type="button" class="btn" id="btn-guardar-worker">Guardar URL del Worker</button>
+      </div>
+      <details class="config-panel__advanced">
+        <summary>Token GitHub local (fallback sin Worker)</summary>
+        <div class="config-panel__grid">
+          <div>
+            <label for="github-repo">Repositorio (usuario/nombre)</label>
+            <input type="text" id="github-repo" value="PabloPoletti/cotizaciones" autocomplete="off">
+          </div>
+          <div>
+            <label for="github-token">GitHub Personal Access Token</label>
+            <input type="password" id="github-token" placeholder="ghp_…" autocomplete="off">
+            <small>Solo si no hay Worker. Se guarda en localStorage de este navegador; nunca se sube al repo.</small>
+          </div>
+          <button type="button" class="btn" id="btn-guardar-config">Guardar token local</button>
+          <button type="button" class="btn" id="btn-probar-token">Probar token</button>
+        </div>
+      </details>
+    </details>
   </main>
 
   <footer class="footer container">

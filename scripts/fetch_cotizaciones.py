@@ -228,10 +228,10 @@ def evaluar_estado_mercado(cliente: BymaData) -> dict[str, Any]:
         error_byma = str(exc)
         logger.warning("  No se pudo consultar market-time: %s", exc)
 
-    if es_dia_habil_byma is False:
-        motivo = "feriado o día no laborable (BYMA)"
-    elif es_fin_semana:
+    if es_fin_semana:
         motivo = "fin de semana"
+    elif es_dia_habil_byma is False:
+        motivo = "feriado o día no laborable (BYMA)"
     elif es_feriado_local:
         motivo = f"feriado argentino ({fecha_hoy})"
     elif es_dia_habil_byma is True:

@@ -93,10 +93,14 @@ def merge_series(existing: list[dict], incoming: list[dict]) -> list[dict]:
     return [by_date[d] for d in sorted(by_date.keys())]
 
 
+def hoy_argentina() -> date:
+    return datetime.now(TZ_ARGENTINA).date()
+
+
 def trim_series(serie: list[dict], ventana_dias: int) -> list[dict]:
     if not serie:
         return serie
-    corte = (date.today() - timedelta(days=ventana_dias)).isoformat()
+    corte = (hoy_argentina() - timedelta(days=ventana_dias)).isoformat()
     return [p for p in serie if p["date"] >= corte]
 
 
@@ -133,7 +137,7 @@ def calcular_metricas(serie: list[dict], dias_liquidez: int) -> dict[str, Any]:
     if not serie:
         return {}
 
-    hoy = date.today()
+    hoy = hoy_argentina()
     ultimo_close = float(serie[-1]["close"])
     inicio_close = float(serie[0]["close"])
 
