@@ -54,6 +54,7 @@
   const elUltimaAct = document.getElementById("ultima-actualizacion");
   const elTipoCambioMeta = document.getElementById("tipo-cambio-meta");
   const elAlertaFetchStatus = document.getElementById("alerta-fetch-status");
+  const elAlertaDolarStale = document.getElementById("alerta-dolar-stale");
   const elAlertaAntiguedad = document.getElementById("alerta-antiguedad");
   const elAlertaError = document.getElementById("alerta-error");
   const elSectores = document.getElementById("sectores-container");
@@ -122,10 +123,15 @@
 
   function renderizarTipoCambio() {
     if (!elTipoCambioMeta) return;
-    const tc = C.state.cotizaciones?.tipo_cambio;
+    const cot = C.state.cotizaciones;
+    const tc = cot?.tipo_cambio;
     if (!tc || tc.error) {
       elTipoCambioMeta.classList.add("hidden");
       elTipoCambioMeta.textContent = "";
+      if (elAlertaDolarStale) {
+        elAlertaDolarStale.classList.add("hidden");
+        elAlertaDolarStale.textContent = "";
+      }
       return;
     }
     const partes = [];
@@ -138,8 +144,22 @@
       return;
     }
     const ts = tc.timestamp_consulta ? C.formatearFecha(tc.timestamp_consulta) : "";
-    elTipoCambioMeta.textContent = `${partes.join(" · ")}${ts ? ` — ${ts}` : ""}`;
+    elTipoCambioMeta.textContent = `${partes.join(" · ")}${ts ? ` — consulta ${ts}` : ""}`;
     elTipoCambioMeta.classList.remove("hidden");
+
+    const stale = C.evaluarFrescuraDolar(cot);
+    if (elAlertaDolarStale) {
+      if (stale?.length) {
+        const detalle = stale
+          .map((s) => `${s.alias} (${s.horas}h desde fuente)`)
+          .join("; ");
+        elAlertaDolarStale.textContent = `DolarAPI desactualizado en día hábil: ${detalle}. No usar como referencia fresca hasta nueva cotización.`;
+        elAlertaDolarStale.classList.remove("hidden");
+      } else {
+        elAlertaDolarStale.classList.add("hidden");
+        elAlertaDolarStale.textContent = "";
+      }
+    }
   }
 
   function semaforoHtml(ticker) {
@@ -212,7 +232,7 @@
           </div>
           <div class="inst-card__metric inst-card__metric--wide">
             <span class="label">TIR ref. / mercado</span>
-            <div>${C.formatearCeldaTir(info, item)}</div>
+            <div>${C.formatearCeldaTir(info, item, row.tirMerc)}</div>
           </div>
           ${metricasHistoricoHtml(row)}
         </div>
@@ -298,7 +318,7 @@
           <td class="num ${varFmt.clase}">${varFmt.texto}</td>
           <td class="num">${var7}</td>
           <td>${C.escapeHtml(liq)}</td>
-          <td class="num tir-cell">${C.formatearCeldaTir(info, item)}</td>
+          <td class="num tir-cell">${C.formatearCeldaTir(info, item, row.tirMerc)}</td>
           <td>${C.escapeHtml(C.formatearFechaCorta(info.vencimiento))}</td>
           <td>${C.escapeHtml(row.sector)}</td>
           <td>${semaforoHtml(item.ticker)}</td>
@@ -603,19 +623,21 @@
     calcSoloPreset = false;
     document.getElementById("btn-calc-mostrar-todos")?.classList.add("hidden");
     elCalcBody.innerHTML = "";
+    const rowMap = new Map(enriquecidos.map((r) => [r.item.ticker, r]));
     const instrumentos = cot.instrumentos.filter(
       (i) => !i.error && i.precio != null && C.estadoVigencia(C.infoDeTicker(i.ticker)) !== "vencido"
     );
 
     for (const item of instrumentos) {
       const info = C.infoDeTicker(item.ticker);
-      const tirCalc = C.tirParaCalculo(info, item);
-      const tirMercado = C.calcularTirMercado(item.precio, info);
+      const row = rowMap.get(item.ticker);
+      const tirMercado = row?.tirMerc || C.calcularTirMercado(item.precio, info);
+      const tirCalc = row?.tirCalc || C.tirParaCalculo(info, item, tirMercado);
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${C.escapeHtml(item.nombre || info.nombre || item.ticker)}</td>
         <td class="ticker">${C.escapeHtml(item.ticker)}</td>
-        <td class="num tir-cell">${C.formatearCeldaTir(info, item)}</td>
+        <td class="num tir-cell">${C.formatearCeldaTir(info, item, tirMercado)}</td>
         <td class="num">
           <input type="number" min="0" max="100" step="0.1" value="0"
                  data-ticker="${C.escapeHtml(item.ticker)}"

@@ -252,7 +252,7 @@
   function renderMercadoBlock(row) {
     const { item, info } = row;
     const varFmt = C().formatearVariacion(item.variacion_pct);
-    const tirMerc = C().calcularTirMercado(item.precio, info);
+    const tirMerc = row.tirMerc || C().calcularTirMercado(item.precio, info);
     let tirMercHtml = "—";
     if (tirMerc.valor != null) {
       tirMercHtml = `${tirMerc.valor}% <span class="meta">(${C().escapeHtml(tirMerc.nota)})</span>`;

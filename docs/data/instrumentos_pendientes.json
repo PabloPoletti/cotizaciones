@@ -1,5 +1,5 @@
 {
-  "_comentario": "Tickers fuera del panel activo (59 inst.). Organizado por motivo de exclusión. No modifica info_fija.json.",
+  "_comentario": "Inventario fuera del universo operativo del panel (59 inst. en info_fija.json). No modifica info_fija.json.",
   "fecha_reorganizacion": "2026-06-28",
   "criterios_panel_referencia": {
     "vencimiento_minimo": "2028-01-01",
@@ -7,126 +7,426 @@
     "max_series_por_emisor": 3
   },
   "conteo": {
-    "pendiente_verificar_dia_habil": 27,
-    "rechazado_liquidez_baja": 24,
-    "rechazado_vencimiento": 35,
-    "ticker_no_existe_byma": 9
+    "panel_activo": 59,
+    "panel_activo_a_reverificar": 2,
+    "candidatos_pendientes": 25,
+    "rechazados": 68,
+    "vencidos_legacy": 2
   },
-  "pendiente_verificar_dia_habil": [
+  "panel_activo": [
+    {
+      "ticker": "AL29",
+      "nombre": "Bono AL29",
+      "categoria": "Soberano USD"
+    },
+    {
+      "ticker": "AL30",
+      "nombre": "Bono AL30",
+      "categoria": "Soberano USD"
+    },
+    {
+      "ticker": "AL35",
+      "nombre": "Bono AL35",
+      "categoria": "Soberano USD"
+    },
+    {
+      "ticker": "AL41",
+      "nombre": "Bono AL41",
+      "categoria": "Soberano USD"
+    },
+    {
+      "ticker": "BA37D",
+      "nombre": "Bono Pcia. Buenos Aires 2037 USD",
+      "categoria": "Provincial"
+    },
+    {
+      "ticker": "BACAD",
+      "nombre": "Bono Ciudad de Buenos Aires (BACAD)",
+      "categoria": "Provincial"
+    },
+    {
+      "ticker": "BACAO",
+      "nombre": "Bono Ciudad de Buenos Aires (BACAO)",
+      "categoria": "Provincial"
+    },
+    {
+      "ticker": "BPO27",
+      "nombre": "BOPREAL Serie 1 (BPO27)",
+      "categoria": "BCRA"
+    },
+    {
+      "ticker": "BPO28",
+      "nombre": "BOPREAL Serie 2 (BPO28)",
+      "categoria": "BCRA"
+    },
+    {
+      "ticker": "BPOD7",
+      "nombre": "BOPREAL (BPOD7)",
+      "categoria": "BCRA"
+    },
+    {
+      "ticker": "CO26D",
+      "nombre": "Bono Córdoba 2026 USD",
+      "categoria": "Provincial"
+    },
+    {
+      "ticker": "CO27D",
+      "nombre": "Bono Córdoba 2027 USD",
+      "categoria": "Provincial"
+    },
+    {
+      "ticker": "DICP",
+      "nombre": "Bono DICP (dollar-linked)",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "DNC7O",
+      "nombre": "Edenor ON 2030 (Clase VII)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "DNCAO",
+      "nombre": "Edenor ON 2033 (Clase 10)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "GD29",
+      "nombre": "Bono GD29",
+      "categoria": "Soberano USD"
+    },
+    {
+      "ticker": "GD30",
+      "nombre": "Bono GD30",
+      "categoria": "Soberano USD"
+    },
+    {
+      "ticker": "GD35",
+      "nombre": "Bono GD35",
+      "categoria": "Soberano USD"
+    },
+    {
+      "ticker": "GD38",
+      "nombre": "Bono GD38",
+      "categoria": "Soberano USD"
+    },
+    {
+      "ticker": "GD41",
+      "nombre": "Bono GD41",
+      "categoria": "Soberano USD"
+    },
+    {
+      "ticker": "GD46",
+      "nombre": "Bono GD46",
+      "categoria": "Soberano USD"
+    },
+    {
+      "ticker": "GN49O",
+      "nombre": "Genneia ON 2033 (Clase XLIX)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "IRCFO",
+      "nombre": "IRSA ON 2028 (Clase XIV)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "IRCPO",
+      "nombre": "IRSA ON 2035 (Clase XXIV)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "NDT5D",
+      "nombre": "Bono Neuquén 2030 USD",
+      "categoria": "Provincial"
+    },
+    {
+      "ticker": "PM29D",
+      "nombre": "Bono Mendoza 2029 USD",
+      "categoria": "Provincial"
+    },
+    {
+      "ticker": "PN35O",
+      "nombre": "Pan American ON 2029 (Clase XXXV)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "PNDCO",
+      "nombre": "Pan American ON 2027 (Clase XII)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "PNECO",
+      "nombre": "Pan American ON 2031 (Clase XIII)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "PNICO",
+      "nombre": "Pan American ON 2032 (Clase XVII)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "PNRCO",
+      "nombre": "Pan American ON 2028 (Clase XXVI)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "RAC5O",
+      "nombre": "Raghsa ON 2030 (Clase V)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "RUCDO",
+      "nombre": "MSU Energy ON 2030",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "S17L6",
+      "nombre": "Lecap S17L6 (jul 2026 corta)",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "S30N6",
+      "nombre": "Lecap S30N6 (nov 2026)",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "S30O6",
+      "nombre": "Lecap S30O6 (oct 2026)",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "S31G6",
+      "nombre": "Lecap S31G6 (ago 2026)",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "S31L6",
+      "nombre": "Lecap S31L6 (jul 2026)",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "SA24D",
+      "nombre": "Bono Salta 2027 USD (reestructurado)",
+      "categoria": "Provincial"
+    },
+    {
+      "ticker": "SPYD",
+      "nombre": "CEDEAR SPYD (ETF S&P Dividend)",
+      "categoria": "CEDEAR"
+    },
+    {
+      "ticker": "T30J6",
+      "nombre": "Letra / bono corto T30J6",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "TLCFO",
+      "nombre": "Telecom ON 2028 (Clase 14)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "TLCMO",
+      "nombre": "Telecom ON 2031 (Clase XXI)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "TLCPO",
+      "nombre": "Telecom ON 2033 (Clase 24)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "TLCTO",
+      "nombre": "Telecom ON 2036 (Clase 27)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "TSC3O",
+      "nombre": "TGS ON 2031 (Clase 3)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "TSC4O",
+      "nombre": "TGS ON 2035 (Clase 4)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "TTC9O",
+      "nombre": "Tecpetrol ON 2029 (Clase IX)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "TTCDO",
+      "nombre": "Tecpetrol ON 2030 (Clase XII)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "TVPP",
+      "nombre": "Bono TVPP (dollar-linked)",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "TX26",
+      "nombre": "Bono TX26 (Boncer)",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "TX28",
+      "nombre": "Bono TX28 (Boncer)",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "TZX26",
+      "nombre": "Bono TZX26 (Boncer cupón cero)",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "TZXD6",
+      "nombre": "Bono TZXD6 (Boncer)",
+      "categoria": "Soberano ARS"
+    },
+    {
+      "ticker": "YFCJO",
+      "nombre": "YPF Luz ON 2032",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "YM39O",
+      "nombre": "YPF ON 2030 (Clase XXXIX)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "YM42O",
+      "nombre": "YPF ON 2029 (Clase XLII)",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "YMCIO",
+      "nombre": "YPF ON 2029",
+      "categoria": "ON corporativa"
+    },
+    {
+      "ticker": "YMCXO",
+      "nombre": "YPF ON 2031 (Clase XXXI)",
+      "categoria": "ON corporativa"
+    }
+  ],
+  "panel_activo_a_reverificar": [
     {
       "ticker": "BPO27",
       "nota": "En panel pero sin histórico BYMA Open Data — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "En panel activo — re-verificar día hábil"
     },
     {
       "ticker": "BPO28",
       "nota": "En panel pero sin histórico BYMA Open Data — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
-    },
+      "motivo": "En panel activo — re-verificar día hábil"
+    }
+  ],
+  "candidatos_pendientes": [
     {
       "ticker": "BPY6D",
       "nota": "BOPREAL serie 3 — sin filas fin de semana",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "BPY8D",
       "nota": "Sin filas quote fin de semana",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "CABA27D",
       "nota": "CABA puede operar como BACAD/BACAO — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "CABA28D",
       "nota": "Sin filas quote fin de semana",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "CH28D",
       "nota": "Chaco — sin filas quote fin de semana",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "S28F6",
       "nota": "Sin filas quote fin de semana — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "S29E5",
       "nota": "Formato ticker incorrecto; probar S31L6, S31G6, etc.",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "S30E5",
       "nota": "Sin filas quote fin de semana — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "S30J6",
       "nota": "Distinto de T30J6 (confirmado en panel) — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "S31E5",
       "nota": "Sin filas quote fin de semana — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "SF27D",
       "nota": "Santa Fe — sin filas quote fin de semana",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "SF28D",
       "nota": "Santa Fe — sin filas quote fin de semana",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "SHYD",
       "nota": "CEDEAR ETF — sin filas fin de semana",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "T15D5",
       "nota": "Sin filas quote fin de semana — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "T2X4",
       "nota": "Sin filas quote fin de semana — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "T2X7",
       "nota": "Sin filas quote fin de semana — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "T30A6",
       "nota": "Sin filas quote fin de semana — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "TDF27D",
       "nota": "Tierra del Fuego — sin filas quote fin de semana",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "TLTD",
       "nota": "CEDEAR ETF — sin filas fin de semana",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "TX27",
       "nota": "Sin filas quote fin de semana — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "TZX25",
       "nota": "Posible ticker obsoleto (usar TZXD6) — re-verificar día hábil",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "GN36O",
@@ -134,7 +434,7 @@
       "clase": "CLASE XXXVI",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "nota": "sin precio BYMA",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "GN38O",
@@ -143,7 +443,7 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "nota": "Sin volumen histórico BYMA en corrida — re-verificar día hábil",
       "vencimiento": "2033-02-10",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "GNCXO",
@@ -151,7 +451,7 @@
       "clase": "CLASE XXXI",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "nota": "sin precio BYMA",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     },
     {
       "ticker": "MSSDO",
@@ -159,10 +459,10 @@
       "clase": "Serie XII",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "nota": "sin precio BYMA",
-      "categoria": "pendiente_verificar_dia_habil"
+      "motivo": "Candidato — pendiente verificación día hábil"
     }
   ],
-  "rechazado_liquidez_baja": [
+  "rechazados": [
     {
       "ticker": "DNC5O",
       "emisor": "Edenor",
@@ -170,9 +470,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2028-08-05",
       "volumen_promedio": 82539.68,
-      "umbral_p33_panel": 117810.0,
-      "motivo": "liquidez baja (vol prom 82540 < p33 panel 117810)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 117810,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "GN39O",
@@ -181,9 +480,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2028-07-14",
       "volumen_promedio": 17025.5,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 17026 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "GN47O",
@@ -192,9 +490,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2028-10-17",
       "volumen_promedio": 12539.64,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 12540 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "GN48O",
@@ -203,9 +500,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2028-03-05",
       "volumen_promedio": 1618.16,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 1618 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "IRCOO",
@@ -214,9 +510,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2029-10-23",
       "volumen_promedio": 52005.64,
-      "umbral_p33_panel": 117810.0,
-      "motivo": "liquidez baja (vol prom 52006 < p33 panel 117810)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 117810,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "MSSGO",
@@ -225,9 +520,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2029-04-16",
       "volumen_promedio": 17111.4,
-      "umbral_p33_panel": 117810.0,
-      "motivo": "liquidez baja (vol prom 17111 < p33 panel 117810)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 117810,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "PN36O",
@@ -236,9 +530,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2031-11-13",
       "volumen_promedio": 73364.96,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 73365 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "PN37O",
@@ -247,9 +540,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2028-11-13",
       "volumen_promedio": 32918.24,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 32918 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "PN41O",
@@ -258,9 +550,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2029-08-27",
       "volumen_promedio": 34212.28,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 34212 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "PN43O",
@@ -268,10 +559,9 @@
       "clase": "Clase 43",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2037-01-15",
-      "volumen_promedio": 103440.0,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 103440 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "volumen_promedio": 103440,
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "PNXCO",
@@ -279,10 +569,9 @@
       "clase": "CLASE 31",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2032-04-30",
-      "volumen_promedio": 57680.0,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 57680 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "volumen_promedio": 57680,
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "RAC7O",
@@ -290,10 +579,9 @@
       "clase": "Clase 7",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2032-12-11",
-      "volumen_promedio": 14000.0,
-      "umbral_p33_panel": 117810.0,
-      "motivo": "liquidez baja (vol prom 14000 < p33 panel 117810)",
-      "categoria": "rechazado_liquidez_baja"
+      "volumen_promedio": 14000,
+      "umbral_p33_panel": 117810,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "TTCAO",
@@ -301,10 +589,9 @@
       "clase": "Clase 10",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2033-01-22",
-      "volumen_promedio": 35680.0,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 35680 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "volumen_promedio": 35680,
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "TTCEO",
@@ -313,9 +600,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2029-05-21",
       "volumen_promedio": 57261.56,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 57262 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "TLCOO",
@@ -324,9 +610,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2028-11-28",
       "volumen_promedio": 37798.48,
-      "umbral_p33_panel": 117810.0,
-      "motivo": "liquidez baja (vol prom 37798 < p33 panel 117810)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 117810,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "TLCUO",
@@ -335,9 +620,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2029-03-05",
       "volumen_promedio": 26637.04,
-      "umbral_p33_panel": 117810.0,
-      "motivo": "liquidez baja (vol prom 26637 < p33 panel 117810)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 117810,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "TLCVO",
@@ -346,9 +630,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2030-05-29",
       "volumen_promedio": 1087.07,
-      "umbral_p33_panel": 117810.0,
-      "motivo": "liquidez baja (vol prom 1087 < p33 panel 117810)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 117810,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "TLCWO",
@@ -357,9 +640,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2030-05-29",
       "volumen_promedio": 41528.27,
-      "umbral_p33_panel": 117810.0,
-      "motivo": "liquidez baja (vol prom 41528 < p33 panel 117810)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 117810,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "YM40O",
@@ -368,9 +650,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2028-08-28",
       "volumen_promedio": 27005.36,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 27005 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "YM43O",
@@ -379,9 +660,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2030-04-14",
       "volumen_promedio": 34887.56,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 34888 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "YMC1O",
@@ -389,10 +669,9 @@
       "clase": "CLASE I",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2029-06-27",
-      "volumen_promedio": 14000.0,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 14000 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "volumen_promedio": 14000,
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "YMCRO",
@@ -401,9 +680,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2028-09-12",
       "volumen_promedio": 594.44,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 594 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "YMCYO",
@@ -412,9 +690,8 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2028-10-10",
       "volumen_promedio": 48893.12,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 48893 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
     },
     {
       "ticker": "YMCZO",
@@ -423,20 +700,61 @@
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2028-10-10",
       "volumen_promedio": 13505.96,
-      "umbral_p33_panel": 115604.0,
-      "motivo": "liquidez baja (vol prom 13506 < p33 panel 115604)",
-      "categoria": "rechazado_liquidez_baja"
-    }
-  ],
-  "rechazado_vencimiento": [
+      "umbral_p33_panel": 115604,
+      "motivo": "Rechazado — liquidez baja"
+    },
+    {
+      "ticker": "LEFI",
+      "nota": "Instrumento interbancario — no listado en Open Data",
+      "motivo": "Rechazado — ticker no existe en BYMA"
+    },
+    {
+      "ticker": "LELIQ",
+      "nota": "LELIQ — no mercado secundario abierto BYMA",
+      "motivo": "Rechazado — ticker no existe en BYMA"
+    },
+    {
+      "ticker": "MRC27D",
+      "nota": "Córdoba Capital municipal — sin filas en Open Data",
+      "motivo": "Rechazado — ticker no existe en BYMA"
+    },
+    {
+      "ticker": "MRC28D",
+      "nota": "Córdoba Capital municipal — sin filas en Open Data",
+      "motivo": "Rechazado — ticker no existe en BYMA"
+    },
+    {
+      "ticker": "MUNBA26",
+      "nota": "Ticker hipotético — sin filas",
+      "motivo": "Rechazado — ticker no existe en BYMA"
+    },
+    {
+      "ticker": "MUNCO26",
+      "nota": "Ticker hipotético — sin filas",
+      "motivo": "Rechazado — ticker no existe en BYMA"
+    },
+    {
+      "ticker": "ROS26D",
+      "nota": "Rosario municipal — sin filas en Open Data",
+      "motivo": "Rechazado — ticker no existe en BYMA"
+    },
+    {
+      "ticker": "ROS28D",
+      "nota": "Rosario municipal — sin filas en Open Data",
+      "motivo": "Rechazado — ticker no existe en BYMA"
+    },
+    {
+      "ticker": "YMCUO",
+      "nota": "No expuesto en BYMA Open Data gratuito (confirmado)",
+      "motivo": "Rechazado — ticker no existe en BYMA"
+    },
     {
       "ticker": "COC2D",
       "emisor": "Córdoba",
       "clase": "Clase II",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2026-08-22",
-      "motivo": "vencimiento 2026-08-22 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "DNC3O",
@@ -444,8 +762,7 @@
       "clase": "CLASE 3",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2026-11-22",
-      "motivo": "vencimiento 2026-11-22 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "DNC9O",
@@ -453,8 +770,7 @@
       "clase": "Clase 9",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2026-08-07",
-      "motivo": "vencimiento 2026-08-07 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "GN37O",
@@ -462,8 +778,7 @@
       "clase": "Clase XXXVII",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2026-11-11",
-      "motivo": "vencimiento 2026-11-11 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "GN41O",
@@ -471,8 +786,7 @@
       "clase": "CLASE XLI",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2026-07-14",
-      "motivo": "vencimiento 2026-07-14 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "GN42O",
@@ -480,8 +794,7 @@
       "clase": "CLASE XLII",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-05-16",
-      "motivo": "vencimiento 2027-05-16 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "GN43O",
@@ -489,8 +802,7 @@
       "clase": "CLASE XLIII",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-03-08",
-      "motivo": "vencimiento 2027-03-08 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "IRCJO",
@@ -498,8 +810,7 @@
       "clase": "Clase XVIII",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2027-02-28",
-      "motivo": "vencimiento 2027-02-28 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "IRCNO",
@@ -507,8 +818,7 @@
       "clase": "Clase XXII",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2027-10-23",
-      "motivo": "vencimiento 2027-10-23 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "IRCQO",
@@ -516,8 +826,7 @@
       "clase": "Clase XXV",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2027-06-08",
-      "motivo": "vencimiento 2027-06-08 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "MSSBO",
@@ -525,8 +834,7 @@
       "clase": "Serie XI",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2026-11-14",
-      "motivo": "vencimiento 2026-11-14 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "MSSEO",
@@ -534,8 +842,7 @@
       "clase": "SERIE XIII",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2026-07-17",
-      "motivo": "vencimiento 2026-07-17 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "MSSFO",
@@ -543,8 +850,7 @@
       "clase": "SERIE XIV",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2027-07-23",
-      "motivo": "vencimiento 2027-07-23 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "RUCEO",
@@ -552,8 +858,7 @@
       "clase": "Clase XIII",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2027-10-30",
-      "motivo": "vencimiento 2027-10-30 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "PN34O",
@@ -561,8 +866,7 @@
       "clase": "Clase 34",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-09-27",
-      "motivo": "vencimiento 2027-09-27 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "PN38O",
@@ -570,8 +874,7 @@
       "clase": "Clase 38",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-08-11",
-      "motivo": "vencimiento 2027-08-11 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "PN40O",
@@ -579,8 +882,7 @@
       "clase": "Clase 40",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2026-10-11",
-      "motivo": "vencimiento 2026-10-11 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "PN42O",
@@ -588,8 +890,7 @@
       "clase": "Clase 42",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-04-17",
-      "motivo": "vencimiento 2027-04-17 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "PNFCO",
@@ -597,8 +898,7 @@
       "clase": "CLASE 14",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2026-07-12",
-      "motivo": "vencimiento 2026-07-12 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "PNJCO",
@@ -606,8 +906,7 @@
       "clase": "CLASE 18",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-02-07",
-      "motivo": "vencimiento 2027-02-07 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "PNZCO",
@@ -615,8 +914,7 @@
       "clase": "CLASE 33",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-07-04",
-      "motivo": "vencimiento 2027-07-04 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "TTC8O",
@@ -624,8 +922,7 @@
       "clase": "Clase 8",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-10-24",
-      "motivo": "vencimiento 2027-10-24 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "TTCBO",
@@ -633,8 +930,7 @@
       "clase": "Clase 11",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-10-16",
-      "motivo": "vencimiento 2027-10-16 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "TLCDO",
@@ -642,8 +938,7 @@
       "clase": "CLASE 12",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2027-03-09",
-      "motivo": "vencimiento 2027-03-09 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "TLCJO",
@@ -651,8 +946,7 @@
       "clase": "CLASE 18",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2027-11-17",
-      "motivo": "vencimiento 2027-11-17 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "TLCKO",
@@ -660,8 +954,7 @@
       "clase": "CLASE 19",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2026-11-17",
-      "motivo": "vencimiento 2026-11-17 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "TLCQO",
@@ -669,8 +962,7 @@
       "clase": "Clase 25",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2027-07-02",
-      "motivo": "vencimiento 2027-07-02 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "TLCRO",
@@ -678,8 +970,7 @@
       "clase": "Clase 26",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_resto.json",
       "vencimiento": "2026-07-18",
-      "motivo": "vencimiento 2026-07-18 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "YM35O",
@@ -687,8 +978,7 @@
       "clase": "Clase XXXV",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-02-27",
-      "motivo": "vencimiento 2027-02-27 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "YM37O",
@@ -696,8 +986,7 @@
       "clase": "Clase XXXVII",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-05-07",
-      "motivo": "vencimiento 2027-05-07 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "YM38O",
@@ -705,8 +994,7 @@
       "clase": "Clase XXXVIII",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-07-22",
-      "motivo": "vencimiento 2027-07-22 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "YM41O",
@@ -714,8 +1002,7 @@
       "clase": "Clase XLI",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-01-08",
-      "motivo": "vencimiento 2027-01-08 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "YMCPO",
@@ -723,8 +1010,7 @@
       "clase": "CLASE XXIV",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2027-04-25",
-      "motivo": "vencimiento 2027-04-25 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "YMCTO",
@@ -732,8 +1018,7 @@
       "clase": "CLASE XXVII",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2026-10-10",
-      "motivo": "vencimiento 2026-10-10 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     },
     {
       "ticker": "YMCWO",
@@ -741,75 +1026,19 @@
       "clase": "Clase XXX",
       "fuente_reporte": "docs/data/descubrimiento_filtrado_muestra.json",
       "vencimiento": "2026-07-01",
-      "motivo": "vencimiento 2026-07-01 < 2028",
-      "categoria": "rechazado_vencimiento"
+      "motivo": "Rechazado — vencimiento anterior al corte del panel"
     }
   ],
-  "ticker_no_existe_byma": [
+  "vencidos_legacy": [
     {
-      "ticker": "LEFI",
-      "nota": "Instrumento interbancario — no listado en Open Data",
-      "categoria": "ticker_no_existe_byma"
+      "ticker": "TX26",
+      "nombre": "Bono TX26 (Boncer)",
+      "motivo": "Vencido — incluido en panel solo con «mostrar vencidos»"
     },
     {
-      "ticker": "LELIQ",
-      "nota": "LELIQ — no mercado secundario abierto BYMA",
-      "categoria": "ticker_no_existe_byma"
-    },
-    {
-      "ticker": "MRC27D",
-      "nota": "Córdoba Capital municipal — sin filas en Open Data",
-      "categoria": "ticker_no_existe_byma"
-    },
-    {
-      "ticker": "MRC28D",
-      "nota": "Córdoba Capital municipal — sin filas en Open Data",
-      "categoria": "ticker_no_existe_byma"
-    },
-    {
-      "ticker": "MUNBA26",
-      "nota": "Ticker hipotético — sin filas",
-      "categoria": "ticker_no_existe_byma"
-    },
-    {
-      "ticker": "MUNCO26",
-      "nota": "Ticker hipotético — sin filas",
-      "categoria": "ticker_no_existe_byma"
-    },
-    {
-      "ticker": "ROS26D",
-      "nota": "Rosario municipal — sin filas en Open Data",
-      "categoria": "ticker_no_existe_byma"
-    },
-    {
-      "ticker": "ROS28D",
-      "nota": "Rosario municipal — sin filas en Open Data",
-      "categoria": "ticker_no_existe_byma"
-    },
-    {
-      "ticker": "YMCUO",
-      "nota": "No expuesto en BYMA Open Data gratuito (confirmado)",
-      "categoria": "ticker_no_existe_byma"
+      "ticker": "CO26D",
+      "nombre": "Bono Córdoba 2026 USD",
+      "motivo": "Vencido — incluido en panel solo con «mostrar vencidos»"
     }
-  ],
-  "notas_ampliacion_jun2026": {
-    "agregados_al_panel": [
-      "YMCXO",
-      "YM39O",
-      "YM42O",
-      "PNICO",
-      "PNECO",
-      "PNRCO",
-      "TSC4O",
-      "DNCAO",
-      "TLCPO",
-      "TLCFO",
-      "TLCTO",
-      "IRCPO"
-    ],
-    "reportes": [
-      "docs/data/descubrimiento_filtrado_muestra.json",
-      "docs/data/descubrimiento_filtrado_resto.json"
-    ]
-  }
+  ]
 }

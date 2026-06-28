@@ -14,7 +14,7 @@ TICKERS = ("AL30", "YMCIO", "DNC7O", "TSC4O")
 
 
 def main() -> int:
-    print("Consultando Data912 (arg_bonds + arg_corp)...")
+    print("Consultando Data912 (arg_bonds, arg_corp, arg_notes, arg_cedears)...")
     backup, meta = consultar_precios_backup(list(TICKERS))
     print(json.dumps(meta, indent=2, ensure_ascii=False))
     print("\nTickers de prueba:")

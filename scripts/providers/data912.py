@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 BASE = "https://data912.com/live"
 USER_AGENT = "cotizaciones-panel/1.0 (github.com/PabloPoletti/cotizaciones)"
-PANELS = ("arg_bonds", "arg_corp")
+PANELS = ("arg_bonds", "arg_corp", "arg_notes", "arg_cedears")
 MIN_INTERVAL_SEC = 0.5  # ~120 req/min máx.; aquí usamos 2 requests por corrida
 
 
@@ -47,7 +47,7 @@ def _normalizar_fila(row: dict[str, Any], panel: str) -> dict[str, Any]:
 
 def consultar_precios_backup(tickers: list[str]) -> tuple[dict[str, dict[str, Any]], dict[str, Any]]:
     """
-    Descarga paneles arg_bonds + arg_corp y arma lookup por ticker.
+    Descarga paneles arg_bonds, arg_corp, arg_notes y arg_cedears y arma lookup por ticker.
     Devuelve (mapa ticker → backup, metadatos de la consulta).
     """
     meta: dict[str, Any] = {

@@ -19,6 +19,7 @@
         </p>
         <p id="tipo-cambio-meta" class="header__meta hidden" aria-live="polite"></p>
         <div id="alerta-fetch-status" class="alert hidden" role="status"></div>
+        <div id="alerta-dolar-stale" class="alert alert--warning hidden" role="status"></div>
         <div id="alerta-antiguedad" class="alert alert--warning hidden" role="status">
           Los datos tienen más de 2 horas de antigüedad. El mercado puede estar cerrado o el workflow de actualización pudo fallar.
         </div>
@@ -359,7 +360,7 @@
     Este panel es informativo y <strong>no constituye asesoramiento financiero</strong>.
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" crossorigin="anonymous"></script>
+  <script src="vendor/chart.umd.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/core.js"></script>
   <script src="js/storage.js"></script>

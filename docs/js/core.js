@@ -95,6 +95,41 @@
     return Date.now() - fecha.getTime() > 2 * 60 * 60 * 1000;
   }
 
+  const HORAS_MAX_DOLAR_DIA_HABIL = 6;
+
+  function esDiaHabilMercado(cot) {
+    const m = cot?.mercado;
+    if (!m) return false;
+    if (m.es_fin_semana) return false;
+    if (m.motivo === "fin de semana") return false;
+    return m.is_working_day_byma === true;
+  }
+
+  function antiguedadHoras(iso) {
+    if (!iso) return Infinity;
+    const fecha = new Date(iso);
+    if (Number.isNaN(fecha.getTime())) return Infinity;
+    return (Date.now() - fecha.getTime()) / (3600 * 1000);
+  }
+
+  /** En día hábil BYMA, alerta si DolarAPI oficial/MEP supera HORAS_MAX_DOLAR_DIA_HABIL. */
+  function evaluarFrescuraDolar(cot) {
+    if (!esDiaHabilMercado(cot)) return null;
+    const tc = cot?.tipo_cambio;
+    if (!tc || tc.error) return null;
+    const stale = [];
+    for (const alias of ["oficial", "mep"]) {
+      const row = tc[alias];
+      const iso = row?.fecha_actualizacion_fuente;
+      if (!iso) continue;
+      const horas = antiguedadHoras(iso);
+      if (horas > HORAS_MAX_DOLAR_DIA_HABIL) {
+        stale.push({ alias, horas: Math.round(horas * 10) / 10, iso });
+      }
+    }
+    return stale.length ? stale : null;
+  }
+
   async function cargarJson(ruta) {
     const respuesta = await fetch(ruta, { cache: "no-store" });
     if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status} al cargar ${ruta}`);
@@ -336,8 +371,8 @@
     };
   }
 
-  function tirParaCalculo(info, item) {
-    const mercado = calcularTirMercado(item?.precio, info);
+  function tirParaCalculo(info, item, tirMercPrecalc) {
+    const mercado = tirMercPrecalc || calcularTirMercado(item?.precio, info);
     if (mercado.valor != null) return { valor: mercado.valor, fuente: "mercado" };
     if (info.tir_referencia != null) {
       return { valor: info.tir_referencia, fuente: "referencia" };
@@ -402,7 +437,7 @@
     const sector = info.sector || item.sector || "Otros";
     const categoria = categoriaDe(info);
     const tirMerc = calcularTirMercado(item.precio, info);
-    const tirCalc = tirParaCalculo(info, item);
+    const tirCalc = tirParaCalculo(info, item, tirMerc);
     const hp = window.CotizHistorico?.metricas(item.ticker) || null;
     return {
       item,
@@ -460,12 +495,12 @@
     return mapa;
   }
 
-  function formatearCeldaTir(info, item) {
+  function formatearCeldaTir(info, item, tirMercPrecalc) {
     const ref = info.tir_referencia != null ? `${info.tir_referencia}%` : "—";
     const refFecha = info.tir_fecha_referencia
       ? `<span class="tir-meta">ref. ${escapeHtml(info.tir_fecha_referencia)}</span>`
       : "";
-    const mercado = item ? calcularTirMercado(item.precio, info) : { valor: null, nota: "" };
+    const mercado = tirMercPrecalc || item?.tirMerc || (item ? calcularTirMercado(item.precio, info) : { valor: null, nota: "" });
     let mercadoHtml = "—";
     if (mercado.valor != null) {
       mercadoHtml = `${mercado.valor}%<span class="tir-meta">${escapeHtml(mercado.nota)}</span>`;
@@ -594,6 +629,9 @@
     formatearFecha,
     formatearFechaCorta,
     esDatosAntiguos,
+    esDiaHabilMercado,
+    evaluarFrescuraDolar,
+    antiguedadHoras,
     cargarJson,
     escapeHtml,
     infoDeTicker,
