@@ -1151,6 +1151,12 @@ tr:hover td {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  min-width: 0;
+}
+
+.ficha-chart-card {
+  min-width: 0;
+  overflow: visible;
 }
 
 .ficha-chart-card h3 {
@@ -1161,6 +1167,41 @@ tr:hover td {
 
 .ficha-chart-box {
   height: 220px;
+  padding: 0 0.35rem 0.25rem 0;
+  overflow: visible;
+}
+
+.ficha-cronograma-wrap {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.ficha-cronograma-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+.ficha-cronograma-table-wrap {
+  margin: 0.5rem 0;
+  max-height: 280px;
+  overflow: auto;
+}
+
+.ficha-cronograma-table {
+  width: 100%;
+  font-size: 0.85rem;
+}
+
+.ficha-cronograma-table th,
+.ficha-cronograma-table td {
+  padding: 0.35rem 0.5rem;
+}
+
+.ficha-cronograma-nota {
+  margin-top: 0.65rem;
+  font-style: italic;
 }
 
 .ficha-empty {

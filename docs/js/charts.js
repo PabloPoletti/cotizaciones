@@ -345,6 +345,12 @@
     const emptyEl = document.getElementById("ficha-charts-empty");
     const gridEl = document.querySelector(".ficha-charts-grid");
 
+    const fichaChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 10, right: 18, bottom: 6, left: 6 } },
+    };
+
     if (!serie.length) {
       if (emptyEl) emptyEl.classList.remove("hidden");
       if (gridEl) gridEl.classList.add("hidden");
@@ -365,13 +371,20 @@
               borderColor: "#1e4d8c",
               tension: 0.2,
               fill: false,
+              pointRadius: 0,
+              pointHitRadius: 8,
             },
           ],
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: { y: { title: { display: true, text: "Precio ref." } } },
+          ...fichaChartOptions,
+          scales: {
+            x: {
+              offset: true,
+              ticks: { maxRotation: 40, autoSkip: true, maxTicksLimit: 8 },
+            },
+            y: { title: { display: true, text: "Precio ref." }, grace: "5%" },
+          },
         },
       });
     }
@@ -389,13 +402,19 @@
               backgroundColor: "rgba(181,71,8,0.08)",
               fill: true,
               tension: 0.15,
+              pointRadius: 0,
             },
           ],
         },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: { y: { max: 0, title: { display: true, text: "% desde máximo" } } },
+          ...fichaChartOptions,
+          scales: {
+            x: {
+              offset: true,
+              ticks: { maxRotation: 40, autoSkip: true, maxTicksLimit: 8 },
+            },
+            y: { max: 0, grace: "5%", title: { display: true, text: "% desde máximo" } },
+          },
         },
       });
     }

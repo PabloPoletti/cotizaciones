@@ -43,11 +43,101 @@
     return '<span class="ficha-badge ficha-badge--manual">Referencia manual (info_fija.json)</span>';
   }
 
+  function fmtFechaCorta(iso) {
+    if (!iso) return "—";
+    return C().formatearFechaCorta(iso);
+  }
+
+  function tablaCronogramaCupon(info) {
+    const filas = info.cronograma_cupon;
+    if (!filas?.length) return "";
+    const esStep = info.cupon_tipo === "step_up";
+    const titulo = esStep ? "Cronograma de cupón step-up" : "Cronograma de cupón";
+    const rows = filas
+      .map(
+        (r) => `<tr>
+          <td>${C().escapeHtml(fmtFechaCorta(r.desde))} → ${C().escapeHtml(fmtFechaCorta(r.hasta))}</td>
+          <td class="num">${r.tasa_anual}%</td>
+        </tr>`
+      )
+      .join("");
+    return `
+      <div class="ficha-cronograma-wrap">
+        <h3 class="ficha-cronograma-title">${C().escapeHtml(titulo)}</h3>
+        ${info.cupon_fecha_pago ? `<p class="header__meta">Pagos: ${C().escapeHtml(info.cupon_fecha_pago)}</p>` : ""}
+        <div class="table-wrap ficha-cronograma-table-wrap">
+          <table class="ficha-cronograma-table">
+            <thead><tr><th>Período vigente</th><th class="num">Tasa anual</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        ${info.fuente_cronograma ? `<p class="header__meta">Fuente: ${C().escapeHtml(info.fuente_cronograma)}</p>` : ""}
+      </div>`;
+  }
+
+  function tablaCronogramaAmort(info) {
+    const filas = info.cronograma_amortizacion;
+    if (!filas?.length) return "";
+    let rem = 100;
+    const rows = filas
+      .map((r) => {
+        const pct = Number(r.porcentaje) || 0;
+        rem = Math.max(0, Math.round((rem - pct) * 10000) / 10000);
+        return `<tr>
+          <td>${C().escapeHtml(fmtFechaCorta(r.fecha))}</td>
+          <td class="num">${pct.toFixed(3).replace(/\.?0+$/, "")}%</td>
+          <td class="num">${rem.toFixed(2)}%</td>
+        </tr>`;
+      })
+      .join("");
+    return `
+      <div class="ficha-cronograma-wrap">
+        <h3 class="ficha-cronograma-title">Cronograma de amortización de capital</h3>
+        <p class="header__meta">Capital remanente estimado sobre VN 100, restando cuotas acumuladas.</p>
+        <div class="table-wrap ficha-cronograma-table-wrap">
+          <table class="ficha-cronograma-table">
+            <thead><tr><th>Fecha</th><th class="num">% amortizado</th><th class="num">Remanente</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        ${info.fuente_cronograma ? `<p class="header__meta">Fuente: ${C().escapeHtml(info.fuente_cronograma)}</p>` : ""}
+      </div>`;
+  }
+
+  function renderAmortizacionBlock(info) {
+    if (info.cronograma_amortizacion?.length) {
+      return `<section class="ficha-section ficha-section--manual">${tablaCronogramaAmort(info)}</section>`;
+    }
+    const esParcial =
+      info.amortizacion_tipo === "amortizacion_parcial" ||
+      (info.amortizacion && !/bullet/i.test(String(info.amortizacion_tipo || "")));
+    if (!esParcial || info.amortizacion_tipo === "bullet") return "";
+    const texto = info.amortizacion || datoNoDisponible();
+    return `
+      <section class="ficha-section ficha-section--manual">
+        <div class="ficha-cronograma-wrap">
+          <h3 class="ficha-cronograma-title">Devolución de capital (referencia)</h3>
+          <p>${C().escapeHtml(texto)}</p>
+          <p class="header__meta ficha-cronograma-nota">
+            Cronograma detallado no disponible en este panel — consultar prospecto oficial para fechas exactas de amortización.
+          </p>
+        </div>
+      </section>`;
+  }
+
   function renderManualBlock(info) {
     const disc = manualDataDisclaimer(info);
     const emision = info.fecha_emision
       ? C().escapeHtml(info.fecha_emision)
       : "No disponible — consultar prospecto oficial";
+    const esStep = info.cupon_tipo === "step_up";
+    const tasaHtml = esStep
+      ? `<span class="meta">Step-up — ver cronograma abajo</span>`
+      : info.cupon_tasa_anual != null
+        ? `${info.cupon_tasa_anual}%`
+        : info.cronograma_cupon?.length
+          ? `<span class="meta">Ver cronograma</span>`
+          : C().escapeHtml(datoNoDisponible());
 
     return `
       <section class="ficha-section ficha-section--manual">
@@ -64,9 +154,9 @@
           <dt>Cupón (texto ref.)</dt>
           <dd>${info.cupon ? C().escapeHtml(info.cupon) : C().escapeHtml(datoNoDisponible())}</dd>
           <dt>Tasa anual ref.</dt>
-          <dd>${info.cupon_tasa_anual != null ? `${info.cupon_tasa_anual}%` : C().escapeHtml(datoNoDisponible())}</dd>
+          <dd>${tasaHtml}</dd>
           <dt>Frecuencia de pago</dt>
-          <dd>${info.cupon_frecuencia ? C().escapeHtml(info.cupon_frecuencia) : C().escapeHtml(datoNoDisponible())}</dd>
+          <dd>${info.cupon_frecuencia ? C().escapeHtml(info.cupon_frecuencia) : C().escapeHtml(datoNoDisponible())}${info.cupon_fecha_pago ? ` <span class="meta">(${C().escapeHtml(info.cupon_fecha_pago)})</span>` : ""}</dd>
           <dt>Amortización</dt>
           <dd>${info.amortizacion ? C().escapeHtml(info.amortizacion) : C().escapeHtml(datoNoDisponible())}</dd>
           <dt>Tipo amort.</dt>
@@ -83,6 +173,7 @@
           <dd>${emision}</dd>
           ${info.notas ? `<dt>Notas panel</dt><dd>${C().escapeHtml(info.notas)}</dd>` : ""}
         </dl>
+        ${tablaCronogramaCupon(info)}
       </section>
     `;
   }
@@ -289,6 +380,7 @@
       ${renderConfirmacionCruzadaBlock(row)}
       ${renderPlazosBlock(info)}
       ${renderManualBlock(info)}
+      ${renderAmortizacionBlock(info)}
       ${renderRiesgoBlock(row)}
       ${renderChartsBlock(item.ticker)}
       ${renderComisionesBlock()}

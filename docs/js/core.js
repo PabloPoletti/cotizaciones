@@ -197,6 +197,15 @@
 
   function soportaTirMercado(info) {
     if (!info) return { ok: false, nota: "Sin datos del instrumento" };
+    if (info.cupon_tipo === "step_up" || info.cupon_tipo === "variable") {
+      return { ok: false, nota: "Cupón step-up: ver TIR de referencia" };
+    }
+    if (
+      info.amortizacion_tipo === "parcial_cronograma" ||
+      (Array.isArray(info.cronograma_amortizacion) && info.cronograma_amortizacion.length > 0)
+    ) {
+      return { ok: false, nota: "Amortización programada: ver TIR de referencia" };
+    }
     if (info.amortizacion_tipo === "amortizacion_parcial") {
       return { ok: false, nota: "Amortización parcial: ver TIR de referencia" };
     }

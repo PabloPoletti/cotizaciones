@@ -335,13 +335,92 @@
     "tir_referencia": 8.5,
     "tir_rango": "8%–9%",
     "tir_fecha_referencia": "2026-06",
-    "vencimiento": "2029-07-09",
-    "cupon": "0,75% semestral",
-    "cupon_tasa_anual": 0.75,
+    "vencimiento": "2030-07-09",
+    "cupon": "Step-up (ver cronograma)",
     "cupon_frecuencia": "semestral",
-    "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet",
-    "categoria": "Soberano USD"
+    "amortizacion": "13 cuotas semestrales: 4% (jul-2024) + doce de 8% (ene/jul 2025–2030)",
+    "amortizacion_tipo": "parcial_cronograma",
+    "categoria": "Soberano USD",
+    "cupon_tipo": "step_up",
+    "cupon_fecha_pago": "9 ene / 9 jul",
+    "cronograma_cupon": [
+      {
+        "desde": "2020-09-04",
+        "hasta": "2021-07-09",
+        "tasa_anual": 0.125
+      },
+      {
+        "desde": "2021-07-09",
+        "hasta": "2023-07-09",
+        "tasa_anual": 0.5
+      },
+      {
+        "desde": "2023-07-09",
+        "hasta": "2027-07-09",
+        "tasa_anual": 0.75
+      },
+      {
+        "desde": "2027-07-09",
+        "hasta": "2030-07-09",
+        "tasa_anual": 1.75
+      }
+    ],
+    "cronograma_amortizacion": [
+      {
+        "fecha": "2024-07-09",
+        "porcentaje": 4.0
+      },
+      {
+        "fecha": "2025-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2025-07-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2026-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2026-07-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2027-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2027-07-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2028-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2028-07-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2029-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2029-07-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2030-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2030-07-09",
+        "porcentaje": 8.0
+      }
+    ],
+    "fuente_cronograma": "Ley 27.556 Anexo III + condiciones Step Up USD (Argentina.gob.ar); calendario 9 ene/9 jul alineado a serie Global (Dec701)",
+    "fecha_emision": "2020-09-04"
   },
   "GD30": {
     "nombre": "Bono GD30",
@@ -353,12 +432,91 @@
     "tir_rango": "8%–9%",
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2030-07-09",
-    "cupon": "0,75% semestral",
-    "cupon_tasa_anual": 0.75,
+    "cupon": "Step-up (ver cronograma)",
     "cupon_frecuencia": "semestral",
-    "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet",
-    "categoria": "Soberano USD"
+    "amortizacion": "13 cuotas semestrales: 4% (jul-2024) + doce de 8% (ene/jul 2025–2030)",
+    "amortizacion_tipo": "parcial_cronograma",
+    "categoria": "Soberano USD",
+    "cupon_tipo": "step_up",
+    "cupon_fecha_pago": "9 ene / 9 jul",
+    "cronograma_cupon": [
+      {
+        "desde": "2020-09-04",
+        "hasta": "2021-07-09",
+        "tasa_anual": 0.125
+      },
+      {
+        "desde": "2021-07-09",
+        "hasta": "2023-07-09",
+        "tasa_anual": 0.5
+      },
+      {
+        "desde": "2023-07-09",
+        "hasta": "2027-07-09",
+        "tasa_anual": 0.75
+      },
+      {
+        "desde": "2027-07-09",
+        "hasta": "2030-07-09",
+        "tasa_anual": 1.75
+      }
+    ],
+    "cronograma_amortizacion": [
+      {
+        "fecha": "2024-07-09",
+        "porcentaje": 4.0
+      },
+      {
+        "fecha": "2025-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2025-07-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2026-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2026-07-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2027-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2027-07-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2028-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2028-07-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2029-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2029-07-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2030-01-09",
+        "porcentaje": 8.0
+      },
+      {
+        "fecha": "2030-07-09",
+        "porcentaje": 8.0
+      }
+    ],
+    "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
+    "fecha_emision": "2020-09-04"
   },
   "GD35": {
     "nombre": "Bono GD35",
@@ -370,12 +528,94 @@
     "tir_rango": "9%–10%",
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2035-07-09",
-    "cupon": "0,625% semestral",
-    "cupon_tasa_anual": 0.625,
+    "cupon": "Step-up (ver cronograma)",
     "cupon_frecuencia": "semestral",
-    "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet",
-    "categoria": "Soberano USD"
+    "amortizacion": "10 cuotas semestrales iguales (ene/jul 2031–2035)",
+    "amortizacion_tipo": "parcial_cronograma",
+    "categoria": "Soberano USD",
+    "cupon_tipo": "step_up",
+    "cupon_fecha_pago": "9 ene / 9 jul",
+    "cronograma_cupon": [
+      {
+        "desde": "2020-09-04",
+        "hasta": "2021-07-09",
+        "tasa_anual": 0.125
+      },
+      {
+        "desde": "2021-07-09",
+        "hasta": "2022-07-09",
+        "tasa_anual": 1.125
+      },
+      {
+        "desde": "2022-07-09",
+        "hasta": "2023-07-09",
+        "tasa_anual": 1.5
+      },
+      {
+        "desde": "2023-07-09",
+        "hasta": "2024-07-09",
+        "tasa_anual": 3.625
+      },
+      {
+        "desde": "2024-07-09",
+        "hasta": "2027-07-09",
+        "tasa_anual": 4.125
+      },
+      {
+        "desde": "2027-07-09",
+        "hasta": "2028-07-09",
+        "tasa_anual": 4.75
+      },
+      {
+        "desde": "2028-07-09",
+        "hasta": "2035-07-09",
+        "tasa_anual": 5.0
+      }
+    ],
+    "cronograma_amortizacion": [
+      {
+        "fecha": "2031-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2031-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2032-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2032-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2033-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2033-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2034-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2034-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2035-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2035-07-09",
+        "porcentaje": 10.0
+      }
+    ],
+    "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
+    "fecha_emision": "2020-09-04"
   },
   "AL29": {
     "nombre": "Bono AL29",
@@ -387,11 +627,64 @@
     "tir_referencia": 8.0,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2029-07-09",
-    "cupon": "0,75% semestral",
-    "cupon_tasa_anual": 0.75,
+    "cupon": "1% anual fijo",
+    "cupon_tasa_anual": 1.0,
     "cupon_frecuencia": "semestral",
-    "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion": "10 cuotas semestrales iguales (10% c/u, ene/jul 2025–2029)",
+    "amortizacion_tipo": "parcial_cronograma",
+    "cupon_tipo": "fijo",
+    "cupon_fecha_pago": "9 ene / 9 jul",
+    "cronograma_cupon": [
+      {
+        "desde": "2020-09-04",
+        "hasta": "2029-07-09",
+        "tasa_anual": 1.0
+      }
+    ],
+    "cronograma_amortizacion": [
+      {
+        "fecha": "2025-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2025-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2026-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2026-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2027-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2027-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2028-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2028-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2029-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2029-07-09",
+        "porcentaje": 10.0
+      }
+    ],
+    "fuente_cronograma": "Ley 27.556 Anexo III + condiciones Step Up USD (Argentina.gob.ar); calendario 9 ene/9 jul alineado a serie Global (Dec701)",
+    "fecha_emision": "2020-09-04"
   },
   "AL35": {
     "nombre": "Bono AL35",
@@ -403,11 +696,93 @@
     "tir_referencia": 9.0,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2035-07-09",
-    "cupon": "0,625% semestral",
-    "cupon_tasa_anual": 0.625,
+    "cupon": "Step-up (ver cronograma)",
     "cupon_frecuencia": "semestral",
-    "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion": "10 cuotas semestrales iguales (ene/jul 2031–2035)",
+    "amortizacion_tipo": "parcial_cronograma",
+    "cupon_tipo": "step_up",
+    "cupon_fecha_pago": "9 ene / 9 jul",
+    "cronograma_cupon": [
+      {
+        "desde": "2020-09-04",
+        "hasta": "2021-07-09",
+        "tasa_anual": 0.125
+      },
+      {
+        "desde": "2021-07-09",
+        "hasta": "2022-07-09",
+        "tasa_anual": 1.125
+      },
+      {
+        "desde": "2022-07-09",
+        "hasta": "2023-07-09",
+        "tasa_anual": 1.5
+      },
+      {
+        "desde": "2023-07-09",
+        "hasta": "2024-07-09",
+        "tasa_anual": 3.625
+      },
+      {
+        "desde": "2024-07-09",
+        "hasta": "2027-07-09",
+        "tasa_anual": 4.125
+      },
+      {
+        "desde": "2027-07-09",
+        "hasta": "2028-07-09",
+        "tasa_anual": 4.75
+      },
+      {
+        "desde": "2028-07-09",
+        "hasta": "2035-07-09",
+        "tasa_anual": 5.0
+      }
+    ],
+    "cronograma_amortizacion": [
+      {
+        "fecha": "2031-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2031-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2032-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2032-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2033-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2033-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2034-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2034-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2035-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2035-07-09",
+        "porcentaje": 10.0
+      }
+    ],
+    "fuente_cronograma": "Ley 27.556 Anexo III + condiciones Step Up USD (Argentina.gob.ar); calendario 9 ene/9 jul alineado a serie Global (Dec701)",
+    "fecha_emision": "2020-09-04"
   },
   "AL41": {
     "nombre": "Bono AL41",
@@ -419,11 +794,150 @@
     "tir_referencia": 9.5,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2041-07-09",
-    "cupon": "0,5% semestral",
-    "cupon_tasa_anual": 0.5,
+    "cupon": "Step-up (ver cronograma)",
     "cupon_frecuencia": "semestral",
-    "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion": "28 cuotas semestrales iguales (~3,571% c/u) desde ene-2028",
+    "amortizacion_tipo": "parcial_cronograma",
+    "cupon_tipo": "step_up",
+    "cupon_fecha_pago": "9 ene / 9 jul",
+    "cronograma_cupon": [
+      {
+        "desde": "2020-09-04",
+        "hasta": "2021-07-09",
+        "tasa_anual": 0.125
+      },
+      {
+        "desde": "2021-07-09",
+        "hasta": "2022-07-09",
+        "tasa_anual": 2.5
+      },
+      {
+        "desde": "2022-07-09",
+        "hasta": "2029-07-09",
+        "tasa_anual": 3.5
+      },
+      {
+        "desde": "2029-07-09",
+        "hasta": "2041-07-09",
+        "tasa_anual": 4.875
+      }
+    ],
+    "cronograma_amortizacion": [
+      {
+        "fecha": "2028-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2028-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2029-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2029-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2030-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2030-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2031-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2031-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2032-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2032-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2033-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2033-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2034-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2034-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2035-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2035-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2036-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2036-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2037-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2037-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2038-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2038-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2039-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2039-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2040-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2040-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2041-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2041-07-09",
+        "porcentaje": 3.571429
+      }
+    ],
+    "fuente_cronograma": "Ley 27.556 Anexo III + condiciones Step Up USD (Argentina.gob.ar); calendario 9 ene/9 jul alineado a serie Global (Dec701)",
+    "fecha_emision": "2020-09-04"
   },
   "GD29": {
     "nombre": "Bono GD29",
@@ -435,11 +949,64 @@
     "tir_referencia": 8.0,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2029-07-09",
-    "cupon": "0,75% semestral",
-    "cupon_tasa_anual": 0.75,
+    "cupon": "1% anual fijo (Dec701 §K)",
+    "cupon_tasa_anual": 1.0,
     "cupon_frecuencia": "semestral",
-    "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion": "10 cuotas semestrales iguales (10% c/u, ene/jul 2025–2029)",
+    "amortizacion_tipo": "parcial_cronograma",
+    "cupon_tipo": "fijo",
+    "cupon_fecha_pago": "9 ene / 9 jul",
+    "cronograma_cupon": [
+      {
+        "desde": "2020-09-04",
+        "hasta": "2029-07-09",
+        "tasa_anual": 1.0
+      }
+    ],
+    "cronograma_amortizacion": [
+      {
+        "fecha": "2025-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2025-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2026-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2026-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2027-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2027-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2028-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2028-07-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2029-01-09",
+        "porcentaje": 10.0
+      },
+      {
+        "fecha": "2029-07-09",
+        "porcentaje": 10.0
+      }
+    ],
+    "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
+    "fecha_emision": "2020-09-04"
   },
   "GD38": {
     "nombre": "Bono GD38",
@@ -451,11 +1018,131 @@
     "tir_referencia": 9.5,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2038-07-09",
-    "cupon": "0,625% semestral",
-    "cupon_tasa_anual": 0.625,
+    "cupon": "Step-up (ver cronograma)",
     "cupon_frecuencia": "semestral",
-    "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion": "22 cuotas semestrales iguales (~4,545% c/u) desde jul-2027",
+    "amortizacion_tipo": "parcial_cronograma",
+    "cupon_tipo": "step_up",
+    "cupon_fecha_pago": "9 ene / 9 jul",
+    "cronograma_cupon": [
+      {
+        "desde": "2020-09-04",
+        "hasta": "2021-07-09",
+        "tasa_anual": 0.125
+      },
+      {
+        "desde": "2021-07-09",
+        "hasta": "2022-07-09",
+        "tasa_anual": 2.0
+      },
+      {
+        "desde": "2022-07-09",
+        "hasta": "2023-07-09",
+        "tasa_anual": 3.875
+      },
+      {
+        "desde": "2023-07-09",
+        "hasta": "2024-07-09",
+        "tasa_anual": 4.25
+      },
+      {
+        "desde": "2024-07-09",
+        "hasta": "2038-07-09",
+        "tasa_anual": 5.0
+      }
+    ],
+    "cronograma_amortizacion": [
+      {
+        "fecha": "2027-07-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2028-01-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2028-07-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2029-01-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2029-07-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2030-01-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2030-07-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2031-01-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2031-07-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2032-01-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2032-07-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2033-01-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2033-07-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2034-01-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2034-07-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2035-01-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2035-07-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2036-01-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2036-07-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2037-01-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2037-07-09",
+        "porcentaje": 4.545455
+      },
+      {
+        "fecha": "2038-01-09",
+        "porcentaje": 4.545455
+      }
+    ],
+    "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
+    "fecha_emision": "2020-09-04"
   },
   "GD41": {
     "nombre": "Bono GD41",
@@ -467,11 +1154,150 @@
     "tir_referencia": 10.0,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2041-07-09",
-    "cupon": "0,5% semestral",
-    "cupon_tasa_anual": 0.5,
+    "cupon": "Step-up (ver cronograma)",
     "cupon_frecuencia": "semestral",
-    "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion": "28 cuotas semestrales iguales (~3,571% c/u) desde ene-2028",
+    "amortizacion_tipo": "parcial_cronograma",
+    "cupon_tipo": "step_up",
+    "cupon_fecha_pago": "9 ene / 9 jul",
+    "cronograma_cupon": [
+      {
+        "desde": "2020-09-04",
+        "hasta": "2021-07-09",
+        "tasa_anual": 0.125
+      },
+      {
+        "desde": "2021-07-09",
+        "hasta": "2022-07-09",
+        "tasa_anual": 2.5
+      },
+      {
+        "desde": "2022-07-09",
+        "hasta": "2029-07-09",
+        "tasa_anual": 3.5
+      },
+      {
+        "desde": "2029-07-09",
+        "hasta": "2041-07-09",
+        "tasa_anual": 4.875
+      }
+    ],
+    "cronograma_amortizacion": [
+      {
+        "fecha": "2028-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2028-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2029-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2029-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2030-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2030-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2031-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2031-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2032-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2032-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2033-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2033-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2034-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2034-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2035-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2035-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2036-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2036-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2037-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2037-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2038-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2038-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2039-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2039-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2040-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2040-07-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2041-01-09",
+        "porcentaje": 3.571429
+      },
+      {
+        "fecha": "2041-07-09",
+        "porcentaje": 3.571429
+      }
+    ],
+    "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
+    "fecha_emision": "2020-09-04"
   },
   "GD46": {
     "nombre": "Bono GD46",
@@ -483,11 +1309,229 @@
     "tir_referencia": 10.5,
     "tir_fecha_referencia": "2026-06",
     "vencimiento": "2046-07-09",
-    "cupon": "0,375% semestral",
-    "cupon_tasa_anual": 0.375,
+    "cupon": "Step-up (ver cronograma)",
     "cupon_frecuencia": "semestral",
-    "amortizacion": "Bullet",
-    "amortizacion_tipo": "bullet"
+    "amortizacion": "44 cuotas semestrales iguales (~2,273% c/u) desde ene-2025",
+    "amortizacion_tipo": "parcial_cronograma",
+    "cupon_tipo": "step_up",
+    "cupon_fecha_pago": "9 ene / 9 jul",
+    "cronograma_cupon": [
+      {
+        "desde": "2020-09-04",
+        "hasta": "2021-07-09",
+        "tasa_anual": 0.125
+      },
+      {
+        "desde": "2021-07-09",
+        "hasta": "2022-07-09",
+        "tasa_anual": 1.125
+      },
+      {
+        "desde": "2022-07-09",
+        "hasta": "2023-07-09",
+        "tasa_anual": 1.5
+      },
+      {
+        "desde": "2023-07-09",
+        "hasta": "2024-07-09",
+        "tasa_anual": 3.625
+      },
+      {
+        "desde": "2024-07-09",
+        "hasta": "2027-07-09",
+        "tasa_anual": 4.125
+      },
+      {
+        "desde": "2027-07-09",
+        "hasta": "2028-07-09",
+        "tasa_anual": 4.375
+      },
+      {
+        "desde": "2028-07-09",
+        "hasta": "2046-07-09",
+        "tasa_anual": 5.0
+      }
+    ],
+    "cronograma_amortizacion": [
+      {
+        "fecha": "2025-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2025-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2026-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2026-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2027-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2027-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2028-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2028-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2029-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2029-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2030-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2030-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2031-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2031-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2032-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2032-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2033-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2033-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2034-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2034-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2035-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2035-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2036-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2036-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2037-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2037-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2038-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2038-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2039-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2039-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2040-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2040-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2041-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2041-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2042-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2042-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2043-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2043-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2044-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2044-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2045-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2045-07-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2046-01-09",
+        "porcentaje": 2.272727
+      },
+      {
+        "fecha": "2046-07-09",
+        "porcentaje": 2.272727
+      }
+    ],
+    "fuente_cronograma": "Decreto 701/2020 — Condiciones de emisión títulos nuevos (infoleg dec701.pdf)",
+    "fecha_emision": "2020-09-04"
   },
   "TX26": {
     "nombre": "Bono TX26 (Boncer)",
