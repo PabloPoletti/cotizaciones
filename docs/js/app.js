@@ -409,6 +409,27 @@
     }
   }
 
+  function aplicarPesosEnInputs(pesos) {
+    document.querySelectorAll(".pct-input").forEach((input) => {
+      input.value = "0";
+    });
+    const entries = Object.entries(pesos).filter(([, p]) => p > 0);
+    if (!entries.length) return;
+
+    let asignado = 0;
+    entries.forEach(([ticker, peso], i) => {
+      const input = document.querySelector(`.pct-input[data-ticker="${CSS.escape(ticker)}"]`);
+      if (!input) return;
+      if (i === entries.length - 1) {
+        input.value = Math.max(0, Math.round((100 - asignado) * 10) / 10).toFixed(1);
+      } else {
+        const v = Math.round(peso * 10) / 10;
+        input.value = v.toFixed(1);
+        asignado += v;
+      }
+    });
+  }
+
   function aplicarPreset(tipo) {
     const elNota = document.getElementById("preset-nota");
     let result;
@@ -417,11 +438,7 @@
     else if (tipo === "mayor-tir") result = A.presetMayorTir(enriquecidos);
     else return;
 
-    document.querySelectorAll(".pct-input").forEach((input) => {
-      input.value = "0";
-      const p = result.pesos[input.dataset.ticker];
-      if (p != null) input.value = p.toFixed(1);
-    });
+    aplicarPesosEnInputs(result.pesos);
 
     let notaTexto = result.nota || "";
     if (result.notasSector?.length) {
