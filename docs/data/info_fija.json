@@ -188,7 +188,7 @@
   "TSC3O": {
     "nombre": "TGS ON 2031 (Clase 3)",
     "tipo": "ON corporativa",
-    "sector": "Telecomunicaciones",
+    "sector": "Gas natural",
     "moneda": "USD",
     "ley": "Nueva York",
     "tir_referencia": 7.15,
@@ -882,7 +882,7 @@
   "TSC4O": {
     "nombre": "TGS ON 2035 (Clase 4)",
     "tipo": "ON corporativa",
-    "sector": "Telecomunicaciones",
+    "sector": "Gas natural",
     "moneda": "USD",
     "ley": "Nueva York",
     "tir_fecha_referencia": "2026-06",

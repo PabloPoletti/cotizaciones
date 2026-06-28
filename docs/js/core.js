@@ -131,6 +131,30 @@
     return precioRaw / 1000;
   }
 
+  /** Margen relativo BYMA vs Data912 para badge de confirmación (ajustable). */
+  const MARGEN_CONFIRMACION_PRECIO = 0.02;
+
+  function preciosCoincidenEntreFuentes(precioPrincipal, precioBackup) {
+    if (precioPrincipal == null || precioBackup == null) return false;
+    const a = Number(precioPrincipal);
+    const b = Number(precioBackup);
+    if (!Number.isFinite(a) || !Number.isFinite(b) || a <= 0 || b <= 0) return false;
+    return Math.abs(a - b) / Math.max(a, b) <= MARGEN_CONFIRMACION_PRECIO;
+  }
+
+  function precioConfirmadoDosFuentes(item) {
+    if (!item || item.error || item.precio == null) return false;
+    return preciosCoincidenEntreFuentes(item.precio, item.precio_backup?.precio);
+  }
+
+  function badgeConfirmacionPrecioHtml(item) {
+    if (!precioConfirmadoDosFuentes(item)) return "";
+    return (
+      '<span class="badge badge--confirm" title="Precio BYMA y Data912 coinciden dentro de ±2%">' +
+      "✓ 2 fuentes</span>"
+    );
+  }
+
   function calcularTirMercado(precioRaw, info) {
     if (precioRaw == null || !info) {
       return { valor: null, nota: "Sin precio de mercado" };
@@ -250,7 +274,7 @@
 
   function enriquecer(item) {
     const info = infoDeTicker(item.ticker);
-    const sector = item.sector || info.sector || "Otros";
+    const sector = info.sector || item.sector || "Otros";
     const categoria = categoriaDe(info);
     const tirMerc = calcularTirMercado(item.precio, info);
     const tirCalc = tirParaCalculo(info, item);
@@ -444,5 +468,8 @@
     esSoberano,
     categoriaDe,
     coincideFiltroCategoria,
+    MARGEN_CONFIRMACION_PRECIO,
+    precioConfirmadoDosFuentes,
+    badgeConfirmacionPrecioHtml,
   };
 })();

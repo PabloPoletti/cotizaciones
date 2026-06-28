@@ -136,8 +136,10 @@
     const tipo = row.categoria || C.categoriaDe(row.info);
     const amort = row.esBullet ? "Bullet" : "Amort. parcial";
     const liq = window.CotizHistorico?.badgeLiquidezHtml(row.item.ticker) || "";
+    const confirm = C.badgeConfirmacionPrecioHtml(row.item);
     return `
       ${liq}
+      ${confirm}
       <span class="badge badge--moneda">${C.escapeHtml(moneda)}</span>
       <span class="badge badge--tipo">${C.escapeHtml(tipo)}</span>
       <span class="badge badge--amort ${row.esBullet ? "" : "badge--warn"}">${C.escapeHtml(amort)}</span>

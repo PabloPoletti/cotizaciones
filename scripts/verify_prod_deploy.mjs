@@ -1,11 +1,37 @@
 /**
- * Verifica despliegue en producción: Worker URL, cooldown 5 min, panel operativo.
+ * Verifica despliegue en producción: Worker URL, cooldown 5 min, panel operativo,
+ * filtros de dos niveles (59 instrumentos) y badge de confirmación Data912.
  * Uso: node scripts/verify_prod_deploy.mjs
  */
 import { chromium } from "playwright";
 
 const BASE = "https://pablopoletti.github.io/cotizaciones/";
 const CONFIG_JS = `${BASE}js/config.js`;
+const PANEL_TOTAL = 59;
+
+const FILTER_EXPECTATIONS = [
+  { tipo: "todos", subtipo: null, count: PANEL_TOTAL, label: "sin filtro" },
+  { tipo: "on", subtipo: null, count: 25, label: "ON corporativa" },
+  {
+    tipo: "on",
+    subtipo: "Telecomunicaciones",
+    count: 4,
+    tickers: ["TLCFO", "TLCMO", "TLCPO", "TLCTO"],
+    label: "ON + sector Telecom",
+  },
+  {
+    tipo: "on",
+    subtipo: "Gas natural",
+    count: 4,
+    tickers: ["TSC3O", "TSC4O", "TTC9O", "TTCDO"],
+    label: "ON + sector Gas natural",
+  },
+  { tipo: "Soberano USD", subtipo: null, count: 10, label: "Soberano USD" },
+  { tipo: "Soberano ARS", subtipo: null, count: 12, label: "Soberano ARS" },
+  { tipo: "Provincial", subtipo: null, count: 8, label: "Provincial" },
+  { tipo: "BCRA", subtipo: null, count: 3, label: "BCRA" },
+  { tipo: "CEDEAR", subtipo: null, count: 1, label: "CEDEAR" },
+];
 
 async function fetchConfigFromProd() {
   const res = await fetch(`${CONFIG_JS}?v=${Date.now()}`, { cache: "no-store" });
@@ -15,6 +41,40 @@ async function fetchConfigFromProd() {
   const urlMatch = text.match(/DISPATCH_WORKER_URL:\s*"([^"]*)"/);
   if (!cdMatch) throw new Error("DISPATCH_COOLDOWN_MS no encontrado en config.js de prod");
   return { cooldownMs: Number(cdMatch[1]), workerUrl: urlMatch?.[1] || "" };
+}
+
+async function openCotizacionesConFiltros(page) {
+  await page.goto(`${BASE}?v=${Date.now()}`, { waitUntil: "networkidle", timeout: 60000 });
+  await page.waitForSelector("#sectores-container .inst-card", { timeout: 30000 });
+  await page.click('button[data-tab="cotizaciones"]');
+  await page.waitForTimeout(400);
+  const filterPanel = page.locator("details.filter-panel");
+  if (!(await filterPanel.evaluate((el) => el.open))) {
+    await filterPanel.locator("summary").click();
+  }
+}
+
+async function applyFilter(page, tipo, subtipo) {
+  await page.selectOption("#filtro-tipo", tipo);
+  await page.waitForTimeout(400);
+  if (subtipo) {
+    await page.waitForSelector("#filtro-subtipo-wrap:not(.hidden)", { timeout: 5000 });
+    await page.selectOption("#filtro-subtipo", subtipo);
+    await page.waitForTimeout(400);
+  }
+}
+
+async function readVisibleCards(page) {
+  return page.evaluate(() => {
+    const cards = [...document.querySelectorAll("#sectores-container .inst-card")];
+    return {
+      count: cards.length,
+      tickers: cards.map((c) => c.dataset.ticker).filter(Boolean).sort(),
+      miniKpi: document.querySelector(".kpi-chip strong")?.textContent?.trim(),
+      tipoCambio: document.getElementById("tipo-cambio-meta")?.textContent?.trim() || "",
+      confirmBadges: document.querySelectorAll(".badge--confirm").length,
+    };
+  });
 }
 
 async function verifyPanel(browser) {
@@ -41,18 +101,56 @@ async function verifyPanel(browser) {
   return ui;
 }
 
+async function verifyFiltersTwoLevel(browser) {
+  const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
+  await openCotizacionesConFiltros(page);
+
+  const results = [];
+  for (const exp of FILTER_EXPECTATIONS) {
+    await applyFilter(page, exp.tipo, exp.subtipo);
+    const visible = await readVisibleCards(page);
+    const tickersOk = exp.tickers
+      ? exp.tickers.every((t) => visible.tickers.includes(t)) && visible.tickers.length === exp.count
+      : visible.count === exp.count;
+    results.push({
+      ...exp,
+      visible: visible.count,
+      tickers: visible.tickers,
+      ok: tickersOk && visible.count === exp.count,
+    });
+  }
+
+  await applyFilter(page, "todos", null);
+  const resumen = await page.evaluate(() => {
+    const btn = document.querySelector('button[data-tab="resumen"]');
+    btn?.click();
+    return {
+      conversionSection: !document.getElementById("seccion-conversion-ars")?.classList.contains("hidden"),
+      conversionRows: document.querySelectorAll("#tabla-conversion-ars tbody tr").length,
+    };
+  });
+  await page.waitForTimeout(500);
+  const resumenAfter = await page.evaluate(() => ({
+    conversionSection: !document.getElementById("seccion-conversion-ars")?.classList.contains("hidden"),
+    conversionRows: document.querySelectorAll("#tabla-conversion-ars tbody tr").length,
+    tipoCambio: document.getElementById("tipo-cambio-meta")?.textContent?.includes("/") ?? false,
+  }));
+
+  const allCards = await readVisibleCards(page);
+  await page.close();
+
+  return {
+    results,
+    allOk: results.every((r) => r.ok),
+    resumenArsUsd: resumenAfter,
+    confirmBadgesTotal: allCards.confirmBadges,
+    tipoCambioHeaderOk: allCards.tipoCambio.includes("Oficial:") && allCards.tipoCambio.includes("MEP:"),
+  };
+}
+
 async function verifyFichaFlow(browser) {
   const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
-  await page.goto(`${BASE}?v=${Date.now()}`, { waitUntil: "networkidle", timeout: 60000 });
-  await page.waitForSelector("#sectores-container .inst-card", { timeout: 30000 });
-
-  await page.click('button[data-tab="cotizaciones"]');
-  await page.waitForTimeout(400);
-
-  const filterPanel = page.locator("details.filter-panel");
-  if (!(await filterPanel.evaluate((el) => el.open))) {
-    await filterPanel.locator("summary").click();
-  }
+  await openCotizacionesConFiltros(page);
 
   await page.selectOption("#filtro-tipo", "Soberano USD");
   await page.selectOption("#filtro-moneda", "USD");
@@ -78,6 +176,7 @@ async function verifyFichaFlow(browser) {
     manualAlert: !!document.querySelector(".ficha-manual-alert")?.textContent?.includes("info_fija.json"),
     liveBadges: document.querySelectorAll(".ficha-badge--live").length,
     calcBadge: !!document.querySelector(".ficha-badge--calc"),
+    confirmBadge: !!document.querySelector(".ficha-hero__badges .badge--confirm"),
     filtrosActivos: document.getElementById("ficha-filtros-activos")?.textContent?.trim(),
     listaHidden: document.getElementById("cotiz-lista-view")?.classList.contains("hidden"),
   }));
@@ -115,6 +214,7 @@ async function main() {
   const config = await fetchConfigFromProd();
   const browser = await chromium.launch({ headless: true });
   const panel = await verifyPanel(browser);
+  const filters = await verifyFiltersTwoLevel(browser);
   const fichaFlow = await verifyFichaFlow(browser);
   await browser.close();
 
@@ -124,8 +224,8 @@ async function main() {
     cooldownMs: config.cooldownMs,
     cooldownOk: config.cooldownMs === 300000,
     workerUrlOk: config.workerUrl.includes("cotizaciones-dispatch.lic-poletti.workers.dev/dispatch"),
-    panelCardsOk: panel.cards >= 47,
-    fichaShellOk: panel.fichaShell && panel.fichaScript,
+    panelCardsOk: panel.cards === PANEL_TOTAL,
+    filtersTwoLevel: filters,
     fichaFlow,
     panel,
     timestamp: new Date().toISOString(),
@@ -142,11 +242,20 @@ async function main() {
     process.exit(1);
   }
   if (!checks.panelCardsOk) {
-    console.error(`FAIL: se esperaban al menos 47 cards, obtuvo ${panel.cards}`);
+    console.error(`FAIL: se esperaban ${PANEL_TOTAL} cards, obtuvo ${panel.cards}`);
     process.exit(1);
   }
-  if (!checks.fichaShellOk) {
-    console.error("FAIL: ficha no cargada en prod (shell o CotizFicha ausente)");
+  if (!filters.allOk) {
+    console.error("FAIL: filtros de dos niveles no coinciden con expectativas");
+    filters.results.filter((r) => !r.ok).forEach((r) => console.error(`  - ${r.label}: esperado ${r.count}, visible ${r.visible}`, r.tickers));
+    process.exit(1);
+  }
+  if (!filters.tipoCambioHeaderOk) {
+    console.error("FAIL: header tipo de cambio sin formato compra/venta");
+    process.exit(1);
+  }
+  if (!filters.resumenArsUsd.conversionSection || filters.resumenArsUsd.conversionRows < 5) {
+    console.error("FAIL: tabla conversión ARS→USD ref. MEP ausente o incompleta en Resumen");
     process.exit(1);
   }
   if (!fichaFlow.filtrosPreservados) {
@@ -158,7 +267,9 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("OK: prod desplegado con cooldown 5 min, panel operativo y ficha verificada.");
+  console.log(
+    `OK: prod con ${PANEL_TOTAL} instrumentos, filtros 2 niveles (Telecom x4), DolarAPI, badge confirmación (${filters.confirmBadgesTotal} visibles).`
+  );
 }
 
 main().catch((err) => {

@@ -674,6 +674,14 @@ tr:hover td {
   color: var(--positive);
 }
 
+.badge--confirm {
+  background: #e0f2fe;
+  color: #0369a1;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
+}
+
 .badge--liq-alta {
   background: #dcfce7;
   color: #166534;
