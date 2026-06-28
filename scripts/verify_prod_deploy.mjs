@@ -5,15 +5,16 @@
 import { chromium } from "playwright";
 
 const BASE = "https://pablopoletti.github.io/cotizaciones/";
-const APP_JS = `${BASE}js/app.js`;
+const CONFIG_JS = `${BASE}js/config.js`;
 
-async function fetchAppJsCooldown() {
-  const res = await fetch(`${APP_JS}?v=${Date.now()}`, { cache: "no-store" });
-  if (!res.ok) throw new Error(`No se pudo cargar app.js: HTTP ${res.status}`);
+async function fetchConfigFromProd() {
+  const res = await fetch(`${CONFIG_JS}?v=${Date.now()}`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`No se pudo cargar config.js: HTTP ${res.status}`);
   const text = await res.text();
-  const match = text.match(/DISPATCH_COOLDOWN_MS\s*=\s*(\d+)/);
-  if (!match) throw new Error("DISPATCH_COOLDOWN_MS no encontrado en app.js de prod");
-  return Number(match[1]);
+  const cdMatch = text.match(/DISPATCH_COOLDOWN_MS:\s*(\d+)/);
+  const urlMatch = text.match(/DISPATCH_WORKER_URL:\s*"([^"]*)"/);
+  if (!cdMatch) throw new Error("DISPATCH_COOLDOWN_MS no encontrado en config.js de prod");
+  return { cooldownMs: Number(cdMatch[1]), workerUrl: urlMatch?.[1] || "" };
 }
 
 async function verifyPanel(browser) {
@@ -40,15 +41,17 @@ async function verifyPanel(browser) {
 }
 
 async function main() {
-  const cooldownMs = await fetchAppJsCooldown();
+  const config = await fetchConfigFromProd();
   const browser = await chromium.launch({ headless: true });
   const panel = await verifyPanel(browser);
   await browser.close();
 
   const checks = {
     url: BASE,
-    cooldownMs,
-    cooldownOk: cooldownMs === 300000,
+    workerUrl: config.workerUrl,
+    cooldownMs: config.cooldownMs,
+    cooldownOk: config.cooldownMs === 300000,
+    workerUrlOk: config.workerUrl.includes("cotizaciones-dispatch.lic-poletti.workers.dev/dispatch"),
     panelCardsOk: panel.cards === 47,
     panel,
     timestamp: new Date().toISOString(),
@@ -57,7 +60,11 @@ async function main() {
   console.log(JSON.stringify(checks, null, 2));
 
   if (!checks.cooldownOk) {
-    console.error(`FAIL: cooldown esperado 300000, obtuvo ${cooldownMs}`);
+    console.error(`FAIL: cooldown esperado 300000, obtuvo ${config.cooldownMs}`);
+    process.exit(1);
+  }
+  if (!checks.workerUrlOk) {
+    console.error(`FAIL: worker URL en prod no coincide: ${config.workerUrl}`);
     process.exit(1);
   }
   if (!checks.panelCardsOk) {
