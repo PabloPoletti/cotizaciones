@@ -32,6 +32,12 @@
     destruir("tirBarras");
     const ctx1 = document.getElementById("chart-tir-barras");
     if (ctx1) {
+      const barCount = tirRows.length;
+      const box = ctx1.parentElement;
+      if (box) {
+        const h = Math.min(Math.max(barCount * 15, 280), 760);
+        box.style.height = `${h}px`;
+      }
       charts.tirBarras = new Chart(ctx1, {
         type: "bar",
         data: {
@@ -41,6 +47,7 @@
               label: "TIR referencia (%)",
               data: tirRows.map((r) => r.tirRef),
               backgroundColor: tirRows.map((r) => r.colorSector),
+              barThickness: barCount > 30 ? 10 : barCount > 20 ? 12 : 16,
             },
           ],
         },
@@ -49,7 +56,16 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: { legend: { display: false } },
-          scales: { x: { title: { display: true, text: "TIR ref. %" } } },
+          scales: {
+            x: { title: { display: true, text: "TIR ref. %" } },
+            y: {
+              ticks: {
+                font: { size: barCount > 30 ? 9 : 10 },
+                autoSkip: barCount > 24,
+                maxTicksLimit: barCount > 24 ? 28 : undefined,
+              },
+            },
+          },
         },
       });
     }
@@ -59,13 +75,15 @@
     const ctx2 = document.getElementById("chart-scatter");
     if (ctx2) {
       const sectores = [...new Set(scatterRows.map((r) => r.sector))];
+      const manyPoints = scatterRows.length > 24;
       const datasets = sectores.map((sector) => ({
         label: sector,
         data: scatterRows
           .filter((r) => r.sector === sector)
           .map((r) => ({ x: r.anosVto, y: r.tirEff, ticker: r.item.ticker })),
         backgroundColor: C().COLORES_SECTOR[sector] || C().COLORES_SECTOR.Otros,
-        pointRadius: 7,
+        pointRadius: manyPoints ? 4 : 7,
+        pointHoverRadius: manyPoints ? 6 : 9,
       }));
       charts.scatter = new Chart(ctx2, {
         type: "scatter",
@@ -74,6 +92,14 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                boxWidth: 10,
+                font: { size: sectores.length > 8 ? 9 : 11 },
+                padding: 8,
+              },
+            },
             tooltip: {
               callbacks: {
                 label(ctx) {
@@ -95,13 +121,27 @@
     destruir("sectores");
     const ctx3 = document.getElementById("chart-sectores");
     if (ctx3) {
+      const manySectors = comp.length > 8;
       charts.sectores = new Chart(ctx3, {
         type: "doughnut",
         data: {
           labels: comp.map(([s]) => s),
           datasets: [{ data: comp.map(([, n]) => n), backgroundColor: sectorColors(comp.map(([s]) => s)) }],
         },
-        options: { responsive: true, maintainAspectRatio: false },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                boxWidth: 10,
+                font: { size: manySectors ? 9 : 11 },
+                padding: 6,
+              },
+            },
+          },
+        },
       });
     }
 

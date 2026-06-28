@@ -15,9 +15,9 @@
   function calcularKPIs(enriquecidos) {
     const tirs = enriquecidos.map((r) => r.tirEff).filter((x) => x != null);
     const durations = enriquecidos.map((r) => r.duration).filter((x) => x != null);
-    const ons = enriquecidos.filter((r) => !r.esSoberano).length;
-    const soberanos = enriquecidos.filter((r) => r.esSoberano).length;
-    const monedas = new Set(enriquecidos.map((r) => r.info.moneda || "USD"));
+    const ons = enriquecidos.filter((r) => r.categoria === "ON corporativa").length;
+    const soberanos = enriquecidos.filter((r) => (r.categoria || "").startsWith("Soberano")).length;
+    const monedas = new Set(enriquecidos.map((r) => r.moneda || r.info.moneda || "USD"));
 
     return {
       tirProm: promedio(tirs),
@@ -29,6 +29,20 @@
       countTotal: enriquecidos.length,
       countMonedas: monedas.size,
     };
+  }
+
+  function calcularKPIsPorMoneda(enriquecidos) {
+    const grupos = new Map();
+    for (const row of enriquecidos) {
+      const m = row.moneda || row.info.moneda || "USD";
+      if (!grupos.has(m)) grupos.set(m, []);
+      grupos.get(m).push(row);
+    }
+    const porMoneda = {};
+    for (const [moneda, rows] of grupos) {
+      porMoneda[moneda] = { ...calcularKPIs(rows), moneda, count: rows.length };
+    }
+    return { porMoneda, total: enriquecidos.length };
   }
 
   function mejorTirPorSector(enriquecidos) {
@@ -226,6 +240,7 @@
 
   window.CotizAnalytics = {
     calcularKPIs,
+    calcularKPIsPorMoneda,
     mejorTirPorSector,
     proximosVencimientos,
     proximosCupones,

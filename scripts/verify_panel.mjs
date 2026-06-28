@@ -65,6 +65,7 @@ async function main() {
       bannerText: banner?.textContent?.trim(),
       bannerClass: banner?.className,
       numSectores: sectores.length,
+      numCards: document.querySelectorAll("#sectores-container .inst-card").length,
       numFilasTabla: filas.length,
       numEtiquetasCierre: etiquetasCierre.length,
       numFilasCalculadora: calcFilas.length,
@@ -77,6 +78,34 @@ async function main() {
     path: join(OUT_DIR, "panel-cotizaciones-tabla.png"),
     fullPage: true,
   });
+
+  // Filtros Provincial + USD
+  await page.click('button[data-tab="cotizaciones"]');
+  await page.waitForTimeout(400);
+  const filterPanel = page.locator("details.filter-panel");
+  if (!(await filterPanel.evaluate((el) => el.open))) {
+    await filterPanel.locator("summary").click();
+  }
+  await page.selectOption("#filtro-tipo", "Provincial");
+  await page.selectOption("#filtro-moneda", "USD");
+  await page.waitForTimeout(400);
+  const filterProvUsd = await page.evaluate(() => ({
+    cards: document.querySelectorAll("#sectores-container .inst-card").length,
+    tickers: [...document.querySelectorAll("#sectores-container .inst-card")].map((c) => c.dataset.ticker),
+  }));
+  await page.selectOption("#filtro-tipo", "todos");
+  await page.selectOption("#filtro-moneda", "todos");
+
+  // Resumen KPIs por moneda
+  await page.click('button[data-tab="resumen"]');
+  await page.waitForTimeout(600);
+  const resumenMoneda = await page.evaluate(() => ({
+    kpiCards: document.querySelectorAll("#resumen-kpis .kpi-card").length,
+    monedaKpis: [...document.querySelectorAll("#resumen-kpis .kpi-card--moneda")].map((el) => ({
+      label: el.querySelector("span")?.textContent?.trim(),
+      value: el.querySelector("strong")?.textContent?.trim(),
+    })),
+  }));
 
   // Probar calculadora: asignar 100% al primer instrumento
   await page.click('button[data-tab="calculadora"]');
@@ -119,6 +148,8 @@ async function main() {
     url: URL,
     tokenUi,
     checks,
+    filterProvUsd,
+    resumenMoneda,
     calcResult,
     consoleErrors,
     consoleWarnings,

@@ -76,7 +76,22 @@
               <select id="filtro-tipo">
                 <option value="todos">Todos</option>
                 <option value="on">ON corporativa</option>
-                <option value="soberano">Soberano</option>
+                <option value="soberano">Soberano (todas)</option>
+                <option value="Soberano USD">Soberano USD</option>
+                <option value="Soberano ARS">Soberano ARS</option>
+                <option value="Provincial">Provincial</option>
+                <option value="BCRA">BCRA</option>
+                <option value="CEDEAR">CEDEAR</option>
+              </select>
+            </div>
+            <div>
+              <label for="filtro-moneda">Moneda</label>
+              <select id="filtro-moneda">
+                <option value="todos">Todas</option>
+                <option value="USD">USD</option>
+                <option value="ARS">ARS</option>
+                <option value="ARS-CER">ARS-CER</option>
+                <option value="ARS dollar-linked">ARS dollar-linked</option>
               </select>
             </div>
             <div>
@@ -119,7 +134,7 @@
     <!-- Análisis -->
     <div id="panel-analisis" class="tab-panel" role="tabpanel">
       <div class="chart-grid">
-        <section class="chart-card">
+        <section class="chart-card chart-card--tir-barras">
           <h2>TIR de referencia por instrumento</h2>
           <div class="chart-box"><canvas id="chart-tir-barras"></canvas></div>
         </section>

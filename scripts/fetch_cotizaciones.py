@@ -36,30 +36,31 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Especies a consultar con nombre y sector para el panel
-# YMCUO (ON YPF Clase XXVIII, venc. 2031, hard dollar) fue removido de la lista:
-# el ticker existe en el mercado (BYMA/brokers) pero NO figura en BYMA Open Data
-# gratuito — get_corporate_bonds(), get_current_quote() e histórico devuelven 0
-# filas (verificado 2026-06-27). Sin fuente pública gratuita, no se puede cotizar.
+# Especies a consultar: se cargan desde docs/data/info_fija.json (fuente única).
+# YMCUO fue removido: ticker existe en mercado pero NO en BYMA Open Data gratuito.
 
-INSTRUMENTOS = [
-    {"ticker": "YMCIO", "nombre": "YPF 2029", "sector": "Petróleo y gas"},
-    {"ticker": "TTC9O", "nombre": "TGS 2029", "sector": "Gas natural"},
-    {"ticker": "TTCDO", "nombre": "TGS (dual)", "sector": "Gas natural"},
-    {"ticker": "PN35O", "nombre": "Pan American 2035", "sector": "Petróleo y gas"},
-    {"ticker": "PNDCO", "nombre": "Pan American (dual)", "sector": "Petróleo y gas"},
-    {"ticker": "TSC3O", "nombre": "Telecom 2028", "sector": "Telecomunicaciones"},
-    {"ticker": "DNC7O", "nombre": "Edenor 2027", "sector": "Utilities"},
-    {"ticker": "IRCFO", "nombre": "IRSA 2028", "sector": "Real estate"},
-    {"ticker": "RAC5O", "nombre": "YPF Luz 2025", "sector": "Utilities"},
-    {"ticker": "TLCMO", "nombre": "Telecom (dual)", "sector": "Telecomunicaciones"},
-    {"ticker": "YFCJO", "nombre": "YPF Luz (dual)", "sector": "Utilities"},
-    {"ticker": "GN49O", "nombre": "Genneia 2049", "sector": "Utilities"},
-    {"ticker": "RUCDO", "nombre": "IRSA (dual)", "sector": "Real estate"},
-    {"ticker": "AL30", "nombre": "Bono AL30", "sector": "Soberanos"},
-    {"ticker": "GD30", "nombre": "Bono GD30", "sector": "Soberanos"},
-    {"ticker": "GD35", "nombre": "Bono GD35", "sector": "Soberanos"},
-]
+
+def cargar_instrumentos_desde_info_fija() -> list[dict[str, str]]:
+    """Lee tickers activos del panel desde info_fija.json."""
+    ruta = RAIZ_REPO / "docs" / "data" / "info_fija.json"
+    if not ruta.exists():
+        raise FileNotFoundError(f"No se encontró {ruta}")
+    data = json.loads(ruta.read_text(encoding="utf-8"))
+    instrumentos: list[dict[str, str]] = []
+    for ticker, meta in sorted(data.items()):
+        if ticker.startswith("_") or not isinstance(meta, dict):
+            continue
+        instrumentos.append(
+            {
+                "ticker": ticker,
+                "nombre": meta.get("nombre", ticker),
+                "sector": meta.get("sector", "Otros"),
+            }
+        )
+    return instrumentos
+
+
+INSTRUMENTOS = cargar_instrumentos_desde_info_fija()
 
 # Tipos de liquidación a probar (en orden de preferencia)
 LIQUIDACIONES = ("CI", "24HS")

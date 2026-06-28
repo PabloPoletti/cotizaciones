@@ -10,6 +10,16 @@
     "Utilities",
     "Real estate",
     "Telecomunicaciones",
+    "Soberanos USD",
+    "Soberanos ARS",
+    "Provincial Córdoba",
+    "Provincial Mendoza",
+    "Provincial Salta",
+    "Provincial Neuquén",
+    "Provincial Buenos Aires",
+    "Ciudad de Buenos Aires",
+    "BCRA",
+    "CEDEAR",
     "Soberanos",
   ];
 
@@ -19,6 +29,16 @@
     Utilities: "#b54708",
     "Real estate": "#7c3aed",
     Telecomunicaciones: "#0891b2",
+    "Soberanos USD": "#64748b",
+    "Soberanos ARS": "#475569",
+    "Provincial Córdoba": "#0369a1",
+    "Provincial Mendoza": "#0284c7",
+    "Provincial Salta": "#0ea5e9",
+    "Provincial Neuquén": "#38bdf8",
+    "Provincial Buenos Aires": "#1d4ed8",
+    "Ciudad de Buenos Aires": "#2563eb",
+    BCRA: "#854d0e",
+    CEDEAR: "#6b7280",
     Soberanos: "#64748b",
     Otros: "#94a3b8",
   };
@@ -193,8 +213,22 @@
     return Math.round(anos * factor * 100) / 100;
   }
 
+  function categoriaDe(info) {
+    if (info.categoria) return info.categoria;
+    if ((info.tipo || "").toLowerCase().includes("soberano")) return "Soberano USD";
+    return "ON corporativa";
+  }
+
   function esSoberano(info) {
-    return (info.tipo || "").toLowerCase().includes("soberano");
+    return categoriaDe(info).startsWith("Soberano");
+  }
+
+  function coincideFiltroCategoria(row, filtro) {
+    if (!filtro || filtro === "todos") return true;
+    const cat = row.categoria || categoriaDe(row.info);
+    if (filtro === "on") return cat === "ON corporativa";
+    if (filtro === "soberano") return cat.startsWith("Soberano");
+    return cat === filtro;
   }
 
   function agruparPorSector(instrumentos) {
@@ -216,12 +250,15 @@
   function enriquecer(item) {
     const info = infoDeTicker(item.ticker);
     const sector = item.sector || info.sector || "Otros";
+    const categoria = categoriaDe(info);
     const tirMerc = calcularTirMercado(item.precio, info);
     const tirCalc = tirParaCalculo(info, item);
     return {
       item,
       info,
       sector,
+      categoria,
+      moneda: info.moneda || "USD",
       tirMerc,
       tirCalc,
       tirEff: tirCalc.valor,
@@ -317,8 +354,12 @@
         return r.item.ticker.toLowerCase().includes(q) || nombre.includes(q);
       });
     }
-    if (filtros.tipo === "on") rows = rows.filter((r) => !r.esSoberano);
-    if (filtros.tipo === "soberano") rows = rows.filter((r) => r.esSoberano);
+    if (filtros.tipo && filtros.tipo !== "todos") {
+      rows = rows.filter((r) => coincideFiltroCategoria(r, filtros.tipo));
+    }
+    if (filtros.moneda && filtros.moneda !== "todos") {
+      rows = rows.filter((r) => (r.moneda || r.info.moneda || "USD") === filtros.moneda);
+    }
     if (filtros.sector && filtros.sector !== "todos") {
       rows = rows.filter((r) => r.sector === filtros.sector);
     }
@@ -387,5 +428,7 @@
     anosAlVencimiento,
     durationAprox,
     esSoberano,
+    categoriaDe,
+    coincideFiltroCategoria,
   };
 })();

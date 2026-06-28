@@ -1,0 +1,297 @@
+{
+  "fecha_verificacion": "2026-06-27T22:42:22.674223-03:00",
+  "nota": "Fin de semana: 'pendiente' no implica ticker inválido.",
+  "universo_panel_total": 4280,
+  "fases": {
+    "1": {
+      "tickers": [
+        "AL29",
+        "AL30",
+        "AL35",
+        "AL41",
+        "GD29",
+        "GD30",
+        "GD35",
+        "GD38",
+        "GD41",
+        "GD46",
+        "S29E5",
+        "S30E5",
+        "S31E5",
+        "S32E5",
+        "S28F6",
+        "S29F6",
+        "T15D5",
+        "T30A6",
+        "T30J6",
+        "TX26",
+        "TX28",
+        "TZX25",
+        "TZX26",
+        "T2X7",
+        "TX27",
+        "TVPP",
+        "T2X4",
+        "DICP"
+      ],
+      "nuevos_vs_panel_actual": [
+        "AL29",
+        "AL35",
+        "AL41",
+        "GD29",
+        "GD38",
+        "GD41",
+        "GD46",
+        "S29E5",
+        "S30E5",
+        "S31E5",
+        "S32E5",
+        "S28F6",
+        "S29F6",
+        "T15D5",
+        "T30A6",
+        "T30J6",
+        "TX26",
+        "TX28",
+        "TZX25",
+        "TZX26",
+        "T2X7",
+        "TX27",
+        "TVPP",
+        "T2X4",
+        "DICP"
+      ],
+      "resumen": {
+        "confirmado": 16,
+        "pendiente": 12,
+        "descartado": 0
+      },
+      "resultados": [
+        {
+          "ticker": "AL29",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "AL30",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "AL35",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "AL41",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "GD29",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "GD30",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "GD35",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "GD38",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "GD41",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "GD46",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "S29E5",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "S30E5",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "S31E5",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "S32E5",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "S28F6",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "S29F6",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "T15D5",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "T30A6",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "T30J6",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "TX26",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "TX28",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "TZX25",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "TZX26",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "T2X7",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "TX27",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "TVPP",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        },
+        {
+          "ticker": "T2X4",
+          "estado": "pendiente",
+          "en_panel_byma": false,
+          "quote_filas": false,
+          "error_especie": false,
+          "detalle": "CI: sin filas; 24HS: sin filas"
+        },
+        {
+          "ticker": "DICP",
+          "estado": "confirmado",
+          "en_panel_byma": false,
+          "quote_filas": true,
+          "error_especie": false,
+          "detalle": "CI: trade=0.0 prevClose=0.0; 24HS: trade=0.0 prevClose=0.0"
+        }
+      ]
+    }
+  }
+}

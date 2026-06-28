@@ -241,7 +241,34 @@ Si la TIR mercado difiere más de ~0,3 pp de la ponderada por referencia, la cal
 
 ---
 
-## Instrumentos monitoreados (16)
+## Instrumentos monitoreados (47)
+
+El universo se define en `docs/data/info_fija.json` (campo `categoria` y `moneda`). El script `scripts/fetch_cotizaciones.py` lee esa lista automáticamente.
+
+| Categoría | Cant. | Notas |
+|-----------|------:|-------|
+| ON corporativa | 13 | USD hard dollar |
+| Soberano USD | 10 | Curva AL* / GD* |
+| Soberano ARS | 12 | Lecaps, Boncer (CER), dollar-linked |
+| Provincial | 8 | Tier 1 + CABA (BACAD/BACAO) |
+| BCRA | 3 | BOPREAL (BPO27, BPO28, BPOD7) |
+| CEDEAR | 1 | SPYD (ETF renta fija EEUU, proxy) |
+
+Verificación PyOBD: `python scripts/verify_tickers.py --fase all --json docs/data/verify_instrumentos.json`
+
+Tickers **pendientes de re-verificar en día hábil** (fin de semana sin filas ≠ inválido): `docs/data/instrumentos_pendientes.json`
+
+### Municipales (Fase 3)
+
+Ningún bono municipal con liquidez verificable en BYMA Open Data gratuito (jun 2026). No se agregaron al panel. Ver detalle en `instrumentos_pendientes.json`.
+
+### LEFI / pases interbancarios (Fase 4)
+
+LEFI y ex-LELIQ **no** figuran en el mercado secundario abierto de BYMA Open Data — documentado como limitación, no simulado.
+
+---
+
+## Instrumentos anteriores (referencia ONs por sector)
 
 | Ticker | Sector |
 |--------|--------|

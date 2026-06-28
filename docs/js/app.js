@@ -20,6 +20,7 @@
   let filtros = {
     busqueda: "",
     tipo: "todos",
+    moneda: "todos",
     sector: "todos",
     orden: "ticker",
     ordenDir: "asc",
@@ -75,8 +76,8 @@
   }
 
   function badgesHtml(row) {
-    const moneda = row.info.moneda || "USD";
-    const tipo = row.esSoberano ? "Soberano" : "ON";
+    const moneda = row.moneda || row.info.moneda || "USD";
+    const tipo = row.categoria || C.categoriaDe(row.info);
     const amort = row.esBullet ? "Bullet" : "Amort. parcial";
     return `
       <span class="badge badge--moneda">${C.escapeHtml(moneda)}</span>
@@ -228,16 +229,24 @@
   }
 
   function renderResumen() {
-    const kpis = A.calcularKPIs(enriquecidos);
+    const porMoneda = A.calcularKPIsPorMoneda(enriquecidos);
     const el = document.getElementById("resumen-kpis");
     if (el) {
+      const monedaCards = Object.values(porMoneda.porMoneda)
+        .sort((a, b) => a.moneda.localeCompare(b.moneda))
+        .map(
+          (k) => `
+        <div class="kpi-card kpi-card--moneda">
+          <span>TIR prom. (${C.escapeHtml(k.moneda)})</span>
+          <strong>${k.tirProm != null ? k.tirProm.toFixed(2) + "%" : "—"}</strong>
+          <small>${k.count} instrumento(s)</small>
+        </div>`
+        )
+        .join("");
       el.innerHTML = `
-        <div class="kpi-card"><span>TIR promedio</span><strong>${kpis.tirProm != null ? kpis.tirProm.toFixed(2) + "%" : "—"}</strong></div>
-        <div class="kpi-card"><span>TIR máxima</span><strong>${kpis.tirMax != null ? kpis.tirMax.toFixed(2) + "%" : "—"}</strong></div>
-        <div class="kpi-card"><span>TIR mínima</span><strong>${kpis.tirMin != null ? kpis.tirMin.toFixed(2) + "%" : "—"}</strong></div>
-        <div class="kpi-card"><span>Duration prom.</span><strong>${kpis.durationProm != null ? kpis.durationProm.toFixed(1) + " a" : "—"}</strong></div>
-        <div class="kpi-card"><span>ON / Soberanos</span><strong>${kpis.countOn} / ${kpis.countSoberano}</strong></div>
-        <div class="kpi-card"><span>Monedas</span><strong>${kpis.countMonedas}</strong></div>
+        ${monedaCards}
+        <div class="kpi-card"><span>Instrumentos totales</span><strong>${porMoneda.total}</strong></div>
+        <div class="kpi-card"><span>Monedas distintas</span><strong>${Object.keys(porMoneda.porMoneda).length}</strong></div>
       `;
     }
     const tbody = document.querySelector("#tabla-ranking-sector tbody");
@@ -513,6 +522,7 @@
     };
     bind("filtro-busqueda", "busqueda");
     bind("filtro-tipo", "tipo");
+    bind("filtro-moneda", "moneda");
     bind("filtro-sector", "sector");
     bind("filtro-orden", "orden");
     bind("filtro-orden-dir", "ordenDir");
