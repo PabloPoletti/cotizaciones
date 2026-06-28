@@ -2,10 +2,17 @@
 name: Actualizar cotizaciones
 
 on:
-  # Cada 30 minutos (UTC). El job filtra horario de mercado argentino.
+  # Lun–vie, ventana UTC ~13:30–21:00 (cubre 11:00–17:30 ART + margen). El job filtra horario exacto.
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "30 13 * * 1-5"
+    - cron: "0,30 14-20 * * 1-5"
+    - cron: "0 21 * * 1-5"
   workflow_dispatch:
+
+# Evita push concurrente: un run en curso encola el siguiente (no lo cancela).
+concurrency:
+  group: cotizaciones-actualizar
+  cancel-in-progress: false
 
 # Permiso para hacer push del JSON actualizado
 permissions:

@@ -55,9 +55,9 @@ El archivo `.github/workflows/actualizar.yml`:
 
 | Aspecto | Detalle |
 |---------|---------|
-| **Frecuencia** | Cada 30 minutos (`cron: */30 * * * *`) |
+| **Frecuencia** | Cada 30 min, lun–vie, ventana UTC 13:30–21:00 (≈11:00–17:30 ART + margen) |
 | **Manual** | Botón **Run workflow** en Actions, o desde el panel web |
-| **Horario** | Solo lun–vie, 11:00–17:30 ART (en cron; manual ignora este filtro) |
+| **Horario** | Filtro final lun–vie 11:00–17:30 ART en el job; manual ignora este filtro |
 | **Qué hace** | Instala Python + PyOBD, ejecuta `scripts/fetch_cotizaciones.py`, commitea `docs/data/cotizaciones.json` |
 
 ### Permisos
@@ -131,7 +131,7 @@ El error más frecuente es un **403** con mensaje tipo *"Resource not accessible
 3. **Token:** el PAT generado arriba.
 4. **Guardar configuración** (persiste en localStorage).
 5. **Probar token** — debe decir *Token OK…*. Si falla, el mensaje indica la causa (token expirado, repo incorrecto, permisos Actions, etc.).
-6. **Actualizar ahora** — si la prueba pasó, dispara el workflow; éxito = HTTP 204 y mensaje *Workflow iniciado*. Tras un dispatch exitoso el botón queda deshabilitado unos segundos para evitar doble clic.
+6. **Actualizar ahora** — si la prueba pasó, dispara el workflow; éxito = HTTP 204 y mensaje *Workflow iniciado*. Tras un dispatch exitoso el botón queda deshabilitado ~90 s para evitar doble clic mientras corre la corrida anterior.
 
 #### Errores frecuentes
 

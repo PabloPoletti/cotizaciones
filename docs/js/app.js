@@ -582,7 +582,7 @@
   }
 
   const GITHUB_API_VERSION = "2022-11-28";
-  const DISPATCH_COOLDOWN_MS = 8000;
+  const DISPATCH_COOLDOWN_MS = 90000;
   let dispatchCooldownTimer = null;
 
   function iniciarCooldownActualizar() {
