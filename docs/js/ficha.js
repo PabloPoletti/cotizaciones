@@ -180,7 +180,7 @@
 
   function renderPlazosBlock(info) {
     const plazo = A().plazoRestante(info);
-    const proxCupon = A().estimarProximoCupon(info);
+    const pc = C().proximoCuponInfo(info);
     let plazoHtml = C().escapeHtml(datoNoDisponible());
     if (plazo) {
       if (plazo.dias < 0) plazoHtml = "Vencido";
@@ -188,8 +188,17 @@
     }
 
     let cuponHtml = C().escapeHtml(datoNoDisponible());
-    if (proxCupon) {
-      cuponHtml = `${proxCupon.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" })}`;
+    let cuponMeta = "";
+    if (pc.metodo === "no_aplica") {
+      cuponHtml = "No aplica";
+      cuponMeta = pc.motivo;
+    } else if (pc.fecha) {
+      cuponHtml = pc.fecha.toLocaleDateString("es-AR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+      cuponMeta = pc.meta;
     } else if (!info.vencimiento || !info.cupon_frecuencia) {
       cuponHtml = C().escapeHtml(datoNoDisponible());
     }
@@ -209,7 +218,7 @@
           <div class="ficha-kpi">
             <span class="label">Próximo cupón</span>
             <strong>${cuponHtml}</strong>
-            <span class="meta ficha-estimado">Fecha estimada — verificar en prospecto oficial</span>
+            <span class="meta ficha-estimado">${C().escapeHtml(cuponMeta || "—")}</span>
           </div>
         </div>
       </section>

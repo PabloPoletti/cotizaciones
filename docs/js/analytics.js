@@ -121,36 +121,26 @@
   }
 
   function estimarProximoCupon(info) {
-    const venc = C().parsearVencimiento(info.vencimiento);
-    if (!venc) return null;
-    const hoy = new Date();
-    hoy.setHours(12, 0, 0, 0);
-    const freq = info.cupon_frecuencia === "anual" ? 12 : 6;
-    let candidato = new Date(venc);
-    while (candidato > hoy) {
-      candidato = new Date(candidato);
-      candidato.setMonth(candidato.getMonth() - freq);
-    }
-    while (candidato <= hoy) {
-      candidato = new Date(candidato);
-      candidato.setMonth(candidato.getMonth() + freq);
-    }
-    if (candidato > venc) return null;
-    return candidato;
+    return C().proximoCuponInfo(info).fecha;
+  }
+
+  function proximoCuponInfo(info) {
+    return C().proximoCuponInfo(info);
   }
 
   function proximosCupones(enriquecidos, limite = 12) {
     return enriquecidos
       .map((r) => {
-        const fecha = estimarProximoCupon(r.info);
-        return fecha
-          ? {
-              ticker: r.item.ticker,
-              nombre: r.item.nombre || r.info.nombre,
-              fecha,
-              cupon: r.info.cupon,
-            }
-          : null;
+        const pc = C().proximoCuponInfo(r.info);
+        if (pc.metodo === "no_aplica" || !pc.fecha) return null;
+        return {
+          ticker: r.item.ticker,
+          nombre: r.item.nombre || r.info.nombre,
+          fecha: pc.fecha,
+          cupon: r.info.cupon,
+          metodo: pc.metodo,
+          meta: pc.meta,
+        };
       })
       .filter(Boolean)
       .sort((a, b) => a.fecha - b.fecha)
@@ -355,6 +345,7 @@
     mejorTirPorSector,
     mejorTirPorSectorGrupo,
     estimarProximoCupon,
+    proximoCuponInfo,
     plazoRestante,
     proximosVencimientos,
     proximosCupones,

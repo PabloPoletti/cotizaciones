@@ -452,6 +452,204 @@
     return fechas;
   }
 
+  /** Suma meses evitando desborde fin-de-mes (p. ej. 31/12 → 30/06, no 01/07). */
+  function addMonths(fecha, meses) {
+    const d = new Date(fecha);
+    d.setHours(12, 0, 0, 0);
+    const day = d.getDate();
+    d.setDate(1);
+    d.setMonth(d.getMonth() + meses);
+    const maxDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+    d.setDate(Math.min(day, maxDay));
+    return d;
+  }
+
+  function esLecapCapitalizable(info) {
+    const cuponTxt = (info.cupon || "").toLowerCase();
+    return info.cupon_frecuencia === "mensual" || cuponTxt.includes("capitalizable");
+  }
+
+  function esCuponCero(info) {
+    if (info.cupon_tasa_anual === 0) return true;
+    const txt = (info.cupon || "").toLowerCase();
+    return /\b0\s*%/.test(txt) || txt.includes("cupón cero") || txt.includes("cupón cero");
+  }
+
+  function proximoCuponHeuristica(info, hoy) {
+    const venc = parsearVencimiento(info.vencimiento);
+    if (!venc || venc <= hoy) return null;
+    const freq = info.cupon_frecuencia;
+    if (freq !== "anual" && freq !== "semestral") return null;
+    const meses = freq === "anual" ? 12 : 6;
+    let candidato = new Date(venc);
+    while (candidato > hoy) {
+      candidato = addMonths(candidato, -meses);
+    }
+    while (candidato <= hoy) {
+      candidato = addMonths(candidato, meses);
+    }
+    if (candidato > venc) return null;
+    return candidato;
+  }
+
+  /**
+   * Próximo cupón estimado — fuente única para ficha y dashboard.
+   * @returns {{ metodo: 'canje_2020'|'heuristica'|'no_aplica', categoria?: string, fecha: Date|null, motivo: string, meta: string }}
+   */
+  function proximoCuponInfo(info) {
+    const vencFmt = info.vencimiento ? formatearFechaCorta(info.vencimiento) : "—";
+
+    if (estadoVigencia(info) === "vencido") {
+      return {
+        metodo: "no_aplica",
+        categoria: "vencido",
+        fecha: null,
+        motivo: "Instrumento vencido — no hay cupones futuros.",
+        meta: "",
+      };
+    }
+    if (!info.vencimiento) {
+      return {
+        metodo: "no_aplica",
+        categoria: "sin_datos",
+        fecha: null,
+        motivo: "Sin vencimiento registrado — no se puede estimar el próximo cupón.",
+        meta: "",
+      };
+    }
+
+    const cat = categoriaDe(info);
+    if (cat === "CEDEAR") {
+      return {
+        metodo: "no_aplica",
+        categoria: "cedear",
+        fecha: null,
+        motivo: "CEDEAR — no aplica calendario de cupón de renta fija.",
+        meta: "",
+      };
+    }
+
+    if (esLecapCapitalizable(info)) {
+      return {
+        metodo: "no_aplica",
+        categoria: "lecap_capitalizable",
+        fecha: null,
+        motivo:
+          "Este instrumento no paga cupones periódicos: capitaliza interés y devuelve todo " +
+          `(capital + interés) en el vencimiento (${vencFmt}).`,
+        meta: "",
+      };
+    }
+
+    if (cat === "BCRA" || /^BPO/i.test(String(info.nombre || ""))) {
+      return {
+        metodo: "no_aplica",
+        categoria: "cupon_cero_bcra",
+        fecha: null,
+        motivo: "Este instrumento no paga cupón corriente (certificado BOPREAL/BCRA).",
+        meta: "",
+      };
+    }
+
+    if (esCuponCero(info)) {
+      const moneda = info.moneda || "";
+      if (moneda === "ARS-CER") {
+        return {
+          metodo: "no_aplica",
+          categoria: "cupon_cero_boncer",
+          fecha: null,
+          motivo:
+            "Boncer/CER cupón cero: no hay pagos de cupón periódicos; el principal se ajusta por CER al vencimiento.",
+          meta: "",
+        };
+      }
+      return {
+        metodo: "no_aplica",
+        categoria: "cupon_cero",
+        fecha: null,
+        motivo: "Este instrumento no paga cupón corriente.",
+        meta: "",
+      };
+    }
+
+    const moneda = info.moneda || "";
+    if (moneda === "ARS-CER") {
+      return {
+        metodo: "no_aplica",
+        categoria: "ars_cer",
+        fecha: null,
+        motivo:
+          "Boncer/CER: los flujos dependen del índice CER futuro; no hay calendario de cupón fijo modelable en el panel.",
+        meta: "",
+      };
+    }
+    if (moneda === "ARS dollar-linked") {
+      return {
+        metodo: "no_aplica",
+        categoria: "dollar_linked",
+        fecha: null,
+        motivo:
+          "Bono dollar-linked: cupón y principal indexados al tipo de cambio; no hay calendario de cupón fijo modelable aquí.",
+        meta: "",
+      };
+    }
+
+    const hoy = new Date();
+    hoy.setHours(12, 0, 0, 0);
+
+    if (info.cupon_fecha_pago && info.cupon_frecuencia === "semestral") {
+      const fechas = generarFechasCupónSemestral(info, hoy);
+      const fecha = fechas[0] || null;
+      if (!fecha) {
+        return {
+          metodo: "no_aplica",
+          categoria: "sin_cupones_futuros",
+          fecha: null,
+          motivo: "Sin fechas de cupón futuras según el calendario del canje 2020 en el panel.",
+          meta: "",
+        };
+      }
+      return {
+        metodo: "canje_2020",
+        categoria: "canje_2020",
+        fecha,
+        motivo: "",
+        meta: `Calendario oficial del canje 2020 (${info.cupon_fecha_pago}).`,
+      };
+    }
+
+    if (info.cupon_frecuencia !== "anual" && info.cupon_frecuencia !== "semestral") {
+      return {
+        metodo: "no_aplica",
+        categoria: "frecuencia_no_modelada",
+        fecha: null,
+        motivo: "Frecuencia de cupón no modelada en el panel (solo anual/semestral con calendario o heurística).",
+        meta: "",
+      };
+    }
+
+    const fecha = proximoCuponHeuristica(info, hoy);
+    if (!fecha) {
+      return {
+        metodo: "no_aplica",
+        categoria: "sin_cupones_futuros",
+        fecha: null,
+        motivo: "No se pudo estimar un cupón futuro con los datos del panel.",
+        meta: "",
+      };
+    }
+
+    return {
+      metodo: "heuristica",
+      categoria: "heuristica",
+      fecha,
+      motivo: "",
+      meta:
+        "Fecha aproximada calculada por intervalos regulares desde el vencimiento — puede no coincidir " +
+        "con la fecha real de pago. Verificar calendario oficial del emisor.",
+    };
+  }
+
   function motivoDuracionNoDisponible(info) {
     if (estadoVigencia(info) === "vencido") {
       return "Duración no disponible — instrumento vencido; no aplica sensibilidad a tasas.";
@@ -969,6 +1167,8 @@
     calcularDuracionConvexidad,
     motivoDuracionNoDisponible,
     soportaDuracion,
+    proximoCuponInfo,
+    generarFechasCupónSemestral,
     esSoberano,
     categoriaDe,
     coincideFiltroCategoria,

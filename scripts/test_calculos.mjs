@@ -180,6 +180,49 @@ function runTests(C, infoFija) {
     assert(flujosOk === 26, `esperado 26 flujos, obtuvo ${flujosOk}`);
   });
 
+  console.log("\n=== proximoCuponInfo ===");
+  test("Lecap S30O6 → no_aplica capitalizable", () => {
+    const pc = C.proximoCuponInfo(infoFija.S30O6);
+    assert(pc.metodo === "no_aplica", "metodo no_aplica");
+    assert(pc.categoria === "lecap_capitalizable", "categoria lecap");
+    assert(/capitaliza interés/i.test(pc.motivo), "motivo capitalización");
+    assert(pc.fecha == null, "sin fecha");
+  });
+  test("S31G6 Lecap → no_aplica (sin bug null)", () => {
+    const pc = C.proximoCuponInfo(infoFija.S31G6);
+    assert(pc.metodo === "no_aplica" && pc.categoria === "lecap_capitalizable", "S31G6 lecap");
+  });
+  test("GD38 → canje_2020 con calendario real", () => {
+    const pc = C.proximoCuponInfo(infoFija.GD38);
+    assert(pc.metodo === "canje_2020", "canje_2020");
+    assert(pc.fecha != null, "tiene fecha");
+    assert(/canje 2020/i.test(pc.meta), "meta canje");
+    assert(pc.fecha.getMonth() === 6 && pc.fecha.getDate() === 9, "9 jul");
+  });
+  test("YMCIO → heuristica con advertencia", () => {
+    const pc = C.proximoCuponInfo(infoFija.YMCIO);
+    assert(pc.metodo === "heuristica", "heuristica");
+    assert(/intervalos regulares/i.test(pc.meta), "advertencia fuerte");
+  });
+  test("TZX26 Boncer 0% → no_aplica", () => {
+    const pc = C.proximoCuponInfo(infoFija.TZX26);
+    assert(pc.metodo === "no_aplica" && pc.categoria === "cupon_cero_boncer", "boncer cero");
+  });
+  test("BPO27 → no_aplica BCRA", () => {
+    const pc = C.proximoCuponInfo(infoFija.BPO27);
+    assert(pc.metodo === "no_aplica" && pc.categoria === "cupon_cero_bcra", "bcra");
+  });
+  test("BACAD fin de mes → 30/6 no 1/7", () => {
+    const pc = C.proximoCuponInfo(infoFija.BACAD);
+    assert(pc.metodo === "heuristica", "heuristica");
+    assert(pc.fecha.getDate() === 30 && pc.fecha.getMonth() === 5, "30 jun");
+  });
+  test("10 tickers canje 2020 en universo", () => {
+    const tickers = Object.keys(infoFija).filter((k) => !k.startsWith("_"));
+    const n = tickers.filter((t) => C.proximoCuponInfo(infoFija[t]).metodo === "canje_2020").length;
+    assert(n === 10, `esperado 10 canje, obtuvo ${n}`);
+  });
+
   return passed;
 }
 
