@@ -364,8 +364,18 @@
     if (filtros.moneda && filtros.moneda !== "todos") {
       rows = rows.filter((r) => (r.moneda || r.info.moneda || "USD") === filtros.moneda);
     }
-    if (filtros.sector && filtros.sector !== "todos") {
-      rows = rows.filter((r) => r.sector === filtros.sector);
+    if (filtros.subtipo && filtros.subtipo !== "todos") {
+      const tipo = filtros.tipo;
+      if (tipo === "on") {
+        rows = rows.filter((r) => r.sector === filtros.subtipo);
+      } else if (tipo === "Provincial") {
+        rows = rows.filter((r) => r.sector === filtros.subtipo);
+      } else if (tipo === "Soberano USD" || tipo === "Soberano ARS" || tipo === "soberano") {
+        rows = rows.filter((r) => {
+          const ley = r.info.ley || "";
+          return ley === filtros.subtipo || ley.includes(filtros.subtipo);
+        });
+      }
     }
 
     const sort = filtros.orden || "ticker";

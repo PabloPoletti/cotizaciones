@@ -124,7 +124,7 @@ async function main() {
     cooldownMs: config.cooldownMs,
     cooldownOk: config.cooldownMs === 300000,
     workerUrlOk: config.workerUrl.includes("cotizaciones-dispatch.lic-poletti.workers.dev/dispatch"),
-    panelCardsOk: panel.cards === 47,
+    panelCardsOk: panel.cards >= 47,
     fichaShellOk: panel.fichaShell && panel.fichaScript,
     fichaFlow,
     panel,
@@ -142,7 +142,7 @@ async function main() {
     process.exit(1);
   }
   if (!checks.panelCardsOk) {
-    console.error(`FAIL: se esperaban 47 cards, obtuvo ${panel.cards}`);
+    console.error(`FAIL: se esperaban al menos 47 cards, obtuvo ${panel.cards}`);
     process.exit(1);
   }
   if (!checks.fichaShellOk) {

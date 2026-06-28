@@ -1,0 +1,255 @@
+{
+  "fecha": "2026-06-28T15:33:54.647011-03:00",
+  "metodo": "get_equity_profile + get_daily_history",
+  "emisores": {
+    "YPF S.A.": {
+      "total": 19,
+      "en_panel": 1,
+      "con_precio_historico": 19,
+      "sin_precio": 0,
+      "nuevos_con_precio": [
+        {
+          "ticker": "YMCXO",
+          "precio": 169450.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YMCYO",
+          "precio": 156000.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YMCZO",
+          "precio": 164000.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YMCJO",
+          "precio": 159560.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YMCRO",
+          "precio": 117840.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YMCTO",
+          "precio": 155000.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YMCWO",
+          "precio": 148000.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YMCPO",
+          "precio": 77600.723,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YMC1O",
+          "precio": 152130.823,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YM34O",
+          "precio": 167760.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YM35O",
+          "precio": 155500.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YM37O",
+          "precio": 155390.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YM38O",
+          "precio": 157340.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YM39O",
+          "precio": 171300.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YM40O",
+          "precio": 159000.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YM41O",
+          "precio": 153800.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YM42O",
+          "precio": 158330.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "YM43O",
+          "precio": 149720.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        }
+      ],
+      "sin_precio_tickers": []
+    },
+    "Tecpetrol": {
+      "total": 6,
+      "en_panel": 2,
+      "con_precio_historico": 6,
+      "sin_precio": 0,
+      "nuevos_con_precio": [
+        {
+          "ticker": "TTC8O",
+          "precio": 154980.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "TTCAO",
+          "precio": 169000.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "TTCBO",
+          "precio": 156680.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "TTCEO",
+          "precio": 151400.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        }
+      ],
+      "sin_precio_tickers": []
+    },
+    "Pan American": {
+      "total": 12,
+      "en_panel": 2,
+      "con_precio_historico": 12,
+      "sin_precio": 0,
+      "nuevos_con_precio": [
+        {
+          "ticker": "PN34O",
+          "precio": 153270.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "PN36O",
+          "precio": 160600.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "PN37O",
+          "precio": 156590.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "PN38O",
+          "precio": 164400.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "PN40O",
+          "precio": 138600.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "PN41O",
+          "precio": 163500.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "PN42O",
+          "precio": 153920.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "PN43O",
+          "precio": 166500.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "PNECO",
+          "precio": 124300.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "PNFCO",
+          "precio": 25000.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        }
+      ],
+      "sin_precio_tickers": []
+    },
+    "Genneia": {
+      "total": 6,
+      "en_panel": 1,
+      "con_precio_historico": 4,
+      "sin_precio": 2,
+      "nuevos_con_precio": [
+        {
+          "ticker": "GN48O",
+          "precio": 153800.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "GN47O",
+          "precio": 152990.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        },
+        {
+          "ticker": "GN39O",
+          "precio": 83550.0,
+          "fecha": "2026-06-26",
+          "en_panel": false
+        }
+      ],
+      "sin_precio_tickers": [
+        "GN36O",
+        "GNCXO"
+      ]
+    }
+  }
+}

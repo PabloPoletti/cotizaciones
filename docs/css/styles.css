@@ -910,6 +910,14 @@ tr:hover td {
   align-items: center;
 }
 
+#calc-body tr.calc-row--hidden {
+  display: none;
+}
+
+.filter-grid .hidden {
+  display: none;
+}
+
 .calc-actions select {
   min-width: 200px;
   padding: 0.45rem;

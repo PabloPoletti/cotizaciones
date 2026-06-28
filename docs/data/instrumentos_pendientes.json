@@ -41,5 +41,14 @@
     ]
   },
   "descartados": [],
+  "ampliacion_muestra_jun2026": {
+    "criterios": "vencimiento >= 2028, vol prom >= p33 panel (115604), max 3/emisor",
+    "agregados_info_fija": ["YMCXO", "YM39O", "YM42O", "PNICO", "PNECO", "PNRCO"],
+    "sin_candidatos_tras_filtro": {
+      "Tecpetrol": "TTCAO y TTCEO pasan vencimiento pero vol prom < p33; TTC8O/TTCBO vencen antes de 2028.",
+      "Genneia": "GN39O/GN47O/GN48O con precio pero vol prom < p33; GN36O/GNCXO sin histórico BYMA."
+    },
+    "reporte": "docs/data/descubrimiento_filtrado_muestra.json"
+  },
   "fase3_conclusion": "Ningún bono municipal con liquidez verificable en BYMA Open Data gratuito (jun 2026). No se agregaron instrumentos municipales al panel."
 }

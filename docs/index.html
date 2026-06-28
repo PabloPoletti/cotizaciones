@@ -111,7 +111,11 @@
                 <option value="ARS dollar-linked">ARS dollar-linked</option>
               </select>
             </div>
-            <div>
+            <div id="filtro-subtipo-wrap" class="hidden">
+              <label for="filtro-subtipo" id="filtro-subtipo-label">Subfiltro</label>
+              <select id="filtro-subtipo"><option value="todos">Todos</option></select>
+            </div>
+            <div class="hidden" id="filtro-sector-legacy-wrap" aria-hidden="true">
               <label for="filtro-sector">Sector</label>
               <select id="filtro-sector"><option value="todos">Todos</option></select>
             </div>
@@ -245,6 +249,7 @@
                 <option value="mayor-tir">Mayor TIR</option>
               </select>
               <button type="button" class="btn btn--sm" id="btn-aplicar-preset">Aplicar</button>
+              <button type="button" class="btn btn--sm hidden" id="btn-calc-mostrar-todos">Mostrar todos los instrumentos</button>
               <button type="button" class="btn btn--sm" id="btn-guardar-cartera">Guardar</button>
               <button type="button" class="btn btn--sm" id="btn-restaurar-cartera">Restaurar</button>
             </div>

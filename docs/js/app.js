@@ -26,11 +26,12 @@
     busqueda: "",
     tipo: "todos",
     moneda: "todos",
-    sector: "todos",
+    subtipo: "todos",
     orden: "ticker",
     ordenDir: "asc",
   };
   let vistaMode = "cards";
+  let calcSoloPreset = false;
   let tabsInited = { analisis: false, resumen: false, observaciones: false };
 
   const elUltimaAct = document.getElementById("ultima-actualizacion");
@@ -251,13 +252,54 @@
     `;
   }
 
-  function poblarFiltroSectores() {
-    const sel = document.getElementById("filtro-sector");
-    if (!sel) return;
-    const sectores = [...new Set(enriquecidos.map((r) => r.sector))].sort();
+  function poblarFiltroSubtipo() {
+    const wrap = document.getElementById("filtro-subtipo-wrap");
+    const sel = document.getElementById("filtro-subtipo");
+    const label = document.getElementById("filtro-subtipo-label");
+    if (!wrap || !sel) return;
+
+    const tipo = filtros.tipo;
+    filtros.subtipo = "todos";
+
+    let options = [];
+    let show = false;
+    let labelText = "Subfiltro";
+
+    if (tipo === "on") {
+      show = true;
+      labelText = "Sector";
+      options = [
+        ...new Set(
+          enriquecidos.filter((r) => C.categoriaDe(r.info) === "ON corporativa").map((r) => r.sector)
+        ),
+      ].sort();
+    } else if (tipo === "Provincial") {
+      show = true;
+      labelText = "Provincia / emisor";
+      options = [
+        ...new Set(enriquecidos.filter((r) => C.categoriaDe(r.info) === "Provincial").map((r) => r.sector)),
+      ].sort();
+    } else if (tipo === "Soberano USD" || tipo === "Soberano ARS" || tipo === "soberano") {
+      show = true;
+      labelText = "Ley aplicable";
+      options = [
+        ...new Set(
+          enriquecidos
+            .filter((r) => {
+              const cat = C.categoriaDe(r.info);
+              return cat.startsWith("Soberano") || C.esSoberano(r.info);
+            })
+            .map((r) => r.info.ley)
+            .filter(Boolean)
+        ),
+      ].sort();
+    }
+
+    wrap.classList.toggle("hidden", !show);
+    if (label) label.textContent = labelText;
     sel.innerHTML =
       `<option value="todos">Todos</option>` +
-      sectores.map((s) => `<option value="${C.escapeHtml(s)}">${C.escapeHtml(s)}</option>`).join("");
+      options.map((o) => `<option value="${C.escapeHtml(o)}">${C.escapeHtml(o)}</option>`).join("");
   }
 
   function describeFiltrosActivos() {
@@ -265,7 +307,7 @@
     if (filtros.busqueda) partes.push(`búsqueda «${filtros.busqueda}»`);
     if (filtros.tipo && filtros.tipo !== "todos") partes.push(`tipo ${filtros.tipo}`);
     if (filtros.moneda && filtros.moneda !== "todos") partes.push(`moneda ${filtros.moneda}`);
-    if (filtros.sector && filtros.sector !== "todos") partes.push(`sector ${filtros.sector}`);
+    if (filtros.subtipo && filtros.subtipo !== "todos") partes.push(`${filtros.subtipo}`);
     return partes.length ? `Filtros: ${partes.join(" · ")}` : "Sin filtros activos";
   }
 
@@ -407,9 +449,29 @@
     el.innerHTML = items.map((html) => `<div class="obs-item">${html}</div>`).join("");
   }
 
+  function actualizarVisibilidadFilasCalc() {
+    document.querySelectorAll("#calc-body tr").forEach((tr) => {
+      const input = tr.querySelector(".pct-input");
+      const pct = parseFloat(input?.value) || 0;
+      if (calcSoloPreset) {
+        tr.classList.toggle("calc-row--hidden", pct <= 0);
+      } else {
+        tr.classList.remove("calc-row--hidden");
+      }
+    });
+  }
+
+  function mostrarTodosInstrumentosCalc() {
+    calcSoloPreset = false;
+    document.getElementById("btn-calc-mostrar-todos")?.classList.add("hidden");
+    actualizarVisibilidadFilasCalc();
+  }
+
   function renderizarCalculadora() {
     const cot = C.state.cotizaciones;
     if (!cot?.instrumentos) return;
+    calcSoloPreset = false;
+    document.getElementById("btn-calc-mostrar-todos")?.classList.add("hidden");
     elCalcBody.innerHTML = "";
     const instrumentos = cot.instrumentos.filter((i) => !i.error && i.precio != null);
 
@@ -534,6 +596,8 @@
     } else if (tbody) {
       tbody.innerHTML = "";
     }
+
+    actualizarVisibilidadFilasCalc();
   }
 
   function aplicarPesosEnInputs(pesos) {
@@ -575,6 +639,8 @@
       elNota.textContent = notaTexto;
       elNota.classList.remove("hidden");
     }
+    calcSoloPreset = true;
+    document.getElementById("btn-calc-mostrar-todos")?.classList.remove("hidden");
     recalcularCartera();
   }
 
@@ -610,7 +676,7 @@
       elCotizToolbar.classList.remove("hidden");
       elMiniKpi.classList.remove("hidden");
 
-      poblarFiltroSectores();
+      poblarFiltroSubtipo();
       renderCotizacionesView();
       renderizarCalculadora();
       renderResumen();
@@ -641,11 +707,26 @@
       });
     };
     bind("filtro-busqueda", "busqueda");
-    bind("filtro-tipo", "tipo");
     bind("filtro-moneda", "moneda");
-    bind("filtro-sector", "sector");
     bind("filtro-orden", "orden");
     bind("filtro-orden-dir", "ordenDir");
+
+    const elTipo = document.getElementById("filtro-tipo");
+    if (elTipo) {
+      elTipo.addEventListener("change", () => {
+        filtros.tipo = elTipo.value;
+        poblarFiltroSubtipo();
+        renderCotizacionesView();
+      });
+    }
+
+    const elSubtipo = document.getElementById("filtro-subtipo");
+    if (elSubtipo) {
+      elSubtipo.addEventListener("change", () => {
+        filtros.subtipo = elSubtipo.value;
+        renderCotizacionesView();
+      });
+    }
 
     document.getElementById("btn-vista-cards")?.addEventListener("click", () => {
       vistaMode = "cards";
@@ -957,6 +1038,7 @@
     document.getElementById("btn-restaurar-cartera")?.addEventListener("click", () => {
       renderizarCalculadora();
     });
+    document.getElementById("btn-calc-mostrar-todos")?.addEventListener("click", mostrarTodosInstrumentosCalc);
   }
 
   function init() {
