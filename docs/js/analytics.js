@@ -113,6 +113,17 @@
       .slice(0, limite);
   }
 
+  function plazoRestante(info) {
+    const venc = C().parsearVencimiento(info.vencimiento);
+    if (!venc) return null;
+    const hoy = new Date();
+    hoy.setHours(12, 0, 0, 0);
+    const diffMs = venc.getTime() - hoy.getTime();
+    const dias = Math.ceil(diffMs / (24 * 3600 * 1000));
+    const anos = Math.round((dias / 365.25) * 10) / 10;
+    return { dias, anos, venc };
+  }
+
   function composicionPorSector(enriquecidos) {
     const mapa = new Map();
     for (const r of enriquecidos) {
@@ -295,6 +306,8 @@
     calcularKPIs,
     calcularKPIsPorMoneda,
     mejorTirPorSector,
+    estimarProximoCupon,
+    plazoRestante,
     proximosVencimientos,
     proximosCupones,
     composicionPorSector,

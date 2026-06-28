@@ -332,10 +332,80 @@
     }
   }
 
+  function renderFichaCharts(ticker) {
+    if (typeof Chart === "undefined") return;
+    const serie = H()?.seriePrecioChart(ticker) || [];
+    const dd = H()?.serieDrawdown(ticker) || [];
+
+    destruir("fichaHistorico");
+    destruir("fichaDrawdown");
+
+    const ctxPrecio = document.getElementById("ficha-chart-precio");
+    const ctxDd = document.getElementById("ficha-chart-drawdown");
+    const emptyEl = document.getElementById("ficha-charts-empty");
+    const gridEl = document.querySelector(".ficha-charts-grid");
+
+    if (!serie.length) {
+      if (emptyEl) emptyEl.classList.remove("hidden");
+      if (gridEl) gridEl.classList.add("hidden");
+      return;
+    }
+    if (emptyEl) emptyEl.classList.add("hidden");
+    if (gridEl) gridEl.classList.remove("hidden");
+
+    if (ctxPrecio) {
+      charts.fichaHistorico = new Chart(ctxPrecio, {
+        type: "line",
+        data: {
+          labels: serie.map((p) => p.fecha),
+          datasets: [
+            {
+              label: `${ticker} (precio/1000)`,
+              data: serie.map((p) => p.precio),
+              borderColor: "#1e4d8c",
+              tension: 0.2,
+              fill: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { y: { title: { display: true, text: "Precio ref." } } },
+        },
+      });
+    }
+
+    if (ctxDd && dd.length) {
+      charts.fichaDrawdown = new Chart(ctxDd, {
+        type: "line",
+        data: {
+          labels: dd.map((p) => p.fecha),
+          datasets: [
+            {
+              label: "Drawdown %",
+              data: dd.map((p) => p.drawdown),
+              borderColor: "#b54708",
+              backgroundColor: "rgba(181,71,8,0.08)",
+              fill: true,
+              tension: 0.15,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { y: { max: 0, title: { display: true, text: "% desde máximo" } } },
+        },
+      });
+    }
+  }
+
   window.CotizCharts = {
     onTabAnalisis,
     initCarteraPie,
     initProyeccion,
     renderHistoricoChart,
+    renderFichaCharts,
   };
 })();

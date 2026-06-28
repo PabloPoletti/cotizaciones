@@ -17,9 +17,11 @@
   const A = window.CotizAnalytics;
   const S = window.CotizStorage;
   const CH = window.CotizCharts;
+  const F = window.CotizFicha;
 
   let enriquecidos = [];
   let semaforos = new Map();
+  let fichaTicker = null;
   let filtros = {
     busqueda: "",
     tipo: "todos",
@@ -37,6 +39,11 @@
   const elAlertaError = document.getElementById("alerta-error");
   const elSectores = document.getElementById("sectores-container");
   const elTablaContainer = document.getElementById("tabla-container");
+  const elCotizListaView = document.getElementById("cotiz-lista-view");
+  const elFichaPanel = document.getElementById("ficha-instrumento");
+  const elFichaContent = document.getElementById("ficha-content");
+  const elFichaFiltros = document.getElementById("ficha-filtros-activos");
+  const elBtnFichaVolver = document.getElementById("btn-ficha-volver");
   const elLoading = document.getElementById("loading");
   const elCotizToolbar = document.getElementById("cotiz-toolbar");
   const elMiniKpi = document.getElementById("cotiz-mini-kpi");
@@ -156,6 +163,9 @@
             ${info.notas ? `<dt>Notas</dt><dd>${C.escapeHtml(info.notas)}</dd>` : ""}
           </dl>
         </details>
+        <footer class="inst-card__foot">
+          <button type="button" class="btn btn--sm btn--ficha" data-ficha-ticker="${C.escapeHtml(item.ticker)}">Ver ficha completa</button>
+        </footer>
       </article>
     `;
   }
@@ -205,6 +215,7 @@
         <th>Venc.</th>
         <th>Sector</th>
         <th>Riesgo</th>
+        <th></th>
       </tr></thead>`;
     const tbody = rows
       .map((row) => {
@@ -212,7 +223,7 @@
         const varFmt = C.formatearVariacion(item.variacion_pct);
         const liq = row.liquidez?.label || "—";
         const var7 = window.CotizHistorico?.formatearPct(row.hp?.var_7d_pct) ?? "—";
-        return `<tr class="${item.error ? "error-row" : ""}">
+        return `<tr class="${item.error ? "error-row" : ""} inst-row" data-ticker="${C.escapeHtml(item.ticker)}" role="button" tabindex="0">
           <td class="ticker">${C.escapeHtml(item.ticker)}</td>
           <td>${C.escapeHtml(item.nombre || info.nombre || "")}</td>
           <td class="num">${item.error ? "—" : C.formatearPrecioConTipo(item)}</td>
@@ -223,6 +234,7 @@
           <td>${C.escapeHtml(C.formatearFechaCorta(info.vencimiento))}</td>
           <td>${C.escapeHtml(row.sector)}</td>
           <td>${semaforoHtml(item.ticker)}</td>
+          <td><button type="button" class="btn btn--sm btn--ficha" data-ficha-ticker="${C.escapeHtml(item.ticker)}">Ficha</button></td>
         </tr>`;
       })
       .join("");
@@ -246,6 +258,78 @@
     sel.innerHTML =
       `<option value="todos">Todos</option>` +
       sectores.map((s) => `<option value="${C.escapeHtml(s)}">${C.escapeHtml(s)}</option>`).join("");
+  }
+
+  function describeFiltrosActivos() {
+    const partes = [];
+    if (filtros.busqueda) partes.push(`búsqueda «${filtros.busqueda}»`);
+    if (filtros.tipo && filtros.tipo !== "todos") partes.push(`tipo ${filtros.tipo}`);
+    if (filtros.moneda && filtros.moneda !== "todos") partes.push(`moneda ${filtros.moneda}`);
+    if (filtros.sector && filtros.sector !== "todos") partes.push(`sector ${filtros.sector}`);
+    return partes.length ? `Filtros: ${partes.join(" · ")}` : "Sin filtros activos";
+  }
+
+  function abrirFicha(ticker) {
+    const row = enriquecidos.find((r) => r.item.ticker === ticker);
+    if (!row || !F) return;
+    fichaTicker = ticker;
+    elCotizListaView?.classList.add("hidden");
+    elFichaPanel?.classList.remove("hidden");
+    elFichaPanel?.setAttribute("aria-hidden", "false");
+    if (elFichaFiltros) elFichaFiltros.textContent = describeFiltrosActivos();
+    if (elFichaContent) {
+      elFichaContent.innerHTML = F.renderFicha(row, {
+        semaforoHtml,
+        badgesHtml,
+      });
+    }
+    CH.renderFichaCharts(ticker);
+    elFichaPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function cerrarFicha() {
+    fichaTicker = null;
+    elFichaPanel?.classList.add("hidden");
+    elFichaPanel?.setAttribute("aria-hidden", "true");
+    elCotizListaView?.classList.remove("hidden");
+    if (elFichaContent) elFichaContent.innerHTML = "";
+  }
+
+  function initFichaNavigation() {
+    elBtnFichaVolver?.addEventListener("click", cerrarFicha);
+
+    elSectores?.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-ficha-ticker]");
+      if (btn) {
+        e.preventDefault();
+        abrirFicha(btn.dataset.fichaTicker);
+        return;
+      }
+      const card = e.target.closest(".inst-card");
+      if (card && !e.target.closest("details") && !e.target.closest("button")) {
+        abrirFicha(card.dataset.ticker);
+      }
+    });
+
+    elTablaContainer?.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-ficha-ticker]");
+      if (btn) {
+        e.stopPropagation();
+        abrirFicha(btn.dataset.fichaTicker);
+        return;
+      }
+      const row = e.target.closest("tr[data-ticker]");
+      if (row) abrirFicha(row.dataset.ticker);
+    });
+
+    elTablaContainer?.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const row = e.target.closest("tr[data-ticker]");
+      if (row) {
+        e.preventDefault();
+        abrirFicha(row.dataset.ticker);
+      }
+    });
   }
 
   function renderCotizacionesView() {
@@ -879,6 +963,7 @@
     initTabs();
     initFiltros();
     initCalcActions();
+    initFichaNavigation();
     cargarConfigWorker();
     cargarConfigLocal();
     cargarDatos();

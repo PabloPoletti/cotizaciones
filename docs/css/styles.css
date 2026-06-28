@@ -926,3 +926,237 @@ tr:hover td {
   font-size: 0.95rem;
   color: var(--accent);
 }
+
+/* —— Ficha de instrumento —— */
+.ficha.hidden {
+  display: none;
+}
+
+.ficha__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.ficha__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-bottom: 2rem;
+}
+
+.ficha-hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.ficha-hero__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ficha-hero__ticker {
+  font-size: 1.35rem;
+}
+
+.ficha-hero__name {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  flex: 1 1 200px;
+}
+
+.ficha-hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.5rem 0;
+}
+
+.ficha-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+}
+
+.ficha-section__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.ficha-section__head h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--accent);
+}
+
+.ficha-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.ficha-badge--live {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.ficha-badge--calc {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.ficha-badge--manual {
+  background: #fce7f3;
+  color: #9d174d;
+}
+
+.ficha-manual-alert {
+  margin-bottom: 1rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.ficha-estimado {
+  color: var(--warning);
+  font-weight: 500;
+}
+
+.ficha-dl {
+  display: grid;
+  grid-template-columns: minmax(120px, 180px) 1fr;
+  gap: 0.45rem 1rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.ficha-dl dt {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.ficha-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.85rem;
+}
+
+.ficha-kpi-grid--3 {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.ficha-kpi-grid--5 {
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+.ficha-kpi {
+  padding: 0.65rem 0.75rem;
+  background: var(--bg);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.ficha-kpi .label {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.ficha-kpi strong {
+  display: block;
+  font-size: 1rem;
+  margin: 0.2rem 0;
+}
+
+.ficha-kpi .meta {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.ficha-charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.ficha-chart-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+
+.ficha-chart-box {
+  height: 220px;
+}
+
+.ficha-empty {
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 0.75rem 0;
+}
+
+.ficha-edu-intro {
+  font-size: 0.9rem;
+  margin: 0 0 0.75rem;
+}
+
+.ficha-edu-list {
+  margin: 0 0 0.75rem;
+  padding-left: 1.25rem;
+  font-size: 0.9rem;
+}
+
+.inst-card__foot {
+  padding: 0.65rem 1rem 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.inst-card {
+  cursor: pointer;
+}
+
+.inst-card details,
+.inst-card button {
+  cursor: default;
+}
+
+.inst-row {
+  cursor: pointer;
+}
+
+.inst-row:hover {
+  background: rgba(30, 77, 140, 0.04);
+}
+
+@media (max-width: 768px) {
+  .ficha-charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ficha-dl {
+    grid-template-columns: 1fr;
+  }
+
+  .ficha-dl dt {
+    margin-top: 0.35rem;
+  }
+}

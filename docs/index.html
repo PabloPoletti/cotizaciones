@@ -79,6 +79,7 @@
     <div id="panel-cotizaciones" class="tab-panel tab-panel--active" role="tabpanel">
       <div id="loading" class="loading">Cargando cotizaciones…</div>
 
+      <div id="cotiz-lista-view">
       <div id="cotiz-toolbar" class="cotiz-toolbar hidden">
         <details class="filter-panel" open>
           <summary>Filtrar y ordenar</summary>
@@ -145,6 +146,15 @@
       <div id="cotiz-mini-kpi" class="kpi-row hidden"></div>
       <div id="sectores-container"></div>
       <div id="tabla-container" class="hidden"></div>
+      </div>
+
+      <div id="ficha-instrumento" class="ficha hidden" aria-hidden="true">
+        <div class="ficha__toolbar">
+          <button type="button" class="btn btn--sm" id="btn-ficha-volver">← Volver a cotizaciones</button>
+          <span id="ficha-filtros-activos" class="header__meta"></span>
+        </div>
+        <div id="ficha-content" class="ficha__content"></div>
+      </div>
     </div>
 
     <!-- Análisis -->
@@ -311,6 +321,7 @@
   <script src="js/historico.js"></script>
   <script src="js/analytics.js"></script>
   <script src="js/charts.js"></script>
+  <script src="js/ficha.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
