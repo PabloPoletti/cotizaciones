@@ -1,5 +1,5 @@
 /**
- * Verifica despliegue en producción: cooldown 90s, panel operativo.
+ * Verifica despliegue en producción: Worker URL, cooldown 5 min, panel operativo.
  * Uso: node scripts/verify_prod_deploy.mjs
  */
 import { chromium } from "playwright";
@@ -22,7 +22,7 @@ async function verifyPanel(browser) {
   await page.goto(`${BASE}?v=${Date.now()}`, { waitUntil: "networkidle", timeout: 60000 });
   await page.waitForTimeout(1500);
 
-  await page.locator("details.config-panel summary").click();
+  await page.locator("details.config-panel").first().locator("summary").click();
   await page.waitForTimeout(300);
 
   const ui = await page.evaluate(() => {

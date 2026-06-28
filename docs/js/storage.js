@@ -1,5 +1,5 @@
 /**
- * Persistencia en localStorage: cartera e historial local de precios.
+ * Persistencia en localStorage: cartera simulada (pesos por ticker).
  */
 (function () {
   "use strict";

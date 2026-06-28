@@ -1,4 +1,4 @@
 {
-  "_comentario": "Reservado para acumulación diaria global vía workflow (próximo paso). Por ahora vacío; el panel usa historial local del navegador.",
+  "_comentario": "Legacy reservado. El panel usa historico_precios.json (BYMA) para series reales; storage.js solo guarda cartera local.",
   "registros": []
 }
