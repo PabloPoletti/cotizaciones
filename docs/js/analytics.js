@@ -149,14 +149,27 @@
     return bullets;
   }
 
+  function distribuirPesosIguales(tickers) {
+    const n = tickers.length;
+    if (!n) return {};
+    const pesos = {};
+    const basePct = Math.floor((100 / n) * 100) / 100;
+    let asignado = 0;
+    tickers.forEach((ticker, i) => {
+      if (i === n - 1) {
+        pesos[ticker] = Math.round((100 - asignado) * 100) / 100;
+      } else {
+        pesos[ticker] = basePct;
+        asignado += basePct;
+      }
+    });
+    return pesos;
+  }
+
   function presetConservador(enriquecidos) {
     const sel = enriquecidos.filter((r) => r.tirEff != null && r.tirEff < 8);
     if (!sel.length) return { pesos: {}, nota: "Ningún instrumento cumple TIR < 8%." };
-    const pct = 100 / sel.length;
-    const pesos = {};
-    sel.forEach((r) => {
-      pesos[r.item.ticker] = pct;
-    });
+    const pesos = distribuirPesosIguales(sel.map((r) => r.item.ticker));
     return {
       pesos,
       nota: "Ejemplo ilustrativo: reparto igualitario entre instrumentos con TIR efectiva < 8%.",
@@ -185,11 +198,7 @@
     if (!seleccionados.length) {
       return { pesos: {}, nota: "No hay TIR calculables para armar el preset.", notasSector };
     }
-    const pct = 100 / seleccionados.length;
-    const pesos = {};
-    seleccionados.forEach((r) => {
-      pesos[r.item.ticker] = pct;
-    });
+    const pesos = distribuirPesosIguales(seleccionados.map((r) => r.item.ticker));
     return {
       pesos,
       nota: "Ejemplo ilustrativo: hasta 2 tickers por sector con mayor TIR efectiva, pesos iguales.",
@@ -203,11 +212,7 @@
       .sort((a, b) => b.tirEff - a.tirEff)
       .slice(0, 5);
     if (!sorted.length) return { pesos: {}, nota: "Sin TIR efectiva disponible." };
-    const pct = 100 / sorted.length;
-    const pesos = {};
-    sorted.forEach((r) => {
-      pesos[r.item.ticker] = pct;
-    });
+    const pesos = distribuirPesosIguales(sorted.map((r) => r.item.ticker));
     return {
       pesos,
       nota: "Ejemplo ilustrativo: 5 mayores TIR efectivas, pesos iguales. Mayor TIR no implica mejor inversión.",

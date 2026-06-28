@@ -28,6 +28,25 @@ async function main() {
   await page.goto(`${URL}?v=${Date.now()}`, { waitUntil: "networkidle", timeout: 60000 });
   await page.waitForTimeout(2000);
 
+  // Configuración GitHub: botón Probar token visible y reacciona sin PAT
+  await page.locator("details.config-panel summary").click();
+  await page.waitForTimeout(300);
+  const tokenUi = await page.evaluate(async () => {
+    const btn = document.getElementById("btn-probar-token");
+    const btnActualizar = document.getElementById("btn-actualizar");
+    const status = document.getElementById("status-actualizar");
+    if (!btn) return { probarTokenVisible: false, probarTokenWorks: false, actualizarVisible: !!btnActualizar };
+    btn.click();
+    await new Promise((r) => setTimeout(r, 400));
+    const msg = status?.textContent?.trim() || "";
+    return {
+      probarTokenVisible: true,
+      probarTokenWorks: msg.includes("PAT") || msg.includes("Token OK") || msg.includes("token"),
+      statusAfterClick: msg,
+      actualizarVisible: !!btnActualizar,
+    };
+  });
+
   const checks = await page.evaluate(() => {
     const ultima = document.getElementById("ultima-actualizacion")?.textContent?.trim();
     const loading = document.getElementById("loading");
@@ -98,6 +117,7 @@ async function main() {
 
   const report = {
     url: URL,
+    tokenUi,
     checks,
     calcResult,
     consoleErrors,

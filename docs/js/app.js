@@ -47,6 +47,7 @@
   const elInputToken = document.getElementById("github-token");
   const elInputRepo = document.getElementById("github-repo");
   const elBtnGuardarConfig = document.getElementById("btn-guardar-config");
+  const elBtnProbarToken = document.getElementById("btn-probar-token");
   const elStatusActualizar = document.getElementById("status-actualizar");
 
   function renderizarEstadoFetch() {
@@ -544,48 +545,193 @@
 
   function guardarConfigLocal() {
     const token = elInputToken?.value.trim() || "";
-    const repo = elInputRepo?.value.trim() || `${REPO_OWNER}/${REPO_NAME}`;
+    const repo = normalizarRepo(elInputRepo?.value) || `${REPO_OWNER}/${REPO_NAME}`;
     if (token) localStorage.setItem(STORAGE_KEY_TOKEN, token);
     else localStorage.removeItem(STORAGE_KEY_TOKEN);
     localStorage.setItem(STORAGE_KEY_REPO, repo);
+    if (elInputRepo) elInputRepo.value = repo;
     elStatusActualizar.textContent = "Configuración guardada.";
     setTimeout(() => { elStatusActualizar.textContent = ""; }, 3000);
   }
 
+  const GITHUB_API_VERSION = "2022-11-28";
+  const DISPATCH_COOLDOWN_MS = 8000;
+  let dispatchCooldownTimer = null;
+
+  function iniciarCooldownActualizar() {
+    if (dispatchCooldownTimer) clearTimeout(dispatchCooldownTimer);
+    elBtnActualizar.disabled = true;
+    dispatchCooldownTimer = setTimeout(() => {
+      elBtnActualizar.disabled = false;
+      dispatchCooldownTimer = null;
+    }, DISPATCH_COOLDOWN_MS);
+  }
+
+  function normalizarRepo(repo) {
+    let s = (repo || "").trim();
+    s = s.replace(/^https?:\/\/github\.com\//i, "");
+    s = s.replace(/\.git$/i, "");
+    return s.replace(/\/+$/, "");
+  }
+
+  function parseRepoSlug(repo) {
+    const slug = normalizarRepo(repo) || `${REPO_OWNER}/${REPO_NAME}`;
+    const partes = slug.split("/").filter(Boolean);
+    if (partes.length !== 2) return null;
+    return { owner: partes[0], name: partes[1], slug };
+  }
+
+  function obtenerConfigGitHub() {
+    const token = (elInputToken?.value.trim() || localStorage.getItem(STORAGE_KEY_TOKEN) || "").trim();
+    const repo = normalizarRepo(elInputRepo?.value || localStorage.getItem(STORAGE_KEY_REPO) || `${REPO_OWNER}/${REPO_NAME}`);
+    return { token, repo };
+  }
+
+  function headersGitHubApi(token) {
+    return {
+      Accept: "application/vnd.github+json",
+      Authorization: `Bearer ${token}`,
+      "X-GitHub-Api-Version": GITHUB_API_VERSION,
+    };
+  }
+
+  async function leerErrorGitHub(resp) {
+    let msg = `Error HTTP ${resp.status}`;
+    try {
+      const data = await resp.json();
+      if (data.message) msg = data.message;
+      if (Array.isArray(data.errors) && data.errors.length) {
+        const detalle = data.errors
+          .map((e) => e.message || e.code || JSON.stringify(e))
+          .join("; ");
+        msg += ` — ${detalle}`;
+      }
+    } catch {
+      try {
+        const text = await resp.text();
+        if (text) msg += `: ${text.slice(0, 240)}`;
+      } catch {
+        /* sin cuerpo legible */
+      }
+    }
+    return msg;
+  }
+
+  async function validarAccesoGitHub(token, owner, name) {
+    const headers = headersGitHubApi(token);
+
+    const userResp = await fetch("https://api.github.com/user", { headers });
+    if (userResp.status === 401) {
+      return {
+        ok: false,
+        message:
+          "Token inválido o expirado. Creá uno nuevo con los permisos del README (scope workflow o Actions: Read and write).",
+      };
+    }
+    if (!userResp.ok) {
+      return { ok: false, message: await leerErrorGitHub(userResp) };
+    }
+
+    const repoResp = await fetch(`https://api.github.com/repos/${owner}/${name}`, { headers });
+    if (repoResp.status === 404) {
+      return {
+        ok: false,
+        message: `Repositorio "${owner}/${name}" no encontrado o el token no tiene acceso. Usá exactamente usuario/nombre (ej. PabloPoletti/cotizaciones).`,
+      };
+    }
+    if (!repoResp.ok) {
+      return { ok: false, message: await leerErrorGitHub(repoResp) };
+    }
+
+    const wfResp = await fetch(
+      `https://api.github.com/repos/${owner}/${name}/actions/workflows/${WORKFLOW_FILE}`,
+      { headers }
+    );
+    if (wfResp.status === 403) {
+      return {
+        ok: false,
+        message:
+          "Token sin permiso para Actions/workflows. Classic: marcá scope workflow. Fine-grained: Actions → Read and write en este repo. Ver README.",
+      };
+    }
+    if (!wfResp.ok) {
+      return { ok: false, message: await leerErrorGitHub(wfResp) };
+    }
+
+    return { ok: true };
+  }
+
+  async function probarTokenGitHub() {
+    const { token, repo } = obtenerConfigGitHub();
+    if (!token) {
+      elStatusActualizar.textContent = "Ingresá un GitHub PAT y guardá la configuración (o dejalo en el campo).";
+      return;
+    }
+    const parsed = parseRepoSlug(repo);
+    if (!parsed) {
+      elStatusActualizar.textContent = "Formato de repo inválido. Usá usuario/nombre (ej. PabloPoletti/cotizaciones).";
+      return;
+    }
+
+    elBtnProbarToken.disabled = true;
+    elStatusActualizar.textContent = "Verificando token…";
+    try {
+      const validacion = await validarAccesoGitHub(token, parsed.owner, parsed.name);
+      elStatusActualizar.textContent = validacion.ok
+        ? `Token OK para ${parsed.slug} (incluye acceso al workflow ${WORKFLOW_FILE}).`
+        : validacion.message;
+    } catch {
+      elStatusActualizar.textContent = "Error de red al verificar el token.";
+    } finally {
+      elBtnProbarToken.disabled = false;
+    }
+  }
+
   async function dispararWorkflow() {
-    const token = localStorage.getItem(STORAGE_KEY_TOKEN);
-    const repo = localStorage.getItem(STORAGE_KEY_REPO) || `${REPO_OWNER}/${REPO_NAME}`;
+    if (elBtnActualizar.disabled) return;
+
+    const { token, repo } = obtenerConfigGitHub();
     if (!token) {
       elStatusActualizar.textContent = "Configurá tu GitHub PAT primero.";
       return;
     }
-    const partes = repo.split("/");
-    if (partes.length !== 2) {
-      elStatusActualizar.textContent = "Formato de repo inválido.";
+    const parsed = parseRepoSlug(repo);
+    if (!parsed) {
+      elStatusActualizar.textContent = "Formato de repo inválido. Usá usuario/nombre (ej. PabloPoletti/cotizaciones).";
       return;
     }
+
     elBtnActualizar.disabled = true;
-    elStatusActualizar.textContent = "Disparando actualización…";
+    elStatusActualizar.textContent = "Verificando token…";
     try {
+      const validacion = await validarAccesoGitHub(token, parsed.owner, parsed.name);
+      if (!validacion.ok) {
+        elStatusActualizar.textContent = validacion.message;
+        return;
+      }
+
+      elStatusActualizar.textContent = "Disparando actualización…";
       const resp = await fetch(
-        `https://api.github.com/repos/${partes[0]}/${partes[1]}/actions/workflows/${WORKFLOW_FILE}/dispatches`,
+        `https://api.github.com/repos/${parsed.owner}/${parsed.name}/actions/workflows/${WORKFLOW_FILE}/dispatches`,
         {
           method: "POST",
           headers: {
-            Accept: "application/vnd.github+json",
-            Authorization: `Bearer ${token}`,
-            "X-GitHub-Api-Version": "2022-11-28",
+            ...headersGitHubApi(token),
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ ref: "main" }),
         }
       );
-      elStatusActualizar.textContent =
-        resp.status === 204 ? "Workflow iniciado. Recargá en unos minutos." : `Error ${resp.status}.`;
+      if (resp.status === 204) {
+        elStatusActualizar.textContent = "Workflow iniciado. Recargá en unos minutos.";
+        iniciarCooldownActualizar();
+        return;
+      }
+      elStatusActualizar.textContent = await leerErrorGitHub(resp);
     } catch {
       elStatusActualizar.textContent = "Error de red.";
     } finally {
-      elBtnActualizar.disabled = false;
+      if (!dispatchCooldownTimer) elBtnActualizar.disabled = false;
     }
   }
 
@@ -619,6 +765,7 @@
     elBtnRecargar?.addEventListener("click", cargarDatos);
     elBtnActualizar?.addEventListener("click", dispararWorkflow);
     elBtnGuardarConfig?.addEventListener("click", guardarConfigLocal);
+    elBtnProbarToken?.addEventListener("click", probarTokenGitHub);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

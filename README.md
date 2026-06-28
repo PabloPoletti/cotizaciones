@@ -14,16 +14,23 @@ cotizaciones/
 │   └── workflows/
 │       └── actualizar.yml      # Workflow: cron + manual, commit del JSON
 ├── docs/                       # Raíz de GitHub Pages
-│   ├── index.html              # Dashboard principal
+│   ├── index.html              # Dashboard (5 pestañas)
 │   ├── css/
 │   │   └── styles.css
 │   ├── js/
-│   │   └── app.js
+│   │   ├── app.js              # UI, filtros, GitHub dispatch
+│   │   ├── core.js             # Carga de datos, TIR mercado
+│   │   ├── analytics.js        # KPIs, presets, observaciones
+│   │   ├── charts.js           # Gráficos Chart.js
+│   │   └── storage.js          # localStorage (cartera, histórico local)
 │   └── data/
 │       ├── cotizaciones.json   # Generado por el script (actualizado por Actions)
-│       └── info_fija.json      # TIR, vencimiento, cupón, amortización (manual)
+│       ├── info_fija.json      # TIR, vencimiento, cupón, amortización (manual)
+│       └── historico.json      # Reservado (histórico global futuro)
 ├── scripts/
-│   └── fetch_cotizaciones.py   # Consulta BYMA y escribe el JSON
+│   ├── fetch_cotizaciones.py   # Consulta BYMA y escribe el JSON
+│   ├── verify_panel.mjs        # Verificación Playwright (prod/local)
+│   └── capture_phases.mjs      # Capturas por pestaña
 ├── requirements.txt
 ├── README.md
 └── .gitignore
@@ -59,7 +66,85 @@ El workflow usa `GITHUB_TOKEN` con permiso `contents: write` para hacer push del
 
 ### Disparo manual desde la web
 
-El botón **Actualizar ahora** del panel llama a la API de GitHub. Necesitás un **Personal Access Token** con permiso `workflow` (o Actions write), guardado solo en localStorage del navegador — nunca lo commitees.
+El botón **Actualizar ahora** del panel llama a la API REST de GitHub para ejecutar `workflow_dispatch` sobre `.github/workflows/actualizar.yml`. El token se guarda **solo en localStorage** de tu navegador — nunca lo commitees ni lo compartas.
+
+**Endpoint que usa el panel:**
+
+```
+POST https://api.github.com/repos/PabloPoletti/cotizaciones/actions/workflows/actualizar.yml/dispatches
+Authorization: Bearer <tu_PAT>
+Accept: application/vnd.github+json
+X-GitHub-Api-Version: 2022-11-28
+Body: { "ref": "main" }
+```
+
+Antes de disparar, el panel verifica el token con `GET /user`, `GET /repos/{owner}/{repo}` y `GET .../actions/workflows/actualizar.yml`. Usá **Probar token** en la configuración para ver el resultado sin ejecutar el workflow.
+
+#### Crear el Personal Access Token (PAT)
+
+El error más frecuente es un **403** con mensaje tipo *"Resource not accessible by personal access token"*: el token autentica pero **no tiene permiso para Actions/workflows**. Elegí **una** de estas dos opciones:
+
+---
+
+##### Opción A — Token **classic** (más simple)
+
+1. Abrí [GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)](https://github.com/settings/tokens?type=beta).
+2. Clic en **Generate new token (classic)**.
+3. **Note:** `cotizaciones-panel` (o el nombre que prefieras).
+4. **Expiration:** la que quieras (recordá renovarlo antes de que venza).
+5. En **Select scopes**, marcá **obligatoriamente**:
+   - **`workflow`** — *Update GitHub Action workflows* (sin esto, `workflow_dispatch` devuelve 403).
+6. Para repos **privados**, también marcá **`repo`**. En repos **públicos** como este, `workflow` suele alcanzar; si falla el acceso al repo, agregá **`public_repo`**.
+7. **Generate token**, copiá el valor (`ghp_…`) y pegalo en el panel → **Guardar configuración** → **Probar token**.
+
+| Scope classic | ¿Para qué? |
+|---------------|------------|
+| **`workflow`** | **Obligatorio** — disparar y gestionar workflows vía API |
+| `public_repo` | Opcional en repo público si el GET al repo falla |
+| `repo` | Solo si el repositorio es privado |
+
+---
+
+##### Opción B — Token **fine-grained**
+
+1. Abrí [GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens](https://github.com/settings/personal-access-tokens).
+2. **Generate new token**.
+3. **Token name:** `cotizaciones-panel`.
+4. **Resource owner:** tu usuario (`PabloPoletti`).
+5. **Repository access:** **Only select repositories** → elegí **`cotizaciones`**.
+6. **Repository permissions** (mínimo):
+   - **Actions:** **Read and write** (obligatorio para `workflow_dispatch`).
+   - **Metadata:** Read-only (viene por defecto).
+7. Generá el token (`github_pat_…`), pegalo en el panel y probalo.
+
+| Permiso fine-grained | Valor mínimo |
+|----------------------|--------------|
+| **Actions** | **Read and write** |
+| Metadata | Read-only (automático) |
+
+---
+
+#### Configuración en el panel
+
+1. Desplegá **Configuración — token para "Actualizar ahora"**.
+2. **Repositorio:** exactamente `PabloPoletti/cotizaciones` (sin `https://`, sin `.git`, sin espacios).
+3. **Token:** el PAT generado arriba.
+4. **Guardar configuración** (persiste en localStorage).
+5. **Probar token** — debe decir *Token OK…*. Si falla, el mensaje indica la causa (token expirado, repo incorrecto, permisos Actions, etc.).
+6. **Actualizar ahora** — si la prueba pasó, dispara el workflow; éxito = HTTP 204 y mensaje *Workflow iniciado*. Tras un dispatch exitoso el botón queda deshabilitado unos segundos para evitar doble clic.
+
+#### Errores frecuentes
+
+| Síntoma | Causa probable |
+|---------|----------------|
+| 403 *Resource not accessible by personal access token* | Classic sin scope **`workflow`**, o fine-grained sin **Actions: Read and write** en `cotizaciones` |
+| 401 *Bad credentials* | Token revocado, mal copiado o expirado |
+| 404 en repo | Nombre mal escrito o token sin acceso a ese repo |
+| Token OK pero dispatch falla | Nombre de workflow distinto de `actualizar.yml` (no debería ocurrir en este repo) |
+
+#### Referencia visual (GitHub UI)
+
+La interfaz de GitHub cambia con el tiempo; los enlaces de arriba llevan directo a la pantalla correcta. Al generar un token classic, la lista de scopes incluye **`workflow`** con la descripción *Update GitHub Action workflows* — debe quedar **marcado**. En fine-grained, en *Repository permissions → Actions*, elegí **Read and write** (no solo Read).
 
 ---
 
@@ -140,7 +225,7 @@ La página combina ambos JSON para la tabla de cotizaciones y la calculadora de 
 
 ### Cómo se calcula la TIR mercado
 
-En `docs/js/app.js`, la función `calcularTirMercado()` resuelve una **YTM aproximada** (yield to maturity) por bisección sobre el flujo de un bono **bullet** con cupón fijo:
+En `docs/js/core.js`, la función `calcularTirMercado()` resuelve una **YTM aproximada** (yield to maturity) por bisección sobre el flujo de un bono **bullet** con cupón fijo:
 
 - Precio BYMA → precio limpio por 100 nominal: `precio / 1000` (ej. 96300 → 96,30)
 - Cupón periódico según `cupon_tasa_anual` y `cupon_frecuencia` (`semestral` = 2 pagos/año, `anual` = 1)
