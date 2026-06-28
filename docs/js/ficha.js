@@ -291,14 +291,66 @@
     `;
   }
 
+  function renderSensibilidadTasasBlock(row) {
+    const rp = row.riesgoPrecio || C().calcularDuracionConvexidad(row.info, row.item);
+    if (rp.ok) {
+      const impacto = rp.impacto1ppPct;
+      const impactoTxt =
+        impacto != null
+          ? `Si las tasas de mercado suben 1 punto porcentual (1 pp), el precio de este bono caería aproximadamente ${Math.abs(impacto).toFixed(2)}%. Si bajan 1 pp, subiría aproximadamente lo mismo en sentido contrario.`
+          : "";
+      return `
+        <div class="ficha-subsection ficha-subsection--sensibilidad">
+          <h3>Sensibilidad a tasas (YTM implícita)</h3>
+          <div class="ficha-kpi-grid ficha-kpi-grid--4">
+            <div class="ficha-kpi">
+              <span class="label">YTM implícita</span>
+              <strong class="num">${rp.ytm.toFixed(2)}%</strong>
+              <span class="meta">Desde precio BYMA y flujos del panel</span>
+            </div>
+            <div class="ficha-kpi">
+              <span class="label">Duración modificada</span>
+              <strong class="num">${rp.duracionModificada.toFixed(2)} años</strong>
+              <span class="meta">Macaulay ${rp.duracionMacaulay.toFixed(2)} a</span>
+            </div>
+            <div class="ficha-kpi">
+              <span class="label">Convexidad</span>
+              <strong class="num">${rp.convexidad.toFixed(2)}</strong>
+              <span class="meta">Curvatura del precio vs tasa</span>
+            </div>
+            <div class="ficha-kpi">
+              <span class="label">Flujos modelados</span>
+              <strong class="num">${rp.flujosCount}</strong>
+              <span class="meta">Cupones + amort. futuros</span>
+            </div>
+          </div>
+          <p class="header__meta ficha-edu-intro">${C().escapeHtml(impactoTxt)} Estimación sobre nominal 100; no incluye riesgo crediticio ni cambios de curva compleja.</p>
+        </div>
+      `;
+    }
+    const motivo =
+      rp.motivo ||
+      C().motivoDuracionNoDisponible(row.info) ||
+      "Duración no disponible — no se pudo calcular con los datos del panel.";
+    return `
+      <div class="ficha-subsection ficha-subsection--sensibilidad">
+        <h3>Sensibilidad a tasas</h3>
+        <p class="ficha-empty">${C().escapeHtml(motivo)}</p>
+      </div>
+    `;
+  }
+
   function renderRiesgoBlock(row) {
     const hp = row.hp;
     const liq = row.liquidez;
+    const sensibilidad = renderSensibilidadTasasBlock(row);
+
     if (!hp && !liq) {
       return `
         <section class="ficha-section ficha-section--live">
-          <div class="ficha-section__head"><h2>Riesgo de precio (BYMA ~90d)</h2>${sectionBadge("live")}</div>
-          <p class="ficha-empty">${C().escapeHtml(datoNoDisponible())} — ejecutá el workflow «Bootstrap histórico precios».</p>
+          <div class="ficha-section__head"><h2>Riesgo de precio</h2>${sectionBadge("live")}</div>
+          ${sensibilidad}
+          <p class="ficha-empty">${C().escapeHtml(datoNoDisponible())} — histórico BYMA ~90d: ejecutá el workflow «Bootstrap histórico precios».</p>
         </section>
       `;
     }
@@ -306,9 +358,11 @@
     return `
       <section class="ficha-section ficha-section--live">
         <div class="ficha-section__head">
-          <h2>Riesgo de precio (BYMA ~90d)</h2>
+          <h2>Riesgo de precio</h2>
           ${sectionBadge("live")}
         </div>
+        ${sensibilidad}
+        <h3 class="ficha-subhead">Histórico BYMA ~90d</h3>
         <div class="ficha-kpi-grid ficha-kpi-grid--5">
           <div class="ficha-kpi"><span class="label">Liquidez</span><strong>${C().escapeHtml(liq?.label || "—")}</strong></div>
           <div class="ficha-kpi"><span class="label">Vol. prom.</span><strong>${hp?.volumen_promedio != null ? H().formatearVolumen(hp.volumen_promedio) : "—"}</strong></div>
@@ -316,7 +370,7 @@
           <div class="ficha-kpi"><span class="label">Var. 30d</span><strong>${H()?.formatearPct(hp?.var_30d_pct) ?? "—"}</strong></div>
           <div class="ficha-kpi"><span class="label">Drawdown máx.</span><strong>${hp?.drawdown_max_pct != null ? `${hp.drawdown_max_pct.toFixed(2)}%` : "—"}</strong></div>
         </div>
-        <p class="header__meta">Volatilidad 30d: ${hp?.volatilidad_30d_pct != null ? `${hp.volatilidad_30d_pct.toFixed(2)}% (desvío diario)` : "—"} — riesgo de precio, no crediticio.</p>
+        <p class="header__meta">Volatilidad 30d: ${hp?.volatilidad_30d_pct != null ? `${hp.volatilidad_30d_pct.toFixed(2)}% (desvío diario)` : "—"} — riesgo de precio observado, distinto del riesgo crediticio.</p>
       </section>
     `;
   }

@@ -391,11 +391,320 @@
     return Math.max(0, diff / (365.25 * 24 * 3600 * 1000));
   }
 
+  const MESES_CUPON = {
+    ene: 0,
+    feb: 1,
+    mar: 2,
+    abr: 3,
+    may: 4,
+    jun: 5,
+    jul: 6,
+    ago: 7,
+    sep: 8,
+    oct: 9,
+    nov: 10,
+    dic: 11,
+  };
+
+  function fechaClave(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  }
+
+  function tasaCuponEnFecha(cronograma, fecha) {
+    if (!cronograma?.length) return null;
+    const t = fecha.getTime();
+    for (const tramo of cronograma) {
+      const desde = parsearVencimiento(tramo.desde);
+      const hasta = parsearVencimiento(tramo.hasta);
+      if (!desde || !hasta) continue;
+      if (t >= desde.getTime() && t <= hasta.getTime()) return tramo.tasa_anual;
+    }
+    return cronograma[cronograma.length - 1]?.tasa_anual ?? null;
+  }
+
+  function parseSlotsCupón(texto) {
+    const raw = texto || "9 ene / 9 jul";
+    return raw.split("/").map((parte) => {
+      const m = parte.trim().match(/(\d{1,2})\s+([a-záéíóú]+)/i);
+      if (!m) return null;
+      const mes = MESES_CUPON[m[2].toLowerCase().slice(0, 3)];
+      if (mes == null) return null;
+      return { day: parseInt(m[1], 10), month: mes };
+    }).filter(Boolean);
+  }
+
+  function generarFechasCupónSemestral(info, hoy) {
+    const venc = parsearVencimiento(info.vencimiento);
+    if (!venc) return [];
+    const slots = parseSlotsCupón(info.cupon_fecha_pago);
+    if (!slots.length) return [];
+    const fechas = [];
+    for (let y = hoy.getFullYear() - 1; y <= venc.getFullYear() + 1; y += 1) {
+      for (const s of slots) {
+        const d = new Date(y, s.month, s.day, 12, 0, 0);
+        if (d > hoy && d <= venc) fechas.push(d);
+      }
+    }
+    fechas.sort((a, b) => a - b);
+    return fechas;
+  }
+
+  function motivoDuracionNoDisponible(info) {
+    if (estadoVigencia(info) === "vencido") {
+      return "Duración no disponible — instrumento vencido; no aplica sensibilidad a tasas.";
+    }
+    const cat = categoriaDe(info);
+    if (cat === "BCRA") {
+      return "Duración no disponible — BOPREAL/BCRA no tiene cronograma de flujos de renta fija modelable en el panel.";
+    }
+    if (cat === "CEDEAR") {
+      return "Duración no disponible — CEDEAR es un certificado sobre activo extranjero, no un bono de cupón fijo.";
+    }
+    const moneda = info.moneda || "";
+    if (moneda === "ARS-CER") {
+      return "Duración no disponible — Boncer/CER: los flujos dependen del índice CER futuro, no modelado en el panel.";
+    }
+    if (moneda === "ARS dollar-linked") {
+      return "Duración no disponible — bono dollar-linked: cupón y principal indexados al tipo de cambio, no modelados aquí.";
+    }
+    const cuponTxt = (info.cupon || "").toLowerCase();
+    if (info.cupon_frecuencia === "mensual" || cuponTxt.includes("capitalizable")) {
+      return "Duración no disponible — Lecap/capitalización mensual: no es una serie de cupones fijos; consultar calendario oficial.";
+    }
+    if (info.amortizacion_tipo === "amortizacion_parcial" && !(info.cronograma_amortizacion?.length > 0)) {
+      return "Duración no disponible — amortización parcial sin cronograma estructurado en el panel (solo descripción en texto). Consultar prospecto oficial.";
+    }
+    if (info.cupon_tasa_anual == null && !(info.cronograma_cupon?.length > 0)) {
+      return "Duración no disponible — falta tasa de cupón estructurada (consultar prospecto / ficha BYMA).";
+    }
+    return null;
+  }
+
+  function soportaDuracion(info) {
+    return motivoDuracionNoDisponible(info) === null;
+  }
+
+  function generarFlujosBullet(info, hoy) {
+    const venc = parsearVencimiento(info.vencimiento);
+    if (!venc || venc <= hoy) {
+      return { ok: false, motivo: "Duración no disponible — sin vencimiento futuro." };
+    }
+    const tasa = info.cupon_tasa_anual;
+    if (tasa == null || tasa <= 0) {
+      return { ok: false, motivo: motivoDuracionNoDisponible(info) || "Sin tasa de cupón." };
+    }
+    const freq = info.cupon_frecuencia;
+    if (freq !== "anual" && freq !== "semestral") {
+      return {
+        ok: false,
+        motivo: "Duración no disponible — frecuencia de cupón no modelada (solo anual/semestral en el panel).",
+      };
+    }
+    const pagosPorAnio = freq === "anual" ? 1 : 2;
+    const msPeriodo = (365.25 / pagosPorAnio) * 24 * 3600 * 1000;
+    const cuponPorPeriodo = (tasa / 100) * 100 / pagosPorAnio;
+    const periodos = Math.max(1, Math.ceil((venc - hoy) / msPeriodo));
+    const flujos = [];
+    for (let i = 1; i <= periodos; i += 1) {
+      const tAnios = i / pagosPorAnio;
+      flujos.push({ tAnios, monto: i === periodos ? cuponPorPeriodo + 100 : cuponPorPeriodo });
+    }
+    return { ok: true, flujos, pagosPorAnio };
+  }
+
+  function generarFlujosCronograma(info, hoy) {
+    const venc = parsearVencimiento(info.vencimiento);
+    if (!venc || venc <= hoy) {
+      return { ok: false, motivo: "Duración no disponible — sin vencimiento futuro." };
+    }
+    if (!(info.cronograma_amortizacion?.length > 0) || !(info.cronograma_cupon?.length > 0)) {
+      return {
+        ok: false,
+        motivo:
+          motivoDuracionNoDisponible(info) ||
+          "Duración no disponible — faltan cronogramas de cupón o amortización.",
+      };
+    }
+    const pagosPorAnio = info.cupon_frecuencia === "anual" ? 1 : 2;
+    const amort = [...info.cronograma_amortizacion].sort((a, b) => a.fecha.localeCompare(b.fecha));
+    const amortPorFecha = new Map(amort.map((a) => [a.fecha, a.porcentaje]));
+
+    let saldo = 100;
+    for (const a of amort) {
+      const fa = parsearVencimiento(a.fecha);
+      if (fa && fa <= hoy) saldo -= a.porcentaje;
+    }
+    if (saldo <= 0) {
+      return { ok: false, motivo: "Duración no disponible — nominal amortizado por completo según cronograma." };
+    }
+
+    const fechasCup = generarFechasCupónSemestral(info, hoy);
+    if (!fechasCup.length) {
+      return { ok: false, motivo: "Duración no disponible — no se pudieron generar fechas de cupón futuras." };
+    }
+
+    const flujos = [];
+    for (const fc of fechasCup) {
+      const tasa = tasaCuponEnFecha(info.cronograma_cupon, fc);
+      if (tasa == null) {
+        return { ok: false, motivo: "Duración no disponible — cupón step-up sin tramo aplicable a una fecha futura." };
+      }
+      let monto = saldo * (tasa / 100) / pagosPorAnio;
+      const clave = fechaClave(fc);
+      const amortPct = amortPorFecha.get(clave);
+      if (amortPct != null) {
+        monto += amortPct;
+        saldo -= amortPct;
+      }
+      const tAnios = (fc - hoy) / (365.25 * 24 * 3600 * 1000);
+      flujos.push({ tAnios, monto, fecha: fc });
+    }
+    return { ok: true, flujos, pagosPorAnio };
+  }
+
+  function generarFlujosCaja(info, opts = {}) {
+    const hoy = opts.fechaValuacion ? new Date(opts.fechaValuacion) : new Date();
+    hoy.setHours(12, 0, 0, 0);
+    const bloqueo = motivoDuracionNoDisponible(info);
+    if (bloqueo) return { ok: false, motivo: bloqueo };
+
+    if (
+      info.amortizacion_tipo === "parcial_cronograma" ||
+      (info.cronograma_amortizacion?.length > 0 && info.cronograma_cupon?.length > 0)
+    ) {
+      return generarFlujosCronograma(info, hoy);
+    }
+    if (info.amortizacion_tipo === "bullet") {
+      return generarFlujosBullet(info, hoy);
+    }
+    return {
+      ok: false,
+      motivo:
+        motivoDuracionNoDisponible(info) ||
+        "Duración no disponible — estructura de amortización no modelada en el panel.",
+    };
+  }
+
+  function valorPresenteFlujos(ytmPct, flujos, pagosPorAnio) {
+    const yp = ytmPct / 100 / pagosPorAnio;
+    let vp = 0;
+    for (const f of flujos) {
+      const periods = f.tAnios * pagosPorAnio;
+      vp += f.monto / Math.pow(1 + yp, periods);
+    }
+    return vp;
+  }
+
+  function calcularYtmDesdeFlujos(precio, flujos, pagosPorAnio) {
+    if (precio == null || !flujos?.length || !pagosPorAnio) {
+      return { valor: null, nota: "Datos insuficientes" };
+    }
+    const sumaFlujos = flujos.reduce((s, f) => s + f.monto, 0);
+    let bajo;
+    let alto;
+    if (precio >= sumaFlujos * 0.995) {
+      bajo = -20;
+      alto = 5;
+    } else {
+      bajo = 0.01;
+      alto = 80;
+    }
+    const vpBajo = valorPresenteFlujos(bajo, flujos, pagosPorAnio);
+    const vpAlto = valorPresenteFlujos(alto, flujos, pagosPorAnio);
+    if (vpBajo < precio && vpAlto < precio) {
+      return { valor: null, nota: "YTM fuera de rango (precio muy alto vs flujos)" };
+    }
+    if (vpBajo > precio && vpAlto > precio) {
+      return { valor: null, nota: "YTM fuera de rango (precio muy bajo vs flujos)" };
+    }
+    for (let i = 0; i < 100; i += 1) {
+      const medio = (bajo + alto) / 2;
+      const diff = valorPresenteFlujos(medio, flujos, pagosPorAnio) - precio;
+      if (Math.abs(diff) < 0.005) {
+        return { valor: Math.round(medio * 10000) / 10000, nota: "YTM implícita (precio + flujos)" };
+      }
+      if (diff > 0) bajo = medio;
+      else alto = medio;
+    }
+    return { valor: null, nota: "Sin convergencia YTM" };
+  }
+
+  function calcularDuracionModificada(flujos, precio, ytmPct, pagosPorAnio) {
+    const yp = ytmPct / 100 / pagosPorAnio;
+    let pvSum = 0;
+    let dMac = 0;
+    for (const f of flujos) {
+      const periods = f.tAnios * pagosPorAnio;
+      const df = Math.pow(1 + yp, -periods);
+      const pv = f.monto * df;
+      pvSum += pv;
+      dMac += f.tAnios * pv;
+    }
+    const p = precio > 0 ? precio : pvSum;
+    const macaulay = dMac / p;
+    const modified = macaulay / (1 + yp);
+    return {
+      macaulay: Math.round(macaulay * 1000) / 1000,
+      modified: Math.round(modified * 1000) / 1000,
+      impacto1ppPct: Math.round(-modified * 1 * 100) / 100,
+    };
+  }
+
+  function calcularConvexidad(flujos, precio, ytmPct, pagosPorAnio) {
+    const yp = ytmPct / 100 / pagosPorAnio;
+    const p = precio;
+    let conv = 0;
+    for (const f of flujos) {
+      const t = f.tAnios;
+      const periods = t * pagosPorAnio;
+      const df = Math.pow(1 + yp, -periods);
+      const pv = f.monto * df;
+      conv += (pv * t * (t + 1 / pagosPorAnio)) / Math.pow(1 + yp, 2);
+    }
+    return Math.round((conv / p) * 100) / 100;
+  }
+
+  function calcularDuracionConvexidad(info, item) {
+    const bloqueo = motivoDuracionNoDisponible(info);
+    if (bloqueo) return { ok: false, motivo: bloqueo };
+    if (!item || item.error || item.precio == null) {
+      return { ok: false, motivo: "Duración no disponible — sin precio de mercado BYMA." };
+    }
+    const precio = normalizarPrecioByma(item.precio);
+    if (precio == null || precio <= 0) {
+      return { ok: false, motivo: "Duración no disponible — precio inválido." };
+    }
+    const flujosRes = generarFlujosCaja(info);
+    if (!flujosRes.ok) return { ok: false, motivo: flujosRes.motivo };
+    const ytm = calcularYtmDesdeFlujos(precio, flujosRes.flujos, flujosRes.pagosPorAnio);
+    if (ytm.valor == null) {
+      return {
+        ok: false,
+        motivo: `Duración no disponible — no se pudo calcular YTM implícita desde precio y flujos (${ytm.nota}).`,
+      };
+    }
+    const dur = calcularDuracionModificada(flujosRes.flujos, precio, ytm.valor, flujosRes.pagosPorAnio);
+    const convexidad = calcularConvexidad(flujosRes.flujos, precio, ytm.valor, flujosRes.pagosPorAnio);
+    return {
+      ok: true,
+      ytm: ytm.valor,
+      ytmNota: ytm.nota,
+      duracionModificada: dur.modified,
+      duracionMacaulay: dur.macaulay,
+      convexidad,
+      impacto1ppPct: dur.impacto1ppPct,
+      flujosCount: flujosRes.flujos.length,
+    };
+  }
+
+  /** @deprecated Usar calcularDuracionConvexidad; conservado por compatibilidad. */
   function durationAprox(info) {
-    const anos = anosAlVencimiento(info);
-    if (anos == null) return null;
-    const factor = info.amortizacion_tipo === "amortizacion_parcial" ? 0.72 : 0.95;
-    return Math.round(anos * factor * 100) / 100;
+    const r = calcularDuracionConvexidad(info, null);
+    if (r.ok) return r.duracionModificada;
+    return null;
   }
 
   function categoriaDe(info) {
@@ -438,6 +747,7 @@
     const categoria = categoriaDe(info);
     const tirMerc = calcularTirMercado(item.precio, info);
     const tirCalc = tirParaCalculo(info, item, tirMerc);
+    const riesgoPrecio = calcularDuracionConvexidad(info, item);
     const hp = window.CotizHistorico?.metricas(item.ticker) || null;
     return {
       item,
@@ -450,7 +760,8 @@
       tirEff: tirCalc.valor,
       tirRef: info.tir_referencia,
       anosVto: anosAlVencimiento(info),
-      duration: durationAprox(info),
+      duration: riesgoPrecio.ok ? riesgoPrecio.duracionModificada : null,
+      riesgoPrecio,
       esSoberano: esSoberano(info),
       esBullet: info.amortizacion_tipo !== "amortizacion_parcial",
       colorSector: COLORES_SECTOR[sector] || COLORES_SECTOR.Otros,
@@ -651,6 +962,13 @@
     filtrarYOrdenar,
     anosAlVencimiento,
     durationAprox,
+    generarFlujosCaja,
+    calcularYtmDesdeFlujos,
+    calcularDuracionModificada,
+    calcularConvexidad,
+    calcularDuracionConvexidad,
+    motivoDuracionNoDisponible,
+    soportaDuracion,
     esSoberano,
     categoriaDe,
     coincideFiltroCategoria,

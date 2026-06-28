@@ -1122,6 +1122,26 @@ tr:hover td {
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
 
+.ficha-kpi-grid--4 {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.ficha-subsection {
+  margin-bottom: 1.25rem;
+}
+
+.ficha-subsection h3,
+.ficha-subhead {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.65rem;
+  color: var(--text);
+}
+
+.ficha-subhead {
+  margin-top: 0.5rem;
+}
+
 .ficha-kpi {
   padding: 0.65rem 0.75rem;
   background: var(--bg);
