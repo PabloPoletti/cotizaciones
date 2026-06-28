@@ -155,6 +155,30 @@
     );
   }
 
+  function diferenciaPctEntreFuentes(precioPrincipal, precioBackup) {
+    if (precioPrincipal == null || precioBackup == null) return null;
+    const a = Number(precioPrincipal);
+    const b = Number(precioBackup);
+    if (!Number.isFinite(a) || !Number.isFinite(b) || a <= 0 || b <= 0) return null;
+    return (Math.abs(a - b) / Math.max(a, b)) * 100;
+  }
+
+  function detalleConfirmacionPrecio(item) {
+    if (!precioConfirmadoDosFuentes(item)) return null;
+    const backup = item.precio_backup;
+    const diffPct = diferenciaPctEntreFuentes(item.precio, backup.precio);
+    return {
+      confirmado: true,
+      precioByma: item.precio,
+      precioData912: backup.precio,
+      diffPct,
+      margenPct: MARGEN_CONFIRMACION_PRECIO * 100,
+      tsByma: item.timestamp_consulta || state.cotizaciones?.ultima_actualizacion,
+      tsData912: state.cotizaciones?.ultima_actualizacion,
+      panelData912: backup.panel || null,
+    };
+  }
+
   function calcularTirMercado(precioRaw, info) {
     if (precioRaw == null || !info) {
       return { valor: null, nota: "Sin precio de mercado" };
@@ -401,6 +425,22 @@
         });
       }
     }
+    if (filtros.confiabilidad && filtros.confiabilidad !== "todos") {
+      rows = rows.filter((r) => {
+        const confirmado = precioConfirmadoDosFuentes(r.item);
+        const liqAlta = r.liquidez?.nivel === "alta";
+        switch (filtros.confiabilidad) {
+          case "confirmados":
+            return confirmado;
+          case "liquidez-alta":
+            return liqAlta;
+          case "ambos":
+            return confirmado && liqAlta;
+          default:
+            return true;
+        }
+      });
+    }
 
     const sort = filtros.orden || "ticker";
     const dir = filtros.ordenDir === "desc" ? -1 : 1;
@@ -471,5 +511,7 @@
     MARGEN_CONFIRMACION_PRECIO,
     precioConfirmadoDosFuentes,
     badgeConfirmacionPrecioHtml,
+    diferenciaPctEntreFuentes,
+    detalleConfirmacionPrecio,
   };
 })();

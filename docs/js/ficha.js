@@ -125,6 +125,39 @@
     `;
   }
 
+  function renderConfirmacionCruzadaBlock(row) {
+    const det = C().detalleConfirmacionPrecio(row.item);
+    if (!det) return "";
+
+    const fmtTs = (ts) => (ts ? C().formatearFecha(ts) : "—");
+    const diffStr = det.diffPct != null ? `${det.diffPct.toFixed(3)}%` : "—";
+
+    return `
+      <section class="ficha-section ficha-section--confirm">
+        <div class="ficha-section__head">
+          <h2>Confirmación cruzada de precio</h2>
+          <span class="badge badge--confirm">✓ 2 fuentes</span>
+        </div>
+        <p class="header__meta">
+          BYMA (principal) y Data912 (respaldo) coinciden dentro de ±${det.margenPct}%.
+          Data912 es referencia educativa con cache ~2h; el precio operativo sigue siendo BYMA.
+        </p>
+        <dl class="ficha-dl ficha-dl--confirm">
+          <dt>Precio BYMA</dt>
+          <dd>${C().formatearPrecio(det.precioByma)} <span class="meta">(${C().escapeHtml(C().etiquetaPrecioTipo(row.item))})</span></dd>
+          <dt>Consulta BYMA</dt>
+          <dd>${C().escapeHtml(fmtTs(det.tsByma))}</dd>
+          <dt>Precio Data912</dt>
+          <dd>${C().formatearPrecio(det.precioData912)}${det.panelData912 ? ` <span class="meta">(panel ${C().escapeHtml(det.panelData912)})</span>` : ""}</dd>
+          <dt>Consulta Data912</dt>
+          <dd>${C().escapeHtml(fmtTs(det.tsData912))} <span class="meta">(misma corrida del panel)</span></dd>
+          <dt>Diferencia</dt>
+          <dd><strong class="num">${diffStr}</strong> <span class="meta">sobre el mayor de ambos precios</span></dd>
+        </dl>
+      </section>
+    `;
+  }
+
   function renderMercadoBlock(row) {
     const { item, info } = row;
     const varFmt = C().formatearVariacion(item.variacion_pct);
@@ -253,6 +286,7 @@
         <p class="header__meta">Categoría: ${C().escapeHtml(categoria)} · Sector: ${C().escapeHtml(row.sector)}</p>
       </header>
       ${renderMercadoBlock(row)}
+      ${renderConfirmacionCruzadaBlock(row)}
       ${renderPlazosBlock(info)}
       ${renderManualBlock(info)}
       ${renderRiesgoBlock(row)}

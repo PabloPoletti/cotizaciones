@@ -682,6 +682,15 @@ tr:hover td {
   font-weight: 600;
 }
 
+.ficha-section--confirm {
+  border-left: 3px solid #0369a1;
+  padding-left: 0.75rem;
+}
+
+.ficha-dl--confirm dd strong.num {
+  color: var(--accent);
+}
+
 .badge--liq-alta {
   background: #dcfce7;
   color: #166534;

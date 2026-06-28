@@ -27,6 +27,7 @@
     tipo: "todos",
     moneda: "todos",
     subtipo: "todos",
+    confiabilidad: "todos",
     orden: "ticker",
     ordenDir: "asc",
   };
@@ -353,6 +354,14 @@
     if (filtros.tipo && filtros.tipo !== "todos") partes.push(`tipo ${filtros.tipo}`);
     if (filtros.moneda && filtros.moneda !== "todos") partes.push(`moneda ${filtros.moneda}`);
     if (filtros.subtipo && filtros.subtipo !== "todos") partes.push(`${filtros.subtipo}`);
+    if (filtros.confiabilidad && filtros.confiabilidad !== "todos") {
+      const labels = {
+        confirmados: "confirmados (2 fuentes)",
+        "liquidez-alta": "liquidez alta",
+        ambos: "confirmados + liquidez alta",
+      };
+      partes.push(labels[filtros.confiabilidad] || filtros.confiabilidad);
+    }
     return partes.length ? `Filtros: ${partes.join(" · ")}` : "Sin filtros activos";
   }
 
@@ -691,6 +700,119 @@
     actualizarVisibilidadFilasCalc();
   }
 
+  function obtenerResumenCartera() {
+    const capital = parseFloat(elCapital?.value) || 0;
+    const lineas = [];
+    let sumaPct = 0;
+    let tirPonderada = 0;
+    let tieneTir = false;
+
+    document.querySelectorAll(".pct-input").forEach((input) => {
+      const pct = parseFloat(input.value) || 0;
+      if (pct <= 0) return;
+      const tirUsada = parseFloat(input.dataset.tirUsada);
+      sumaPct += pct;
+      if (!Number.isNaN(tirUsada)) {
+        tirPonderada += (pct / 100) * tirUsada;
+        tieneTir = true;
+      }
+      lineas.push({
+        ticker: input.dataset.ticker,
+        pct,
+        monto: (capital * pct) / 100,
+        tirUsada: Number.isNaN(tirUsada) ? null : tirUsada,
+      });
+    });
+
+    let tirFinal = null;
+    let rentaAnual = null;
+    if (tieneTir && sumaPct > 0) {
+      tirFinal = tirPonderada / (sumaPct / 100);
+      rentaAnual = (capital * tirFinal) / 100;
+    }
+
+    return {
+      fechaIso: new Date().toISOString(),
+      fechaLocal: new Date().toLocaleString("es-AR"),
+      capital,
+      sumaPct,
+      tirPonderada: tirFinal,
+      rentaAnual,
+      lineas,
+    };
+  }
+
+  function formatearResumenCarteraTexto(resumen) {
+    const lines = [
+      "Cartera — Panel Cotizaciones",
+      `Fecha: ${resumen.fechaLocal}`,
+      `Capital total: ${C.formatearPrecio(resumen.capital)} USD`,
+      `Suma asignada: ${resumen.sumaPct.toFixed(1)}%`,
+      `TIR ponderada: ${resumen.tirPonderada != null ? resumen.tirPonderada.toFixed(2) + "%" : "—"}`,
+      `Renta anual estimada: ${resumen.rentaAnual != null ? C.formatearPrecio(resumen.rentaAnual) + " USD" : "—"}`,
+      "",
+      "Instrumentos:",
+    ];
+    if (!resumen.lineas.length) {
+      lines.push("  (sin asignaciones)");
+    } else {
+      resumen.lineas.forEach((l) => {
+        lines.push(
+          `  ${l.ticker}: ${l.pct.toFixed(1)}% → ${C.formatearPrecio(l.monto)} USD` +
+            (l.tirUsada != null ? ` (TIR ${l.tirUsada.toFixed(2)}%)` : "")
+        );
+      });
+    }
+    lines.push("", "Referencia ilustrativa — no es asesoramiento ni orden de operación.");
+    return lines.join("\n");
+  }
+
+  function exportarCarteraCsv() {
+    const resumen = obtenerResumenCartera();
+    if (!resumen.lineas.length) {
+      alert("Asigná al menos un porcentaje antes de exportar.");
+      return;
+    }
+    const esc = (v) => `"${String(v).replace(/"/g, '""')}"`;
+    const rows = [
+      ["campo", "valor"].join(","),
+      ["fecha", esc(resumen.fechaLocal)].join(","),
+      ["capital_usd", resumen.capital].join(","),
+      ["suma_pct", resumen.sumaPct.toFixed(2)].join(","),
+      ["tir_ponderada_pct", resumen.tirPonderada != null ? resumen.tirPonderada.toFixed(4) : ""].join(","),
+      ["renta_anual_estimada_usd", resumen.rentaAnual != null ? resumen.rentaAnual.toFixed(2) : ""].join(","),
+      [],
+      ["ticker", "pct", "monto_usd", "tir_usada_pct"].join(","),
+    ];
+    resumen.lineas.forEach((l) => {
+      rows.push(
+        [l.ticker, l.pct.toFixed(2), l.monto.toFixed(2), l.tirUsada != null ? l.tirUsada.toFixed(4) : ""].join(",")
+      );
+    });
+    const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8" });
+    const stamp = new Date().toISOString().slice(0, 10);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `cartera-cotizaciones-${stamp}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  async function copiarResumenCartera() {
+    const resumen = obtenerResumenCartera();
+    if (!resumen.lineas.length) {
+      alert("Asigná al menos un porcentaje antes de copiar.");
+      return;
+    }
+    const texto = formatearResumenCarteraTexto(resumen);
+    try {
+      await navigator.clipboard.writeText(texto);
+      alert("Resumen copiado al portapapeles.");
+    } catch {
+      prompt("Copiá este resumen:", texto);
+    }
+  }
+
   function aplicarPesosEnInputs(pesos) {
     document.querySelectorAll(".pct-input").forEach((input) => {
       input.value = "0";
@@ -816,6 +938,14 @@
     if (elSubtipo) {
       elSubtipo.addEventListener("change", () => {
         filtros.subtipo = elSubtipo.value;
+        renderCotizacionesView();
+      });
+    }
+
+    const elConf = document.getElementById("filtro-confiabilidad");
+    if (elConf) {
+      elConf.addEventListener("change", () => {
+        filtros.confiabilidad = elConf.value;
         renderCotizacionesView();
       });
     }
@@ -1127,6 +1257,8 @@
       elStatusActualizar.textContent = "Cartera guardada en este navegador.";
       setTimeout(() => { elStatusActualizar.textContent = ""; }, 2500);
     });
+    document.getElementById("btn-exportar-cartera")?.addEventListener("click", exportarCarteraCsv);
+    document.getElementById("btn-copiar-cartera")?.addEventListener("click", copiarResumenCartera);
     document.getElementById("btn-restaurar-cartera")?.addEventListener("click", () => {
       renderizarCalculadora();
     });
