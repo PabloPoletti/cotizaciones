@@ -29,7 +29,7 @@ async function main() {
   await page.waitForTimeout(2000);
 
   // Configuración GitHub: botón Probar token visible y reacciona sin PAT
-  await page.locator("details.config-panel summary").click();
+  await page.locator("details.config-panel > summary").click();
   await page.waitForTimeout(300);
   const tokenUi = await page.evaluate(async () => {
     const btn = document.getElementById("btn-probar-token");
