@@ -1,647 +1,1374 @@
 {
-  "ultima_actualizacion": "2026-06-28T15:40:40-03:00",
+  "ultima_actualizacion": "2026-06-28T15:52:16-03:00",
   "fetch_status": "mercado_cerrado",
-  "fetch_mensaje": "Mercado cerrado. Mostrando últimos cierres disponibles (51/53 instrumentos).",
+  "fetch_mensaje": "Mercado cerrado. Mostrando últimos cierres disponibles (57/59 instrumentos).",
   "mercado": {
     "cerrado": true,
     "motivo": "feriado o día no laborable (BYMA)",
     "es_fin_semana": true,
     "is_working_day_byma": false
   },
+  "tipo_cambio": {
+    "fuente": "dolarapi.com",
+    "timestamp_consulta": "2026-06-28T15:52:16-03:00",
+    "error": false,
+    "mensaje_error": null,
+    "oficial": {
+      "alias": "oficial",
+      "casa": "oficial",
+      "nombre": "Oficial",
+      "compra_ars": 1445,
+      "venta_ars": 1495,
+      "fecha_actualizacion_fuente": "2026-06-26T18:55:00.000Z",
+      "endpoint": "https://dolarapi.com/v1/dolares/oficial"
+    },
+    "mep": {
+      "alias": "mep",
+      "casa": "bolsa",
+      "nombre": "Bolsa",
+      "compra_ars": 1499.3,
+      "venta_ars": 1502.5,
+      "fecha_actualizacion_fuente": "2026-06-28T17:57:00.000Z",
+      "endpoint": "https://dolarapi.com/v1/dolares/bolsa",
+      "nota": "DolarAPI casa=bolsa (dólar MEP / bolsa)"
+    }
+  },
+  "data912": {
+    "fuente": "data912.com",
+    "paneles_consultados": [
+      "arg_bonds",
+      "arg_corp"
+    ],
+    "error": false,
+    "mensaje_error": null,
+    "filas_arg_bonds": 183,
+    "filas_arg_corp": 577,
+    "tickers_solicitados": 59,
+    "tickers_encontrados": 44
+  },
   "instrumentos": [
     {
       "ticker": "AL29",
       "nombre": "Bono AL29",
       "sector": "Soberanos USD",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 97360.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_AL29_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 97360.0,
+        "px_bid": 97360.0,
+        "px_ask": 97650.0,
+        "pct_change": 0.24,
+        "volumen": 1308637.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "AL30",
       "nombre": "Bono AL30",
       "sector": "Soberanos USD",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 96300.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_AL30_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 96300.0,
+        "px_bid": 96290.0,
+        "px_ask": 96350.0,
+        "pct_change": -0.3,
+        "volumen": 90015674.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "AL35",
       "nombre": "Bono AL35",
       "sector": "Soberanos USD",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 122800.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_AL35_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 122800.0,
+        "px_bid": 122200.0,
+        "px_ask": 122800.0,
+        "pct_change": 0.19,
+        "volumen": 3157063.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "AL41",
       "nombre": "Bono AL41",
       "sector": "Soberanos USD",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 115000.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_AL41_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 115000.0,
+        "px_bid": 115000.0,
+        "px_ask": 115630.0,
+        "pct_change": 0.34,
+        "volumen": 3359243.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "BA37D",
       "nombre": "Bono Pcia. Buenos Aires 2037 USD",
       "sector": "Provincial Buenos Aires",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 116300.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_BA37D_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 116300.0,
+        "px_bid": 115800.0,
+        "px_ask": 116300.0,
+        "pct_change": 0.0,
+        "volumen": 98317.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "BACAD",
       "nombre": "Bono Ciudad de Buenos Aires (BACAD)",
       "sector": "Ciudad de Buenos Aires",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 100.903,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_BACAD_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "BACAO",
       "nombre": "Bono Ciudad de Buenos Aires (BACAO)",
       "sector": "Ciudad de Buenos Aires",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 142682.005,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_BACAO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "BPO27",
       "nombre": "BOPREAL Serie 1 (BPO27)",
       "sector": "BCRA",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": null,
       "precio_tipo": null,
       "variacion_pct": null,
       "error": true,
-      "mensaje_error": "Precio no disponible (mercado cerrado)"
+      "mensaje_error": "Precio no disponible (mercado cerrado)",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "BPO28",
       "nombre": "BOPREAL Serie 2 (BPO28)",
       "sector": "BCRA",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": null,
       "precio_tipo": null,
       "variacion_pct": null,
       "error": true,
-      "mensaje_error": "Precio no disponible (mercado cerrado)"
+      "mensaje_error": "Precio no disponible (mercado cerrado)",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "BPOD7",
       "nombre": "BOPREAL (BPOD7)",
       "sector": "BCRA",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 153750.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_BPOD7_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 153750.0,
+        "px_bid": 153750.0,
+        "px_ask": 153750.0,
+        "pct_change": 0.16,
+        "volumen": 834834.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "CO26D",
       "nombre": "Bono Córdoba 2026 USD",
       "sector": "Provincial Córdoba",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 7.05,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_CO26D_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 7.05,
+        "px_bid": 6.09,
+        "px_ask": 7.05,
+        "pct_change": 0.0,
+        "volumen": 0.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "CO27D",
       "nombre": "Bono Córdoba 2027 USD",
       "sector": "Provincial Córdoba",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 145723.928,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_CO27D_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "DICP",
       "nombre": "Bono DICP (dollar-linked)",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 52560.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_DICP_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 52680.0,
+        "px_bid": 52560.0,
+        "px_ask": 52750.0,
+        "pct_change": 0.0,
+        "volumen": 941235.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "DNC7O",
       "nombre": "Edenor ON 2030 (Clase VII)",
       "sector": "Utilities",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 165930.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_DNC7O_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 165930.0,
+        "px_bid": 163360.0,
+        "px_ask": 165930.0,
+        "pct_change": 1.36,
+        "volumen": 109800.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
+    },
+    {
+      "ticker": "DNCAO",
+      "nombre": "Edenor ON 2033 (Clase 10)",
+      "sector": "Utilities",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
+      "precio": 157400.0,
+      "precio_tipo": "ultimo_cierre",
+      "variacion_pct": null,
+      "error": false,
+      "precio_fuente": "historico_2026-06-26_DNCAO_24HS",
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 157400.0,
+        "px_bid": 157010.0,
+        "px_ask": 157600.0,
+        "pct_change": -0.71,
+        "volumen": 423300.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "GD29",
       "nombre": "Bono GD29",
       "sector": "Soberanos USD",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 99050.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_GD29_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 99050.0,
+        "px_bid": 99020.0,
+        "px_ask": 99460.0,
+        "pct_change": -0.19,
+        "volumen": 75391.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "GD30",
       "nombre": "Bono GD30",
       "sector": "Soberanos USD",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 98770.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_GD30_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 98770.0,
+        "px_bid": 98600.0,
+        "px_ask": 99050.0,
+        "pct_change": -0.43,
+        "volumen": 7578399.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "GD35",
       "nombre": "Bono GD35",
       "sector": "Soberanos USD",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 126700.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_GD35_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 126790.0,
+        "px_bid": 126600.0,
+        "px_ask": 126790.0,
+        "pct_change": 0.03,
+        "volumen": 6543454.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "GD38",
       "nombre": "Bono GD38",
       "sector": "Soberanos USD",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 132450.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_GD38_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 132450.0,
+        "px_bid": 132000.0,
+        "px_ask": 132450.0,
+        "pct_change": 0.18,
+        "volumen": 3006088.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "GD41",
       "nombre": "Bono GD41",
       "sector": "Soberanos USD",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 118100.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_GD41_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 118100.0,
+        "px_bid": 117600.0,
+        "px_ask": 118200.0,
+        "pct_change": 0.25,
+        "volumen": 3814971.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "GD46",
       "nombre": "Bono GD46",
       "sector": "Soberanos USD",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 113290.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_GD46_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 113290.0,
+        "px_bid": 112610.0,
+        "px_ask": 113290.0,
+        "pct_change": -0.18,
+        "volumen": 402389.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "GN49O",
       "nombre": "Genneia ON 2033 (Clase XLIX)",
       "sector": "Utilities",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 158450.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_GN49O_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 158450.0,
+        "px_bid": 156000.0,
+        "px_ask": 159490.0,
+        "pct_change": -0.59,
+        "volumen": 110000.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "IRCFO",
       "nombre": "IRSA ON 2028 (Clase XIV)",
       "sector": "Real estate",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 76600.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_IRCFO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 76600.0,
+        "px_bid": 75500.0,
+        "px_ask": 76990.0,
+        "pct_change": 0.78,
+        "volumen": 116988.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
+    },
+    {
+      "ticker": "IRCPO",
+      "nombre": "IRSA ON 2035 (Clase XXIV)",
+      "sector": "Real estate",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
+      "precio": 163800.0,
+      "precio_tipo": "ultimo_cierre",
+      "variacion_pct": null,
+      "error": false,
+      "precio_fuente": "historico_2026-06-26_IRCPO_24HS",
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 163800.0,
+        "px_bid": 163720.0,
+        "px_ask": 163800.0,
+        "pct_change": 0.46,
+        "volumen": 332421.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "NDT5D",
       "nombre": "Bono Neuquén 2030 USD",
       "sector": "Provincial Neuquén",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 63.64,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_NDT5D_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 63.64,
+        "px_bid": 63.64,
+        "px_ask": 63.99,
+        "pct_change": -0.25,
+        "volumen": 59063.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "PM29D",
       "nombre": "Bono Mendoza 2029 USD",
       "sector": "Provincial Mendoza",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 47.1,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_PM29D_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 47.1,
+        "px_bid": 46.68,
+        "px_ask": 47.1,
+        "pct_change": 0.64,
+        "volumen": 1000.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "PN35O",
       "nombre": "Pan American ON 2029 (Clase XXXV)",
       "sector": "Petróleo y gas",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 160600.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_PN35O_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 160600.0,
+        "px_bid": 159880.0,
+        "px_ask": 160590.0,
+        "pct_change": 0.29,
+        "volumen": 42154.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "PNDCO",
       "nombre": "Pan American ON 2027 (Clase XII)",
       "sector": "Petróleo y gas",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 64580.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_PNDCO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 64580.0,
+        "px_bid": 64580.0,
+        "px_ask": 66880.0,
+        "pct_change": 0.32,
+        "volumen": 30000.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "PNECO",
       "nombre": "Pan American ON 2031 (Clase XIII)",
       "sector": "Petróleo y gas",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 124300.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_PNECO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "PNICO",
       "nombre": "Pan American ON 2032 (Clase XVII)",
       "sector": "Petróleo y gas",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 129000.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_PNICO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "PNRCO",
       "nombre": "Pan American ON 2028 (Clase XXVI)",
       "sector": "Petróleo y gas",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 142250.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_PNRCO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 142250.0,
+        "px_bid": 142250.0,
+        "px_ask": 145250.0,
+        "pct_change": 0.03,
+        "volumen": 11.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "RAC5O",
       "nombre": "Raghsa ON 2030 (Clase V)",
       "sector": "Utilities",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 148037.832,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_RAC5O_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "RUCDO",
       "nombre": "MSU Energy ON 2030",
       "sector": "Real estate",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 157390.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_RUCDO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 157390.0,
+        "px_bid": 157150.0,
+        "px_ask": 158000.0,
+        "pct_change": 0.12,
+        "volumen": 71467.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "S17L6",
       "nombre": "Lecap S17L6 (jul 2026 corta)",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 106.73,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_S17L6_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "S30N6",
       "nombre": "Lecap S30N6 (nov 2026)",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 118.11,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_S30N6_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "S30O6",
       "nombre": "Lecap S30O6 (oct 2026)",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 125.06,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_S30O6_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "S31G6",
       "nombre": "Lecap S31G6 (ago 2026)",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 122.4,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_S31G6_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "S31L6",
       "nombre": "Lecap S31L6 (jul 2026)",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 115.38,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_S31L6_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "SA24D",
       "nombre": "Bono Salta 2027 USD (reestructurado)",
       "sector": "Provincial Salta",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 58290.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_SA24D_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 58290.0,
+        "px_bid": 57400.0,
+        "px_ask": 58290.0,
+        "pct_change": 3.16,
+        "volumen": 3458.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "SPYD",
       "nombre": "CEDEAR SPYD (ETF S&P Dividend)",
       "sector": "CEDEAR",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 12.61,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_SPYD_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "T30J6",
       "nombre": "Letra / bono corto T30J6",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 144.795,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_T30J6_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 144.795,
+        "px_bid": 144.785,
+        "px_ask": 144.795,
+        "pct_change": 0.19,
+        "volumen": 58426333642.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
+    },
+    {
+      "ticker": "TLCFO",
+      "nombre": "Telecom ON 2028 (Clase 14)",
+      "sector": "Telecomunicaciones",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
+      "precio": 130000.0,
+      "precio_tipo": "ultimo_cierre",
+      "variacion_pct": null,
+      "error": false,
+      "precio_fuente": "historico_2026-06-26_TLCFO_24HS",
+      "precio_etiqueta": "cierre anterior",
+      "fuentes_consultadas": [
+        "byma"
+      ]
     },
     {
       "ticker": "TLCMO",
       "nombre": "Telecom ON 2031 (Clase XXI)",
       "sector": "Telecomunicaciones",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 174600.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_TLCMO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 174600.0,
+        "px_bid": 171670.0,
+        "px_ask": 176950.0,
+        "pct_change": 0.02,
+        "volumen": 93000.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
+    },
+    {
+      "ticker": "TLCPO",
+      "nombre": "Telecom ON 2033 (Clase 24)",
+      "sector": "Telecomunicaciones",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
+      "precio": 166900.0,
+      "precio_tipo": "ultimo_cierre",
+      "variacion_pct": null,
+      "error": false,
+      "precio_fuente": "historico_2026-06-26_TLCPO_24HS",
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 166900.0,
+        "px_bid": 166900.0,
+        "px_ask": 167700.0,
+        "pct_change": -0.42,
+        "volumen": 291369.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
+    },
+    {
+      "ticker": "TLCTO",
+      "nombre": "Telecom ON 2036 (Clase 27)",
+      "sector": "Telecomunicaciones",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
+      "precio": 169250.0,
+      "precio_tipo": "ultimo_cierre",
+      "variacion_pct": null,
+      "error": false,
+      "precio_fuente": "historico_2026-06-26_TLCTO_24HS",
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 169250.0,
+        "px_bid": 167260.0,
+        "px_ask": 169250.0,
+        "pct_change": 1.43,
+        "volumen": 267920.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "TSC3O",
       "nombre": "TGS ON 2031 (Clase 3)",
       "sector": "Telecomunicaciones",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 169400.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_TSC3O_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 169400.0,
+        "px_bid": 168570.0,
+        "px_ask": 169350.0,
+        "pct_change": -0.65,
+        "volumen": 367000.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
+    },
+    {
+      "ticker": "TSC4O",
+      "nombre": "TGS ON 2035 (Clase 4)",
+      "sector": "Telecomunicaciones",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
+      "precio": 160900.0,
+      "precio_tipo": "ultimo_cierre",
+      "variacion_pct": null,
+      "error": false,
+      "precio_fuente": "historico_2026-06-26_TSC4O_24HS",
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 160900.0,
+        "px_bid": 160520.0,
+        "px_ask": 160890.0,
+        "pct_change": -0.3,
+        "volumen": 43000.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "TTC9O",
       "nombre": "Tecpetrol ON 2029 (Clase IX)",
       "sector": "Gas natural",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 157480.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_TTC9O_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 157480.0,
+        "px_bid": 156500.0,
+        "px_ask": 157480.0,
+        "pct_change": 0.05,
+        "volumen": 8459.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "TTCDO",
       "nombre": "Tecpetrol ON 2030 (Clase XII)",
       "sector": "Gas natural",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 161690.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_TTCDO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 161690.0,
+        "px_bid": 158620.0,
+        "px_ask": 164700.0,
+        "pct_change": -0.01,
+        "volumen": 40000.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "TVPP",
       "nombre": "Bono TVPP (dollar-linked)",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 11.6,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_TVPP_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 11.6,
+        "px_bid": 11.152,
+        "px_ask": 11.6,
+        "pct_change": -4.13,
+        "volumen": 25006084.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "TX26",
       "nombre": "Bono TX26 (Boncer)",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 702.9,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_TX26_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 702.9,
+        "px_bid": 702.9,
+        "px_ask": 703.3,
+        "pct_change": 0.12,
+        "volumen": 2057530149.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "TX28",
       "nombre": "Bono TX28 (Boncer)",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 1665.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_TX28_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 1665.0,
+        "px_bid": 1660.0,
+        "px_ask": 1665.0,
+        "pct_change": 0.84,
+        "volumen": 6773369.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "TZX26",
       "nombre": "Bono TZX26 (Boncer cupón cero)",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 394.65,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_TZX26_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 394.65,
+        "px_bid": 394.65,
+        "px_ask": 394.7,
+        "pct_change": 0.21,
+        "volumen": 6927876461.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "TZXD6",
       "nombre": "Bono TZXD6 (Boncer)",
       "sector": "Soberanos ARS",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 287.5,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_TZXD6_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 287.5,
+        "px_bid": 287.4,
+        "px_ask": 287.5,
+        "pct_change": 0.17,
+        "volumen": 3023922714.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "YFCJO",
       "nombre": "YPF Luz ON 2032",
       "sector": "Utilities",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 161800.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_YFCJO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 161800.0,
+        "px_bid": 160790.0,
+        "px_ask": 164180.0,
+        "pct_change": 0.09,
+        "volumen": 40000.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "YM39O",
       "nombre": "YPF ON 2030 (Clase XXXIX)",
       "sector": "Petróleo y gas",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 171300.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_YM39O_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 171050.0,
+        "px_bid": 171300.0,
+        "px_ask": 176950.0,
+        "pct_change": 0.02,
+        "volumen": 88961.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "YM42O",
       "nombre": "YPF ON 2029 (Clase XLII)",
       "sector": "Petróleo y gas",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 158330.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_YM42O_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 158330.0,
+        "px_bid": 156100.0,
+        "px_ask": 158710.0,
+        "pct_change": 0.08,
+        "volumen": 39950.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "YMCIO",
       "nombre": "YPF ON 2029",
       "sector": "Petróleo y gas",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 167400.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_YMCIO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 167400.0,
+        "px_bid": 166160.0,
+        "px_ask": 167400.0,
+        "pct_change": 0.68,
+        "volumen": 322045.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     },
     {
       "ticker": "YMCXO",
       "nombre": "YPF ON 2031 (Clase XXXI)",
       "sector": "Petróleo y gas",
-      "timestamp_consulta": "2026-06-28T15:40:40-03:00",
+      "timestamp_consulta": "2026-06-28T15:52:16-03:00",
       "precio": 169450.0,
       "precio_tipo": "ultimo_cierre",
       "variacion_pct": null,
       "error": false,
       "precio_fuente": "historico_2026-06-26_YMCXO_24HS",
-      "precio_etiqueta": "cierre anterior"
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 169450.0,
+        "px_bid": 169050.0,
+        "px_ask": 169450.0,
+        "pct_change": 0.32,
+        "volumen": 1124763.0,
+        "panel": "arg_corp",
+        "fuente": "data912.com"
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ]
     }
   ]
 }

@@ -163,6 +163,22 @@ Errores frecuentes:
 
 ---
 
+## Fuentes de datos
+
+| Dato | Fuente principal | Complementaria |
+|------|------------------|----------------|
+| Precios, variación, histórico BYMA | [BYMA Open Data](https://www.byma.com.ar/) vía [PyOBD](https://github.com/franco-lamas/PyOBD) | **[Data912](https://data912.com)** — `precio_backup` vía `/live/arg_bonds` + `/live/arg_corp` (2 req/corrida) |
+| Vencimiento, cupón, TIR ref., sector | `docs/data/info_fija.json` (manual + prospectos) | Ficha técnica BYMA (`get_equity_profile`) en scripts de descubrimiento |
+| **Tipo de cambio ARS/USD** | — | **[DolarAPI](https://dolarapi.com)** — dólar oficial y MEP (`/v1/dolares/oficial`, `/v1/dolares/bolsa`) |
+
+El tipo de cambio se guarda en `cotizaciones.json` bajo `tipo_cambio` con `timestamp_consulta` propio. **No reemplaza** precios BYMA ni convierte automáticamente TIR entre monedas: el panel filtra por `moneda` en `info_fija.json`. Los precios BYMA de bonos/ONs usan escala `/1000` (convención BYMA), no un FX hardcodeado.
+
+Si DolarAPI falla, el fetch BYMA continúa igual que antes.
+
+Data912 se consulta **una vez por corrida** (paneles completos `arg_bonds` + `arg_corp`); el precio mostrado sigue siendo BYMA. Cada instrumento puede incluir `precio_backup` y `fuentes_consultadas: ["byma", "data912"]` en `cotizaciones.json`.
+
+---
+
 ## Datos fijos (`info_fija.json`)
 
 Complementa cotizaciones con vencimiento, cupón, amortización, sector, ley y **TIR de referencia** (aprox. jun 2026). El panel calcula **TIR mercado (aprox.)** en el navegador desde el precio BYMA (`core.js`, bisección bullet; amortización parcial usa referencia).

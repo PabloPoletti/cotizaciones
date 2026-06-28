@@ -16,6 +16,7 @@
           Última actualización:
           <strong id="ultima-actualizacion">Cargando…</strong>
         </p>
+        <p id="tipo-cambio-meta" class="header__meta hidden" aria-live="polite"></p>
         <div id="alerta-fetch-status" class="alert hidden" role="status"></div>
         <div id="alerta-antiguedad" class="alert alert--warning hidden" role="status">
           Los datos tienen más de 2 horas de antigüedad. El mercado puede estar cerrado o el workflow de actualización pudo fallar.
@@ -207,6 +208,25 @@
     <!-- Resumen -->
     <div id="panel-resumen" class="tab-panel" role="tabpanel">
       <div id="resumen-kpis" class="kpi-grid"></div>
+      <section class="panel-section" id="seccion-conversion-ars">
+        <h2>Instrumentos ARS — referencia en USD (MEP)</h2>
+        <p class="header__meta">
+          Conversión de referencia usando dólar MEP (venta DolarAPI); no es el precio de mercado del instrumento en USD.
+        </p>
+        <div class="table-wrap">
+          <table id="tabla-conversion-ars">
+            <thead>
+              <tr>
+                <th>Ticker</th>
+                <th>Instrumento</th>
+                <th class="num">Precio (ARS)</th>
+                <th class="num">≈ USD ref.</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
       <section class="panel-section">
         <h2>Mejor TIR efectiva por sector</h2>
         <div class="table-wrap"><table id="tabla-ranking-sector"><thead><tr><th>Sector</th><th>Ticker</th><th class="num">TIR eff.</th><th>Vencimiento</th></tr></thead><tbody></tbody></table></div>

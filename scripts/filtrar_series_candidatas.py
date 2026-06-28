@@ -12,6 +12,22 @@ from pathlib import Path
 from pyobd import BymaData
 
 from descubrir_series import EMISORES, MUESTRA_KEYS, descubrir_emisor
+
+# Emisores pendientes tras la muestra inicial (YPF, Tecpetrol, Pan American, Genneia).
+RESTO_KEYS = (
+    "tgs",
+    "edenor",
+    "telecom",
+    "irsa",
+    "raghsa",
+    "msu",
+    "cordoba",
+    "mendoza",
+    "salta",
+    "neuquen",
+    "buenos_aires",
+    "caba",
+)
 from historico_precios import DIAS_LIQUIDEZ_DEFAULT, calcular_metricas, df_a_serie, fetch_daily_history
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -121,8 +137,32 @@ def filtrar_emisor(candidatos: list[dict], p33: float | None, cliente: BymaData,
 
 
 def main() -> int:
+    import argparse
+
+    ap = argparse.ArgumentParser(description="Filtra candidatos descubiertos por criterios de inclusión.")
+    ap.add_argument(
+        "--grupo",
+        choices=("muestra", "resto", "all"),
+        default="resto",
+        help="muestra=4 emisores iniciales; resto=12 emisores pendientes; all=todos",
+    )
+    ap.add_argument("--json", type=Path, help="Ruta del reporte JSON de salida")
+    args = ap.parse_args()
+
+    if args.grupo == "muestra":
+        keys = MUESTRA_KEYS
+        default_out = RAIZ / "docs" / "data" / "descubrimiento_filtrado_muestra.json"
+    elif args.grupo == "resto":
+        keys = RESTO_KEYS
+        default_out = RAIZ / "docs" / "data" / "descubrimiento_filtrado_resto.json"
+    else:
+        keys = tuple(EMISORES.keys())
+        default_out = RAIZ / "docs" / "data" / "descubrimiento_filtrado_all.json"
+    out = args.json or default_out
+
     panel = {k for k in json.loads(INFO.read_text(encoding="utf-8")) if not k.startswith("_")}
     p33 = umbral_liquidez_panel()
+    print(f"Grupo: {args.grupo} ({len(keys)} emisores)")
     print(f"Umbral liquidez (p33 panel, {len(panel)} inst.): {p33}")
 
     cliente = BymaData()
@@ -131,6 +171,7 @@ def main() -> int:
 
     reporte = {
         "fecha": datetime.now().isoformat(),
+        "grupo": args.grupo,
         "criterios": {
             "vencimiento_minimo": "2028-01-01",
             "liquidez_minima": f"volumen_promedio >= p33 panel ({p33})",
@@ -142,7 +183,7 @@ def main() -> int:
     }
 
     total_sel = 0
-    for key in MUESTRA_KEYS:
+    for key in keys:
         cfg = EMISORES[key]
         desc = descubrir_emisor(cliente, key, cfg, corp_bases, panel, 0.08)
         filtrado = filtrar_emisor(desc["series"], p33, cliente, 0.08)
@@ -161,8 +202,11 @@ def main() -> int:
                 f"vol prom {s['volumen_promedio']:.0f} — {s.get('clase', '')}"
             )
 
-    reporte["resumen"] = {"series_seleccionadas_total": total_sel}
-    out = RAIZ / "docs" / "data" / "descubrimiento_filtrado_muestra.json"
+    reporte["resumen"] = {
+        "series_seleccionadas_total": total_sel,
+        "instrumentos_panel_antes": len(panel),
+        "instrumentos_panel_despues_estimado": len(panel) + total_sel,
+    }
     out.write_text(json.dumps(reporte, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\nReporte: {out}")
     print(f"Total seleccionadas: {total_sel}")

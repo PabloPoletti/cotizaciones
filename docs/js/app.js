@@ -35,6 +35,7 @@
   let tabsInited = { analisis: false, resumen: false, observaciones: false };
 
   const elUltimaAct = document.getElementById("ultima-actualizacion");
+  const elTipoCambioMeta = document.getElementById("tipo-cambio-meta");
   const elAlertaFetchStatus = document.getElementById("alerta-fetch-status");
   const elAlertaAntiguedad = document.getElementById("alerta-antiguedad");
   const elAlertaError = document.getElementById("alerta-error");
@@ -80,6 +81,48 @@
           ? "alert--info"
           : "alert--warning"
     );
+  }
+
+  function formatearArs(valor) {
+    if (valor == null || Number.isNaN(valor)) return "—";
+    return new Intl.NumberFormat("es-AR", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(valor);
+  }
+
+  function formatearArsConSimbolo(valor) {
+    if (valor == null || Number.isNaN(valor)) return "—";
+    return `$${formatearArs(valor)}`;
+  }
+
+  function parCompraVenta(compra, venta) {
+    if (compra == null && venta == null) return null;
+    const c = compra != null ? formatearArsConSimbolo(compra) : "—";
+    const v = venta != null ? formatearArsConSimbolo(venta) : "—";
+    return `${c} / ${v}`;
+  }
+
+  function renderizarTipoCambio() {
+    if (!elTipoCambioMeta) return;
+    const tc = C.state.cotizaciones?.tipo_cambio;
+    if (!tc || tc.error) {
+      elTipoCambioMeta.classList.add("hidden");
+      elTipoCambioMeta.textContent = "";
+      return;
+    }
+    const partes = [];
+    const parOficial = parCompraVenta(tc.oficial?.compra_ars, tc.oficial?.venta_ars);
+    if (parOficial) partes.push(`Oficial: ${parOficial}`);
+    const parMep = parCompraVenta(tc.mep?.compra_ars, tc.mep?.venta_ars);
+    if (parMep) partes.push(`MEP: ${parMep}`);
+    if (!partes.length) {
+      elTipoCambioMeta.classList.add("hidden");
+      return;
+    }
+    const ts = tc.timestamp_consulta ? C.formatearFecha(tc.timestamp_consulta) : "";
+    elTipoCambioMeta.textContent = `${partes.join(" · ")}${ts ? ` — ${ts}` : ""}`;
+    elTipoCambioMeta.classList.remove("hidden");
   }
 
   function semaforoHtml(ticker) {
@@ -388,6 +431,51 @@
     }
   }
 
+  function esInstrumentoArsReferencia(row) {
+    const moneda = (row.moneda || row.info.moneda || "").toUpperCase();
+    if (!moneda.startsWith("ARS")) return false;
+    const nombre = (row.item.nombre || row.info.nombre || "").toLowerCase();
+    return nombre.includes("lecap") || nombre.includes("boncer");
+  }
+
+  function mepVentaReferencia() {
+    const tc = C.state.cotizaciones?.tipo_cambio;
+    const v = tc?.mep?.venta_ars;
+    return v != null && v > 0 ? v : null;
+  }
+
+  function renderConversionArsUsd(enriquecidos) {
+    const seccion = document.getElementById("seccion-conversion-ars");
+    const tbody = document.querySelector("#tabla-conversion-ars tbody");
+    if (!seccion || !tbody) return;
+
+    const mep = mepVentaReferencia();
+    const filas = enriquecidos
+      .filter(esInstrumentoArsReferencia)
+      .filter((r) => r.item.precio != null && !r.item.error)
+      .sort((a, b) => a.item.ticker.localeCompare(b.item.ticker));
+
+    if (!mep || !filas.length) {
+      seccion.classList.add("hidden");
+      tbody.innerHTML = "";
+      return;
+    }
+
+    seccion.classList.remove("hidden");
+    tbody.innerHTML = filas
+      .map((row) => {
+        const precioArs = row.item.precio;
+        const usdRef = precioArs / mep;
+        return `<tr>
+          <td class="ticker">${C.escapeHtml(row.item.ticker)}</td>
+          <td>${C.escapeHtml(row.item.nombre || row.info.nombre || "")}</td>
+          <td class="num">${formatearArs(precioArs)} ARS</td>
+          <td class="num">≈ ${C.formatearPrecio(usdRef)} USD <span class="meta">ref. MEP</span></td>
+        </tr>`;
+      })
+      .join("");
+  }
+
   function renderResumen() {
     const porMoneda = A.calcularKPIsPorMoneda(enriquecidos);
     const el = document.getElementById("resumen-kpis");
@@ -440,6 +528,7 @@
         )
         .join("");
     }
+    renderConversionArsUsd(enriquecidos);
   }
 
   function renderObservaciones() {
@@ -671,6 +760,7 @@
       elUltimaAct.textContent = C.formatearFecha(dataCotiz.ultima_actualizacion);
       elAlertaAntiguedad.classList.toggle("hidden", !C.esDatosAntiguos(dataCotiz.ultima_actualizacion));
       renderizarEstadoFetch();
+      renderizarTipoCambio();
 
       elLoading.classList.add("hidden");
       elCotizToolbar.classList.remove("hidden");

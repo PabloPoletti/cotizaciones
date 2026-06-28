@@ -1,0 +1,635 @@
+{
+  "fecha": "2026-06-28T15:48:30.158421",
+  "grupo": "resto",
+  "criterios": {
+    "vencimiento_minimo": "2028-01-01",
+    "liquidez_minima": "volumen_promedio >= p33 panel (117810.0)",
+    "max_por_emisor": 3,
+    "ventana_vencimiento_ideal": "2028-2033"
+  },
+  "emisores": {
+    "tgs": {
+      "nombre": "TGS",
+      "en_panel": [],
+      "candidatos_nuevos_con_precio": 1,
+      "rechazados": [],
+      "aprobados_pool": [
+        {
+          "ticker": "TSC4O",
+          "clase": "Clase 4",
+          "vencimiento": "2035-11-20",
+          "emisor_byma": "TRANSPORTADORA DE GAS DEL SUR S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 160900.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TSC4O 24HS",
+          "isin": "USP9308RBB89",
+          "vencimiento_date": "2035-11-20",
+          "volumen_promedio": 166040.0,
+          "puntaje": 5.720212724706482
+        }
+      ],
+      "seleccionados": [
+        {
+          "ticker": "TSC4O",
+          "clase": "Clase 4",
+          "vencimiento": "2035-11-20",
+          "emisor_byma": "TRANSPORTADORA DE GAS DEL SUR S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 160900.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TSC4O 24HS",
+          "isin": "USP9308RBB89",
+          "vencimiento_date": "2035-11-20",
+          "volumen_promedio": 166040.0,
+          "puntaje": 5.720212724706482
+        }
+      ]
+    },
+    "edenor": {
+      "nombre": "Edenor",
+      "en_panel": [
+        "DNC7O"
+      ],
+      "candidatos_nuevos_con_precio": 4,
+      "rechazados": [
+        {
+          "ticker": "DNC3O",
+          "clase": "CLASE 3",
+          "vencimiento": "2026-11-22",
+          "emisor_byma": "EMPRESA DISTRIB. Y COMERCIALZADORA NORTE S.A. (EDENOR S.A.)",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 153250.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "DNC3O 24HS",
+          "isin": "AR0140482933",
+          "motivo": "vencimiento 2026-11-22 < 2028"
+        },
+        {
+          "ticker": "DNC5O",
+          "clase": "CLASE 5",
+          "vencimiento": "2028-08-05",
+          "emisor_byma": "EMPRESA DISTRIB. Y COMERCIALZADORA NORTE S.A. (EDENOR S.A.)",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 164500.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "DNC5O 24HS",
+          "isin": "AR0674196495",
+          "motivo": "liquidez baja (vol prom 82540 < p33 panel 117810)",
+          "volumen_promedio": 82539.68
+        },
+        {
+          "ticker": "DNC9O",
+          "clase": "Clase 9",
+          "vencimiento": "2026-08-07",
+          "emisor_byma": "EMPRESA DISTRIB. Y COMERCIALZADORA NORTE S.A. (EDENOR S.A.)",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 103.3,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "DNC9O 24HS",
+          "isin": "AR0859113117",
+          "motivo": "vencimiento 2026-08-07 < 2028"
+        }
+      ],
+      "aprobados_pool": [
+        {
+          "ticker": "DNCAO",
+          "clase": "Clase 10",
+          "vencimiento": "2033-04-28",
+          "emisor_byma": "EMPRESA DISTRIB. Y COMERCIALZADORA NORTE S.A. (EDENOR S.A.)",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 157400.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "DNCAO 24HS",
+          "isin": "USP3710FBA14",
+          "vencimiento_date": "2033-04-28",
+          "volumen_promedio": 281520.0,
+          "puntaje": 7.949509253827135
+        }
+      ],
+      "seleccionados": [
+        {
+          "ticker": "DNCAO",
+          "clase": "Clase 10",
+          "vencimiento": "2033-04-28",
+          "emisor_byma": "EMPRESA DISTRIB. Y COMERCIALZADORA NORTE S.A. (EDENOR S.A.)",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 157400.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "DNCAO 24HS",
+          "isin": "USP3710FBA14",
+          "vencimiento_date": "2033-04-28",
+          "volumen_promedio": 281520.0,
+          "puntaje": 7.949509253827135
+        }
+      ]
+    },
+    "telecom": {
+      "nombre": "Telecom",
+      "en_panel": [],
+      "candidatos_nuevos_con_precio": 12,
+      "rechazados": [
+        {
+          "ticker": "TLCDO",
+          "clase": "CLASE 12",
+          "vencimiento": "2027-03-09",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 146740.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCDO 24HS",
+          "isin": "ARTECO5600E0",
+          "motivo": "vencimiento 2027-03-09 < 2028"
+        },
+        {
+          "ticker": "TLCJO",
+          "clase": "CLASE 18",
+          "vencimiento": "2027-11-17",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 114280.253,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCJO 24HS",
+          "isin": "AR0041103448",
+          "motivo": "vencimiento 2027-11-17 < 2028"
+        },
+        {
+          "ticker": "TLCKO",
+          "clase": "CLASE 19",
+          "vencimiento": "2026-11-17",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 145000.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCKO 24HS",
+          "isin": "AR0849737462",
+          "motivo": "vencimiento 2026-11-17 < 2028"
+        },
+        {
+          "ticker": "TLCOO",
+          "clase": "Clase 23",
+          "vencimiento": "2028-11-28",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 154820.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCOO 24HS",
+          "isin": "AR0241562484",
+          "motivo": "liquidez baja (vol prom 37798 < p33 panel 117810)",
+          "volumen_promedio": 37798.48
+        },
+        {
+          "ticker": "TLCQO",
+          "clase": "Clase 25",
+          "vencimiento": "2027-07-02",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 159000.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCQO 24HS",
+          "isin": "AR0006792755",
+          "motivo": "vencimiento 2027-07-02 < 2028"
+        },
+        {
+          "ticker": "TLCRO",
+          "clase": "Clase 26",
+          "vencimiento": "2026-07-18",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 98.3,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCRO 24HS",
+          "isin": "AR0103723521",
+          "motivo": "vencimiento 2026-07-18 < 2028"
+        },
+        {
+          "ticker": "TLCUO",
+          "clase": "Clase 28",
+          "vencimiento": "2029-03-05",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 156990.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCUO 24HS",
+          "isin": "AR0857544677",
+          "motivo": "liquidez baja (vol prom 26637 < p33 panel 117810)",
+          "volumen_promedio": 26637.04
+        },
+        {
+          "ticker": "TLCVO",
+          "clase": "Clase 30",
+          "vencimiento": "2030-05-29",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 153000.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCVO 24HS",
+          "isin": "AR0931859976",
+          "motivo": "liquidez baja (vol prom 1087 < p33 panel 117810)",
+          "volumen_promedio": 1087.07
+        },
+        {
+          "ticker": "TLCWO",
+          "clase": "Clase 30",
+          "vencimiento": "2030-05-29",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 152000.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCWO 24HS",
+          "isin": "AR0931859976",
+          "motivo": "liquidez baja (vol prom 41528 < p33 panel 117810)",
+          "volumen_promedio": 41528.27
+        }
+      ],
+      "aprobados_pool": [
+        {
+          "ticker": "TLCPO",
+          "clase": "Clase 24",
+          "vencimiento": "2033-05-28",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 166900.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCPO 24HS",
+          "isin": "USP9028NCA74",
+          "vencimiento_date": "2033-05-28",
+          "volumen_promedio": 336785.88,
+          "puntaje": 8.027353875088206
+        },
+        {
+          "ticker": "TLCFO",
+          "clase": "CLASE 14",
+          "vencimiento": "2028-02-10",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 130000.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCFO 24HS",
+          "isin": "ARTECO5600G5",
+          "vencimiento_date": "2028-02-10",
+          "volumen_promedio": 122234.25,
+          "puntaje": 7.087192912141259
+        },
+        {
+          "ticker": "TLCTO",
+          "clase": "CLASE 27",
+          "vencimiento": "2036-01-20",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 169250.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCTO 24HS",
+          "isin": "USP9028NCE96",
+          "vencimiento_date": "2036-01-20",
+          "volumen_promedio": 301839.48,
+          "puntaje": 6.479776044004081
+        }
+      ],
+      "seleccionados": [
+        {
+          "ticker": "TLCPO",
+          "clase": "Clase 24",
+          "vencimiento": "2033-05-28",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 166900.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCPO 24HS",
+          "isin": "USP9028NCA74",
+          "vencimiento_date": "2033-05-28",
+          "volumen_promedio": 336785.88,
+          "puntaje": 8.027353875088206
+        },
+        {
+          "ticker": "TLCFO",
+          "clase": "CLASE 14",
+          "vencimiento": "2028-02-10",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 130000.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCFO 24HS",
+          "isin": "ARTECO5600G5",
+          "vencimiento_date": "2028-02-10",
+          "volumen_promedio": 122234.25,
+          "puntaje": 7.087192912141259
+        },
+        {
+          "ticker": "TLCTO",
+          "clase": "CLASE 27",
+          "vencimiento": "2036-01-20",
+          "emisor_byma": "TELECOM ARGENTINA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 169250.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "TLCTO 24HS",
+          "isin": "USP9028NCE96",
+          "vencimiento_date": "2036-01-20",
+          "volumen_promedio": 301839.48,
+          "puntaje": 6.479776044004081
+        }
+      ]
+    },
+    "irsa": {
+      "nombre": "IRSA",
+      "en_panel": [
+        "IRCFO"
+      ],
+      "candidatos_nuevos_con_precio": 5,
+      "rechazados": [
+        {
+          "ticker": "IRCJO",
+          "clase": "Clase XVIII",
+          "vencimiento": "2027-02-28",
+          "emisor_byma": "IRSA INVERSIONES Y REPRESENTACIONES S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 158800.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "IRCJO 24HS",
+          "isin": "AR0961375257",
+          "motivo": "vencimiento 2027-02-28 < 2028"
+        },
+        {
+          "ticker": "IRCNO",
+          "clase": "Clase XXII",
+          "vencimiento": "2027-10-23",
+          "emisor_byma": "IRSA INVERSIONES Y REPRESENTACIONES S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 158970.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "IRCNO 24HS",
+          "isin": "AR0275431465",
+          "motivo": "vencimiento 2027-10-23 < 2028"
+        },
+        {
+          "ticker": "IRCOO",
+          "clase": "Clase XXIII",
+          "vencimiento": "2029-10-23",
+          "emisor_byma": "IRSA INVERSIONES Y REPRESENTACIONES S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 161890.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "IRCOO 24HS",
+          "isin": "AR0084572384",
+          "motivo": "liquidez baja (vol prom 52006 < p33 panel 117810)",
+          "volumen_promedio": 52005.64
+        },
+        {
+          "ticker": "IRCQO",
+          "clase": "Clase XXV",
+          "vencimiento": "2027-06-08",
+          "emisor_byma": "IRSA INVERSIONES Y REPRESENTACIONES S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 151500.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "IRCQO 24HS",
+          "isin": "AR0336616088",
+          "motivo": "vencimiento 2027-06-08 < 2028"
+        }
+      ],
+      "aprobados_pool": [
+        {
+          "ticker": "IRCPO",
+          "clase": "Clase XXIV",
+          "vencimiento": "2035-03-31",
+          "emisor_byma": "IRSA INVERSIONES Y REPRESENTACIONES S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 163800.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "IRCPO 24HS",
+          "isin": "USP58809BU07",
+          "vencimiento_date": "2035-03-31",
+          "volumen_promedio": 403920.0,
+          "puntaje": 6.60629535768743
+        }
+      ],
+      "seleccionados": [
+        {
+          "ticker": "IRCPO",
+          "clase": "Clase XXIV",
+          "vencimiento": "2035-03-31",
+          "emisor_byma": "IRSA INVERSIONES Y REPRESENTACIONES S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 163800.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "IRCPO 24HS",
+          "isin": "USP58809BU07",
+          "vencimiento_date": "2035-03-31",
+          "volumen_promedio": 403920.0,
+          "puntaje": 6.60629535768743
+        }
+      ]
+    },
+    "raghsa": {
+      "nombre": "Raghsa",
+      "en_panel": [
+        "RAC5O"
+      ],
+      "candidatos_nuevos_con_precio": 1,
+      "rechazados": [
+        {
+          "ticker": "RAC7O",
+          "clase": "Clase 7",
+          "vencimiento": "2032-12-11",
+          "emisor_byma": "RAGHSA S. A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 151468.008,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "RAC7O 24HS",
+          "isin": "USP79849AF54",
+          "motivo": "liquidez baja (vol prom 14000 < p33 panel 117810)",
+          "volumen_promedio": 14000.0
+        }
+      ],
+      "aprobados_pool": [],
+      "seleccionados": []
+    },
+    "msu": {
+      "nombre": "MSU Energy",
+      "en_panel": [
+        "RUCDO"
+      ],
+      "candidatos_nuevos_con_precio": 5,
+      "rechazados": [
+        {
+          "ticker": "MSSBO",
+          "clase": "Serie XI",
+          "vencimiento": "2026-11-14",
+          "emisor_byma": "MSU S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 116500.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "MSSBO 24HS",
+          "isin": "ARLEDE5600D8",
+          "motivo": "vencimiento 2026-11-14 < 2028"
+        },
+        {
+          "ticker": "MSSDO",
+          "clase": "Serie XII",
+          "vencimiento": "2032-11-14",
+          "emisor_byma": "MSU S.A.",
+          "en_panel": false,
+          "tiene_precio": false,
+          "ultimo_cierre": null,
+          "fecha_cierre": null,
+          "simbolo_historico": null,
+          "isin": "ARLEDE5600E6",
+          "motivo": "sin precio BYMA"
+        },
+        {
+          "ticker": "MSSEO",
+          "clase": "SERIE XIII",
+          "vencimiento": "2026-07-17",
+          "emisor_byma": "MSU S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 159500.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "MSSEO 24HS",
+          "isin": "ARMSUS5600F5",
+          "motivo": "vencimiento 2026-07-17 < 2028"
+        },
+        {
+          "ticker": "MSSFO",
+          "clase": "SERIE XIV",
+          "vencimiento": "2027-07-23",
+          "emisor_byma": "MSU S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 154000.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "MSSFO 24HS",
+          "isin": "AR0820572623",
+          "motivo": "vencimiento 2027-07-23 < 2028"
+        },
+        {
+          "ticker": "MSSGO",
+          "clase": "Serie XV",
+          "vencimiento": "2029-04-16",
+          "emisor_byma": "MSU S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 154450.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "MSSGO 24HS",
+          "isin": "AR0268611834",
+          "motivo": "liquidez baja (vol prom 17111 < p33 panel 117810)",
+          "volumen_promedio": 17111.4
+        },
+        {
+          "ticker": "RUCEO",
+          "clase": "Clase XIII",
+          "vencimiento": "2027-10-30",
+          "emisor_byma": "MSU ENERGY S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 151800.0,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "RUCEO 24HS",
+          "isin": "AR0207865277",
+          "motivo": "vencimiento 2027-10-30 < 2028"
+        }
+      ],
+      "aprobados_pool": [],
+      "seleccionados": []
+    },
+    "cordoba": {
+      "nombre": "Córdoba",
+      "en_panel": [],
+      "candidatos_nuevos_con_precio": 1,
+      "rechazados": [
+        {
+          "ticker": "COC2D",
+          "clase": "Clase II",
+          "vencimiento": "2026-08-22",
+          "emisor_byma": "BANCO DE LA PROVINCIA DE CORDOBA S.A.",
+          "en_panel": false,
+          "tiene_precio": true,
+          "ultimo_cierre": 100.2,
+          "fecha_cierre": "2026-06-26",
+          "simbolo_historico": "COC2D 24HS",
+          "isin": "AR0470733053",
+          "motivo": "vencimiento 2026-08-22 < 2028"
+        }
+      ],
+      "aprobados_pool": [],
+      "seleccionados": []
+    },
+    "mendoza": {
+      "nombre": "Mendoza",
+      "en_panel": [],
+      "candidatos_nuevos_con_precio": 0,
+      "rechazados": [],
+      "aprobados_pool": [],
+      "seleccionados": []
+    },
+    "salta": {
+      "nombre": "Salta",
+      "en_panel": [],
+      "candidatos_nuevos_con_precio": 0,
+      "rechazados": [],
+      "aprobados_pool": [],
+      "seleccionados": []
+    },
+    "neuquen": {
+      "nombre": "Neuquén",
+      "en_panel": [],
+      "candidatos_nuevos_con_precio": 0,
+      "rechazados": [],
+      "aprobados_pool": [],
+      "seleccionados": []
+    },
+    "buenos_aires": {
+      "nombre": "Buenos Aires",
+      "en_panel": [],
+      "candidatos_nuevos_con_precio": 0,
+      "rechazados": [],
+      "aprobados_pool": [],
+      "seleccionados": []
+    },
+    "caba": {
+      "nombre": "CABA",
+      "en_panel": [],
+      "candidatos_nuevos_con_precio": 0,
+      "rechazados": [],
+      "aprobados_pool": [],
+      "seleccionados": []
+    }
+  },
+  "resumen": {
+    "series_seleccionadas_total": 6,
+    "instrumentos_panel_antes": 53,
+    "instrumentos_panel_despues_estimado": 59
+  }
+}

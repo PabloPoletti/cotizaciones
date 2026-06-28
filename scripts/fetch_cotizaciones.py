@@ -569,6 +569,37 @@ def main() -> int:
         error_conexion_global,
     )
 
+    logger.info("Consultando precios de respaldo (Data912)...")
+    try:
+        from providers.data912 import consultar_precios_backup, enriquecer_con_backup
+
+        tickers = [i["ticker"] for i in instrumentos_resultado]
+        backup_map, data912_meta = consultar_precios_backup(tickers)
+        enriquecer_con_backup(instrumentos_resultado, backup_map)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Data912 omitido: %s", exc)
+        data912_meta = {
+            "fuente": "data912.com",
+            "error": True,
+            "mensaje_error": str(exc),
+        }
+        for item in instrumentos_resultado:
+            item["fuentes_consultadas"] = ["byma"]
+
+    logger.info("Consultando tipo de cambio (DolarAPI)...")
+    try:
+        from providers.dolarapi import consultar_tipo_cambio
+
+        tipo_cambio = consultar_tipo_cambio(timestamp_global)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("DolarAPI omitido: %s", exc)
+        tipo_cambio = {
+            "fuente": "dolarapi.com",
+            "timestamp_consulta": timestamp_global,
+            "error": True,
+            "mensaje_error": str(exc),
+        }
+
     payload: dict[str, Any] = {
         "ultima_actualizacion": timestamp_global,
         "fetch_status": fetch_status,
@@ -579,6 +610,8 @@ def main() -> int:
             "es_fin_semana": estado_mercado.get("es_fin_semana"),
             "is_working_day_byma": estado_mercado.get("is_working_day_byma"),
         },
+        "tipo_cambio": tipo_cambio,
+        "data912": data912_meta,
         "instrumentos": instrumentos_resultado,
     }
 
