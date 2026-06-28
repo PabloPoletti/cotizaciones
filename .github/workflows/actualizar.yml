@@ -80,6 +80,10 @@ jobs:
         if: steps.mercado.outputs.abierto == 'true'
         run: pip install -r requirements.txt
 
+      - name: Sincronizar con main antes del fetch
+        if: steps.mercado.outputs.abierto == 'true'
+        run: git pull --rebase origin main
+
       - name: Ejecutar script de cotizaciones
         if: steps.mercado.outputs.abierto == 'true'
         run: python scripts/fetch_cotizaciones.py
@@ -89,11 +93,20 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet HEAD -- docs/data/cotizaciones.json; then
+            echo "Sin cambios reales en cotizaciones.json (idéntico a HEAD)"
+            exit 0
+          fi
+
           git add docs/data/cotizaciones.json
-          if git diff --staged --quiet; then
-            echo "Sin cambios en cotizaciones.json"
+          git commit -m "Actualizar cotizaciones BYMA [skip ci]"
+          git pull --rebase origin main
+
+          if git push; then
+            echo "Push exitoso."
           else
-            git commit -m "Actualizar cotizaciones BYMA [skip ci]"
+            echo "Push falló; reintentando tras rebase..."
             git pull --rebase origin main
             git push
           fi
