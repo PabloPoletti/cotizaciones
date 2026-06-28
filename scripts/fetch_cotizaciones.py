@@ -593,6 +593,15 @@ def main() -> int:
     logger.info("fetch_status=%s (%s)", fetch_status, fetch_mensaje)
     logger.info("Instrumentos con precio: %s/%s", ok_count, len(instrumentos_resultado))
 
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from historico_precios import ejecutar_incremental
+
+        logger.info("--- Histórico de precios (incremental) ---")
+        ejecutar_incremental()
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Histórico incremental omitido o falló (cotizaciones guardadas): %s", exc)
+
     return 0
 
 

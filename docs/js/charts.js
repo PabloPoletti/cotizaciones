@@ -10,6 +10,7 @@
   const C = () => window.CotizCore;
   const A = () => window.CotizAnalytics;
   const S = () => window.CotizStorage;
+  const H = () => window.CotizHistorico;
 
   function destruir(id) {
     if (charts[id]) {
@@ -146,6 +147,7 @@
     }
 
     renderHistoricoChart(enriquecidos);
+    renderDrawdownChart(enriquecidos);
     chartsInited = true;
   }
 
@@ -164,12 +166,24 @@
     }
 
     const ticker = sel.value || tickers[0];
-    const serie = S().historicoParaTicker(ticker);
-    const store = S().cargarHistoricoLocal();
     const meta = document.getElementById("historico-meta");
+    const usarByma = H()?.tieneDatos() && H().serie(ticker).length > 0;
+
+    let serie;
+    let labels;
+    let data;
+    if (usarByma) {
+      serie = H().seriePrecioChart(ticker);
+      labels = serie.map((p) => p.fecha);
+      data = serie.map((p) => p.precio);
+    } else {
+      serie = S().historicoParaTicker(ticker);
+      labels = serie.map((p) => p.fecha);
+      data = serie.map((p) => p.precio / 1000);
+    }
 
     const MSG_VACIO =
-      "Sin historial todavía — se empieza a acumular desde hoy que visitás el panel en este navegador (un punto por día, solo en este dispositivo).";
+      "Sin historial BYMA todavía — ejecutá el workflow «Bootstrap histórico precios» una vez. Mientras tanto no hay serie de 90 días.";
 
     if (serie.length === 0) {
       if (emptyEl) emptyEl.classList.remove("hidden");
@@ -180,9 +194,6 @@
 
     if (emptyEl) emptyEl.classList.add("hidden");
     if (chartWrap) chartWrap.classList.remove("hidden");
-
-    const labels = serie.map((p) => p.fecha);
-    const data = serie.map((p) => p.precio / 1000);
 
     charts.historico = new Chart(ctx, {
       type: "line",
@@ -206,8 +217,63 @@
     });
 
     if (meta) {
-      meta.textContent = `${serie.length} punto(s) local(es) en este navegador desde ${store.inicio || serie[0].fecha}. No sincronizado entre dispositivos.`;
+      if (usarByma) {
+        const m = H().metricas(ticker);
+        meta.textContent =
+          `${serie.length} días BYMA (${m?.fecha_inicio_serie || labels[0]} → ${m?.ultima_fecha || labels[labels.length - 1]}). ` +
+          `Var. 7d/30d: ${H().formatearPct(m?.var_7d_pct)} / ${H().formatearPct(m?.var_30d_pct)}.`;
+      } else {
+        const store = S().cargarHistoricoLocal();
+        meta.textContent = `${serie.length} punto(s) local(es) en este navegador desde ${store.inicio || serie[0].fecha}.`;
+      }
     }
+  }
+
+  function renderDrawdownChart(enriquecidos) {
+    destruir("drawdown");
+    const ctx = document.getElementById("chart-drawdown");
+    const sel = document.getElementById("historico-ticker-select");
+    const wrap = document.getElementById("drawdown-chart-wrap");
+    const emptyEl = document.getElementById("drawdown-empty");
+    if (!ctx || !sel) return;
+
+    const ticker = sel.value || enriquecidos.find((r) => !r.item.error)?.item.ticker;
+    const dd = H()?.tieneDatos() ? H().serieDrawdown(ticker) : [];
+
+    if (!dd.length) {
+      if (emptyEl) emptyEl.classList.remove("hidden");
+      if (wrap) wrap.classList.add("hidden");
+      return;
+    }
+    if (emptyEl) emptyEl.classList.add("hidden");
+    if (wrap) wrap.classList.remove("hidden");
+
+    charts.drawdown = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: dd.map((p) => p.fecha),
+        datasets: [
+          {
+            label: "Drawdown desde máximo (% ventana)",
+            data: dd.map((p) => p.drawdown),
+            borderColor: "#b54708",
+            backgroundColor: "rgba(181,71,8,0.08)",
+            fill: true,
+            tension: 0.15,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            title: { display: true, text: "% desde máximo" },
+            max: 0,
+          },
+        },
+      },
+    });
   }
 
   const PALETA = [
@@ -259,7 +325,10 @@
     const sel = document.getElementById("historico-ticker-select");
     if (sel && !sel.dataset.listener) {
       sel.dataset.listener = "1";
-      sel.addEventListener("change", () => renderHistoricoChart(enriquecidos));
+      sel.addEventListener("change", () => {
+        renderHistoricoChart(enriquecidos);
+        renderDrawdownChart(enriquecidos);
+      });
     }
   }
 

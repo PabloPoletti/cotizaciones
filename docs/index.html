@@ -27,22 +27,38 @@
 
   <main class="container">
     <details class="config-panel">
-      <summary>Configuración — token para &quot;Actualizar ahora&quot;</summary>
-      <div class="config-panel__grid">
-        <div>
-          <label for="github-repo">Repositorio (usuario/nombre)</label>
-          <input type="text" id="github-repo" value="PabloPoletti/cotizaciones" autocomplete="off">
-        </div>
-        <div>
-          <label for="github-token">GitHub Personal Access Token</label>
-          <input type="password" id="github-token" placeholder="ghp_…" autocomplete="off">
-          <small>
-            Se guarda solo en localStorage de tu navegador. Nunca se sube al repositorio.
-          </small>
-        </div>
-        <button type="button" class="btn" id="btn-guardar-config">Guardar configuración</button>
-        <button type="button" class="btn" id="btn-probar-token">Probar token</button>
+      <summary>Actualizar cotizaciones — configuración</summary>
+      <div class="config-panel__intro">
+        <p>
+          <strong>Método principal:</strong> el botón «Actualizar ahora» llama a un Cloudflare Worker que dispara el workflow en GitHub.
+          No necesitás token en el dispositivo si la URL del Worker está configurada.
+          Límite: <strong>1 actualización cada 5 minutos</strong> (panel y servidor).
+        </p>
       </div>
+      <div class="config-panel__grid">
+        <div class="config-panel__full">
+          <label for="worker-url">URL del Worker (POST)</label>
+          <input type="url" id="worker-url" placeholder="https://cotizaciones-dispatch….workers.dev/dispatch" autocomplete="off">
+          <small>Tras deploy en Cloudflare, pegá acá la URL y guardá. También podés fijarla en <code>docs/js/config.js</code>.</small>
+        </div>
+        <button type="button" class="btn" id="btn-guardar-worker">Guardar URL del Worker</button>
+      </div>
+      <details class="config-panel__advanced">
+        <summary>Opciones avanzadas — token GitHub local (fallback)</summary>
+        <div class="config-panel__grid">
+          <div>
+            <label for="github-repo">Repositorio (usuario/nombre)</label>
+            <input type="text" id="github-repo" value="PabloPoletti/cotizaciones" autocomplete="off">
+          </div>
+          <div>
+            <label for="github-token">GitHub Personal Access Token</label>
+            <input type="password" id="github-token" placeholder="ghp_…" autocomplete="off">
+            <small>Solo si no hay Worker. Se guarda en localStorage de este navegador; nunca se sube al repo.</small>
+          </div>
+          <button type="button" class="btn" id="btn-guardar-config">Guardar token local</button>
+          <button type="button" class="btn" id="btn-probar-token">Probar token</button>
+        </div>
+      </details>
     </details>
 
     <div class="toolbar">
@@ -147,12 +163,11 @@
           <div class="chart-box chart-box--sm"><canvas id="chart-sectores"></canvas></div>
         </section>
         <section class="chart-card chart-card--wide">
-          <h2>Evolución de precio (historial local)</h2>
+          <h2>Evolución de precio (BYMA, ~90 días)</h2>
           <div class="alert alert--info historico-disclaimer">
-            <strong>Historial local de este navegador/dispositivo.</strong>
-            Los puntos se acumulan desde la primera vez que abrís el panel en este dispositivo (máximo uno por día).
-            No es historial de mercado oficial, no está sincronizado entre dispositivos ni reemplaza series de BYMA.
-            El archivo <code>historico.json</code> del repo está reservado para un historial global futuro.
+            <strong>Serie diaria BYMA Open Data</strong> desde <code>historico_precios.json</code>.
+            Requiere ejecutar una vez el workflow manual «Bootstrap histórico precios».
+            Liquidez y volatilidad son relativas al universo del panel (47 instrumentos), no al mercado completo.
           </div>
           <div class="historico-controls">
             <label for="historico-ticker-select">Instrumento</label>
@@ -160,9 +175,17 @@
             <span id="historico-meta" class="header__meta"></span>
           </div>
           <div id="historico-empty" class="historico-empty hidden" role="status">
-            <p><strong>Sin historial todavía</strong> — se empieza a acumular desde hoy que visitás el panel en este navegador (un punto por día, solo en este dispositivo).</p>
+            <p><strong>Sin historial BYMA cargado</strong> — dispará «Bootstrap histórico precios» en GitHub Actions.</p>
           </div>
           <div id="historico-chart-wrap" class="chart-box"><canvas id="chart-historico"></canvas></div>
+        </section>
+        <section class="chart-card chart-card--wide">
+          <h2>Drawdown desde máximo (ventana guardada)</h2>
+          <p class="header__meta">Caída % desde el máximo rolling de la serie; útil para volatilidad de precio, no riesgo crediticio.</p>
+          <div id="drawdown-empty" class="historico-empty hidden" role="status">
+            <p>Sin datos de drawdown hasta que exista histórico BYMA para el instrumento seleccionado.</p>
+          </div>
+          <div id="drawdown-chart-wrap" class="chart-box"><canvas id="chart-drawdown"></canvas></div>
         </section>
       </div>
     </div>
@@ -282,8 +305,10 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" crossorigin="anonymous"></script>
+  <script src="js/config.js"></script>
   <script src="js/core.js"></script>
   <script src="js/storage.js"></script>
+  <script src="js/historico.js"></script>
   <script src="js/analytics.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/app.js"></script>

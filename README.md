@@ -12,23 +12,32 @@ Repositorio: [github.com/PabloPoletti/cotizaciones](https://github.com/PabloPole
 cotizaciones/
 ├── .github/
 │   └── workflows/
-│       └── actualizar.yml      # Workflow: cron + manual, commit del JSON
+│       ├── bootstrap_historico.yml  # Bootstrap manual ~90 días (una vez)
+│       └── actualizar.yml           # Cron + manual, cotizaciones + histórico incremental
 ├── docs/                       # Raíz de GitHub Pages
 │   ├── index.html              # Dashboard (5 pestañas)
 │   ├── css/
 │   │   └── styles.css
 │   ├── js/
-│   │   ├── app.js              # UI, filtros, GitHub dispatch
+│   │   ├── config.js             # URL Worker, cooldown 5 min
+│   │   ├── historico.js          # historico_precios.json, liquidez relativa
+│   │   ├── app.js                # UI, filtros, dispatch Worker/token
 │   │   ├── core.js             # Carga de datos, TIR mercado
 │   │   ├── analytics.js        # KPIs, presets, observaciones
 │   │   ├── charts.js           # Gráficos Chart.js
 │   │   └── storage.js          # localStorage (cartera, histórico local)
 │   └── data/
 │       ├── cotizaciones.json   # Generado por el script (actualizado por Actions)
+│       ├── historico_precios.json  # OHLCV ~90d + métricas (bootstrap + incremental)
 │       ├── info_fija.json      # TIR, vencimiento, cupón, amortización (manual)
-│       └── historico.json      # Reservado (histórico global futuro)
+│       └── historico.json      # Reservado (legacy)
+├── workers/
+│   └── dispatch/               # Cloudflare Worker (dispatch sin PAT en navegador)
 ├── scripts/
-│   ├── fetch_cotizaciones.py   # Consulta BYMA y escribe el JSON
+│   ├── fetch_cotizaciones.py   # Consulta BYMA y escribe cotizaciones.json
+│   ├── historico_precios.py      # Lógica histórico OHLCV + métricas
+│   ├── bootstrap_historico.py    # Carga inicial ~90 días (manual)
+│   ├── actualizar_historico.py   # Incremental (últimos días)
 │   ├── verify_panel.mjs        # Verificación Playwright (prod/local)
 │   └── capture_phases.mjs      # Capturas por pestaña
 ├── requirements.txt
@@ -58,7 +67,18 @@ El archivo `.github/workflows/actualizar.yml`:
 | **Frecuencia** | Cada 30 min, lun–vie, ventana UTC 13:30–21:00 (≈11:00–17:30 ART + margen) |
 | **Manual** | Botón **Run workflow** en Actions, o desde el panel web |
 | **Horario** | Filtro final lun–vie 11:00–17:30 ART en el job; manual ignora este filtro |
-| **Qué hace** | Instala Python + PyOBD, ejecuta `scripts/fetch_cotizaciones.py`, commitea `docs/data/cotizaciones.json` |
+| **Qué hace** | Cotizaciones BYMA + histórico incremental; commitea `cotizaciones.json` y `historico_precios.json` |
+
+### Bootstrap histórico (una vez, manual)
+
+Workflow **Bootstrap histórico precios** (`.github/workflows/bootstrap_historico.yml`):
+
+- Solo `workflow_dispatch` — **no** tiene cron.
+- Carga ~90 días × 47 tickers vía PyOBD (`get_daily_history`).
+- Duración estimada: **15–25 minutos**.
+- Después de mergear, disparalo desde **Actions → Bootstrap histórico precios → Run workflow** (input `dias`: 90 por defecto).
+
+El cron normal solo **agrega/actualiza los últimos días**; no vuelve a traer 90 días cada 30 min.
 
 ### Permisos
 
@@ -66,21 +86,13 @@ El workflow usa `GITHUB_TOKEN` con permiso `contents: write` para hacer push del
 
 ### Disparo manual desde la web
 
-El botón **Actualizar ahora** del panel llama a la API REST de GitHub para ejecutar `workflow_dispatch` sobre `.github/workflows/actualizar.yml`. El token se guarda **solo en localStorage** de tu navegador — nunca lo commitees ni lo compartas.
+**Método principal:** Cloudflare Worker (`workers/dispatch/`) — el panel llama `POST /dispatch` sin token en el navegador. Ver `workers/dispatch/README.md` para deploy con Wrangler.
 
-**Endpoint que usa el panel:**
+**Fallback:** token GitHub en **Opciones avanzadas** del panel (localStorage por dispositivo).
 
-```
-POST https://api.github.com/repos/PabloPoletti/cotizaciones/actions/workflows/actualizar.yml/dispatches
-Authorization: Bearer <tu_PAT>
-Accept: application/vnd.github+json
-X-GitHub-Api-Version: 2022-11-28
-Body: { "ref": "main" }
-```
+Cooldown unificado: **5 minutos** (panel `DISPATCH_COOLDOWN_MS` = 300000 y Worker `RATE_LIMIT_SECONDS` = 300).
 
-Antes de disparar, el panel verifica el token con `GET /user`, `GET /repos/{owner}/{repo}` y `GET .../actions/workflows/actualizar.yml`. Usá **Probar token** en la configuración para ver el resultado sin ejecutar el workflow.
-
-#### Crear el Personal Access Token (PAT)
+#### Token local (fallback avanzado)
 
 El error más frecuente es un **403** con mensaje tipo *"Resource not accessible by personal access token"*: el token autentica pero **no tiene permiso para Actions/workflows**. Elegí **una** de estas dos opciones:
 
@@ -131,7 +143,7 @@ El error más frecuente es un **403** con mensaje tipo *"Resource not accessible
 3. **Token:** el PAT generado arriba.
 4. **Guardar configuración** (persiste en localStorage).
 5. **Probar token** — debe decir *Token OK…*. Si falla, el mensaje indica la causa (token expirado, repo incorrecto, permisos Actions, etc.).
-6. **Actualizar ahora** — si la prueba pasó, dispara el workflow; éxito = HTTP 204 y mensaje *Workflow iniciado*. Tras un dispatch exitoso el botón queda deshabilitado ~90 s para evitar doble clic mientras corre la corrida anterior.
+6. **Actualizar ahora** — si la prueba pasó, dispara el workflow; éxito = HTTP 204 y mensaje *Workflow iniciado*. Tras un dispatch exitoso el botón queda deshabilitado **5 minutos** (alineado con el rate limit del Worker).
 
 #### Errores frecuentes
 

@@ -1,0 +1,65 @@
+# Carga inicial del histórico BYMA (~90 días). Disparar manualmente UNA vez (15–25 min).
+name: Bootstrap histórico precios
+
+on:
+  workflow_dispatch:
+    inputs:
+      dias:
+        description: "Días de historia a cargar por instrumento"
+        required: false
+        default: "90"
+        type: string
+
+concurrency:
+  group: cotizaciones-bootstrap-historico
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Sincronizar con main
+        run: git pull --rebase origin main
+
+      - name: Bootstrap histórico BYMA
+        run: python scripts/bootstrap_historico.py --dias "${{ inputs.dias }}"
+
+      - name: Commit y push si hubo cambios
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet HEAD -- docs/data/historico_precios.json; then
+            echo "Sin cambios en historico_precios.json"
+            exit 0
+          fi
+
+          git add docs/data/historico_precios.json
+          git commit -m "Bootstrap histórico precios BYMA [skip ci]"
+          git pull --rebase origin main
+
+          if git push; then
+            echo "Push exitoso."
+          else
+            echo "Push falló; reintentando tras rebase..."
+            git pull --rebase origin main
+            git push
+          fi

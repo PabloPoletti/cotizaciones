@@ -48,7 +48,7 @@ async function main() {
   const checks = {
     url: BASE,
     cooldownMs,
-    cooldownOk: cooldownMs === 90000,
+    cooldownOk: cooldownMs === 300000,
     panelCardsOk: panel.cards === 47,
     panel,
     timestamp: new Date().toISOString(),
@@ -57,7 +57,7 @@ async function main() {
   console.log(JSON.stringify(checks, null, 2));
 
   if (!checks.cooldownOk) {
-    console.error(`FAIL: cooldown esperado 90000, obtuvo ${cooldownMs}`);
+    console.error(`FAIL: cooldown esperado 300000, obtuvo ${cooldownMs}`);
     process.exit(1);
   }
   if (!checks.panelCardsOk) {
@@ -65,7 +65,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("OK: prod desplegado con cooldown 90s y panel operativo.");
+  console.log("OK: prod desplegado con cooldown 5 min y panel operativo.");
 }
 
 main().catch((err) => {

@@ -47,6 +47,7 @@
     cotizaciones: null,
     infoFija: {},
     historico: { registros: [] },
+    historicoPrecios: { instrumentos: {} },
   };
 
   function formatearPrecio(valor) {
@@ -253,6 +254,7 @@
     const categoria = categoriaDe(info);
     const tirMerc = calcularTirMercado(item.precio, info);
     const tirCalc = tirParaCalculo(info, item);
+    const hp = window.CotizHistorico?.metricas(item.ticker) || null;
     return {
       item,
       info,
@@ -268,6 +270,8 @@
       esSoberano: esSoberano(info),
       esBullet: info.amortizacion_tipo !== "amortizacion_parcial",
       colorSector: COLORES_SECTOR[sector] || COLORES_SECTOR.Otros,
+      hp,
+      liquidez: window.CotizHistorico?.nivelLiquidez(item.ticker) || null,
     };
   }
 

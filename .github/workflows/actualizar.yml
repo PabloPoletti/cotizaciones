@@ -94,12 +94,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          if git diff --quiet HEAD -- docs/data/cotizaciones.json; then
-            echo "Sin cambios reales en cotizaciones.json (idéntico a HEAD)"
+          if git diff --quiet HEAD -- docs/data/cotizaciones.json docs/data/historico_precios.json; then
+            echo "Sin cambios reales en cotizaciones.json / historico_precios.json (idénticos a HEAD)"
             exit 0
           fi
 
-          git add docs/data/cotizaciones.json
+          git add docs/data/cotizaciones.json docs/data/historico_precios.json
           git commit -m "Actualizar cotizaciones BYMA [skip ci]"
           git pull --rebase origin main
 

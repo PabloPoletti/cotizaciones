@@ -9,6 +9,9 @@
   const WORKFLOW_FILE = "actualizar.yml";
   const STORAGE_KEY_TOKEN = "cotizaciones_github_pat";
   const STORAGE_KEY_REPO = "cotizaciones_github_repo";
+  const CFG = window.CotizConfig || {};
+  const DISPATCH_COOLDOWN_MS = CFG.DISPATCH_COOLDOWN_MS || 300000;
+  const STORAGE_KEY_WORKER = CFG.STORAGE_KEY_WORKER_URL || "cotizaciones_worker_url";
 
   const C = window.CotizCore;
   const A = window.CotizAnalytics;
@@ -50,6 +53,8 @@
   const elBtnGuardarConfig = document.getElementById("btn-guardar-config");
   const elBtnProbarToken = document.getElementById("btn-probar-token");
   const elStatusActualizar = document.getElementById("status-actualizar");
+  const elInputWorkerUrl = document.getElementById("worker-url");
+  const elBtnGuardarWorker = document.getElementById("btn-guardar-worker");
 
   function renderizarEstadoFetch() {
     const cot = C.state.cotizaciones;
@@ -79,10 +84,29 @@
     const moneda = row.moneda || row.info.moneda || "USD";
     const tipo = row.categoria || C.categoriaDe(row.info);
     const amort = row.esBullet ? "Bullet" : "Amort. parcial";
+    const liq = window.CotizHistorico?.badgeLiquidezHtml(row.item.ticker) || "";
     return `
+      ${liq}
       <span class="badge badge--moneda">${C.escapeHtml(moneda)}</span>
       <span class="badge badge--tipo">${C.escapeHtml(tipo)}</span>
       <span class="badge badge--amort ${row.esBullet ? "" : "badge--warn"}">${C.escapeHtml(amort)}</span>
+    `;
+  }
+
+  function metricasHistoricoHtml(row) {
+    const hp = row.hp;
+    if (!hp) return "";
+    const H = window.CotizHistorico;
+    return `
+      <div class="inst-card__metric">
+        <span class="label">Var. 7d / 30d</span>
+        <strong class="num">${H?.formatearPct(hp.var_7d_pct) ?? "—"} / ${H?.formatearPct(hp.var_30d_pct) ?? "—"}</strong>
+      </div>
+      <div class="inst-card__metric">
+        <span class="label">Volat. 30d</span>
+        <strong class="num">${hp.volatilidad_30d_pct != null ? hp.volatilidad_30d_pct.toFixed(2) + "%" : "—"}</strong>
+        <span class="meta">Riesgo precio</span>
+      </div>
     `;
   }
 
@@ -115,11 +139,15 @@
             <span class="label">TIR ref. / mercado</span>
             <div>${C.formatearCeldaTir(info, item)}</div>
           </div>
+          ${metricasHistoricoHtml(row)}
         </div>
         <details class="inst-card__detail">
           <summary>Ver detalle</summary>
           <dl class="inst-dl">
             <dt>Sector</dt><dd>${C.escapeHtml(row.sector)}</dd>
+            <dt>Liquidez (panel)</dt><dd>${C.escapeHtml(row.liquidez?.label || "—")}${row.hp?.volumen_promedio ? ` — vol. prom. ${window.CotizHistorico?.formatearVolumen(row.hp.volumen_promedio)}` : ""}</dd>
+            <dt>Var. desde inicio serie</dt><dd>${window.CotizHistorico?.formatearPct(row.hp?.var_desde_inicio_pct) ?? "—"}</dd>
+            <dt>Drawdown máx. ventana</dt><dd>${row.hp?.drawdown_max_pct != null ? row.hp.drawdown_max_pct.toFixed(2) + "%" : "—"}</dd>
             <dt>Vencimiento</dt><dd>${C.escapeHtml(C.formatearFechaCorta(info.vencimiento))}</dd>
             <dt>Cupón</dt><dd>${C.escapeHtml(info.cupon || "—")}</dd>
             <dt>Amortización</dt><dd>${C.escapeHtml(info.amortizacion || "—")}</dd>
@@ -171,6 +199,8 @@
         <th>Nombre</th>
         <th class="num">Precio</th>
         <th class="num">Var.%</th>
+        <th class="num">Var.7d</th>
+        <th>Liq.</th>
         <th class="num">TIR</th>
         <th>Venc.</th>
         <th>Sector</th>
@@ -180,11 +210,15 @@
       .map((row) => {
         const { item, info } = row;
         const varFmt = C.formatearVariacion(item.variacion_pct);
+        const liq = row.liquidez?.label || "—";
+        const var7 = window.CotizHistorico?.formatearPct(row.hp?.var_7d_pct) ?? "—";
         return `<tr class="${item.error ? "error-row" : ""}">
           <td class="ticker">${C.escapeHtml(item.ticker)}</td>
           <td>${C.escapeHtml(item.nombre || info.nombre || "")}</td>
           <td class="num">${item.error ? "—" : C.formatearPrecioConTipo(item)}</td>
           <td class="num ${varFmt.clase}">${varFmt.texto}</td>
+          <td class="num">${var7}</td>
+          <td>${C.escapeHtml(liq)}</td>
           <td class="num tir-cell">${C.formatearCeldaTir(info, item)}</td>
           <td>${C.escapeHtml(C.formatearFechaCorta(info.vencimiento))}</td>
           <td>${C.escapeHtml(row.sector)}</td>
@@ -466,16 +500,18 @@
     elAlertaError.classList.add("hidden");
 
     try {
-      const [dataCotiz, dataInfo, dataHist] = await Promise.all([
+      const [dataCotiz, dataInfo, dataHist, dataHistPrecios] = await Promise.all([
         C.cargarJson("data/cotizaciones.json"),
         C.cargarJson("data/info_fija.json").catch(() => ({})),
         C.cargarJson("data/historico.json").catch(() => ({ registros: [] })),
+        C.cargarJson("data/historico_precios.json").catch(() => ({ instrumentos: {} })),
       ]);
 
       C.state.cotizaciones = dataCotiz;
       C.state.infoFija = dataInfo;
       delete C.state.infoFija._comentario;
       C.state.historico = dataHist;
+      if (window.CotizHistorico) window.CotizHistorico.init(dataHistPrecios);
 
       S.registrarSnapshotDiario(dataCotiz.instrumentos);
 
@@ -582,8 +618,27 @@
   }
 
   const GITHUB_API_VERSION = "2022-11-28";
-  const DISPATCH_COOLDOWN_MS = 90000;
   let dispatchCooldownTimer = null;
+
+  function obtenerWorkerUrl() {
+    const fromInput = elInputWorkerUrl?.value.trim();
+    const fromStorage = localStorage.getItem(STORAGE_KEY_WORKER);
+    return fromInput || fromStorage || CFG.DISPATCH_WORKER_URL || "";
+  }
+
+  function guardarWorkerUrl() {
+    const url = elInputWorkerUrl?.value.trim() || "";
+    if (url) localStorage.setItem(STORAGE_KEY_WORKER, url);
+    else localStorage.removeItem(STORAGE_KEY_WORKER);
+    elStatusActualizar.textContent = "URL del Worker guardada.";
+    setTimeout(() => { elStatusActualizar.textContent = ""; }, 3000);
+  }
+
+  function cargarConfigWorker() {
+    if (!elInputWorkerUrl) return;
+    const url = localStorage.getItem(STORAGE_KEY_WORKER) || CFG.DISPATCH_WORKER_URL || "";
+    elInputWorkerUrl.value = url;
+  }
 
   function iniciarCooldownActualizar() {
     if (dispatchCooldownTimer) clearTimeout(dispatchCooldownTimer);
@@ -714,12 +769,38 @@
     }
   }
 
-  async function dispararWorkflow() {
-    if (elBtnActualizar.disabled) return;
+  async function dispararViaWorker(workerUrl) {
+    elStatusActualizar.textContent = "Disparando actualización…";
+    const resp = await fetch(workerUrl, {
+      method: "POST",
+      headers: { Accept: "application/json" },
+    });
+    let data = {};
+    try {
+      data = await resp.json();
+    } catch {
+      /* cuerpo no JSON */
+    }
+    if (resp.status === 429) {
+      const retry = data.retry_after_seconds || 300;
+      elStatusActualizar.textContent =
+        data.message || `Esperá ${retry}s antes de volver a actualizar (límite del servidor).`;
+      iniciarCooldownActualizar();
+      return;
+    }
+    if (resp.ok) {
+      elStatusActualizar.textContent = data.message || "Workflow iniciado. Recargá en unos minutos.";
+      iniciarCooldownActualizar();
+      return;
+    }
+    elStatusActualizar.textContent = data.message || data.error || `Error del Worker (HTTP ${resp.status}).`;
+  }
 
+  async function dispararViaToken() {
     const { token, repo } = obtenerConfigGitHub();
     if (!token) {
-      elStatusActualizar.textContent = "Configurá tu GitHub PAT primero.";
+      elStatusActualizar.textContent =
+        "Sin Worker configurado ni PAT. Configurá la URL del Worker arriba o un token en Opciones avanzadas.";
       return;
     }
     const parsed = parseRepoSlug(repo);
@@ -728,33 +809,44 @@
       return;
     }
 
-    elBtnActualizar.disabled = true;
     elStatusActualizar.textContent = "Verificando token…";
-    try {
-      const validacion = await validarAccesoGitHub(token, parsed.owner, parsed.name);
-      if (!validacion.ok) {
-        elStatusActualizar.textContent = validacion.message;
-        return;
-      }
+    const validacion = await validarAccesoGitHub(token, parsed.owner, parsed.name);
+    if (!validacion.ok) {
+      elStatusActualizar.textContent = validacion.message;
+      return;
+    }
 
-      elStatusActualizar.textContent = "Disparando actualización…";
-      const resp = await fetch(
-        `https://api.github.com/repos/${parsed.owner}/${parsed.name}/actions/workflows/${WORKFLOW_FILE}/dispatches`,
-        {
-          method: "POST",
-          headers: {
-            ...headersGitHubApi(token),
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ref: "main" }),
-        }
-      );
-      if (resp.status === 204) {
-        elStatusActualizar.textContent = "Workflow iniciado. Recargá en unos minutos.";
-        iniciarCooldownActualizar();
-        return;
+    elStatusActualizar.textContent = "Disparando actualización…";
+    const resp = await fetch(
+      `https://api.github.com/repos/${parsed.owner}/${parsed.name}/actions/workflows/${WORKFLOW_FILE}/dispatches`,
+      {
+        method: "POST",
+        headers: {
+          ...headersGitHubApi(token),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ref: "main" }),
       }
-      elStatusActualizar.textContent = await leerErrorGitHub(resp);
+    );
+    if (resp.status === 204) {
+      elStatusActualizar.textContent = "Workflow iniciado. Recargá en unos minutos.";
+      iniciarCooldownActualizar();
+      return;
+    }
+    elStatusActualizar.textContent = await leerErrorGitHub(resp);
+  }
+
+  async function dispararWorkflow() {
+    if (elBtnActualizar.disabled) return;
+
+    elBtnActualizar.disabled = true;
+    try {
+      const workerUrl = obtenerWorkerUrl();
+      if (workerUrl) {
+        await dispararViaWorker(workerUrl);
+      } else {
+        await dispararViaToken();
+      }
     } catch {
       elStatusActualizar.textContent = "Error de red.";
     } finally {
@@ -787,11 +879,13 @@
     initTabs();
     initFiltros();
     initCalcActions();
+    cargarConfigWorker();
     cargarConfigLocal();
     cargarDatos();
     elBtnRecargar?.addEventListener("click", cargarDatos);
     elBtnActualizar?.addEventListener("click", dispararWorkflow);
     elBtnGuardarConfig?.addEventListener("click", guardarConfigLocal);
+    elBtnGuardarWorker?.addEventListener("click", guardarWorkerUrl);
     elBtnProbarToken?.addEventListener("click", probarTokenGitHub);
   }
 

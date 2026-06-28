@@ -160,6 +160,59 @@
       );
     }
 
+    const H = window.CotizHistorico;
+    if (H?.tieneDatos()) {
+      const porCat = new Map();
+      for (const row of enriquecidos) {
+        const liq = row.liquidez?.nivel;
+        const vol = row.hp?.volumen_promedio;
+        if (!vol || liq === "na") continue;
+        const cat = row.categoria || C().categoriaDe(row.info);
+        const prev = porCat.get(cat);
+        if (!prev || vol > prev.vol) {
+          porCat.set(cat, { ticker: row.item.ticker, vol, label: row.liquidez?.label });
+        }
+      }
+      if (porCat.size) {
+        const lineas = [...porCat.entries()]
+          .sort((a, b) => a[0].localeCompare(b[0]))
+          .map(
+            ([cat, v]) =>
+              `<strong>${C().escapeHtml(cat)}</strong>: ${C().escapeHtml(v.ticker)} (liq. ${C().escapeHtml(v.label || "—")}, vol. prom. ${H.formatearVolumen(v.vol)})`
+          );
+        bullets.push(
+          `Mayor liquidez relativa dentro de cada categoría (percentiles del panel, no mercado completo): ${lineas.join("; ")}.`
+        );
+      }
+
+      const tirAltaLiqBaja = enriquecidos.filter(
+        (r) =>
+          r.tirEff != null &&
+          r.tirEff >= 9 &&
+          r.liquidez?.nivel === "baja" &&
+          r.hp?.volumen_promedio
+      );
+      if (tirAltaLiqBaja.length) {
+        bullets.push(
+          `<strong>Advertencia de salida:</strong> ${tirAltaLiqBaja
+            .map((r) => `${r.item.ticker} (TIR ~${r.tirEff.toFixed(1)}%, liq. baja)`)
+            .join(", ")} — TIR atractiva en el panel pero volumen operado bajo vs el resto; puede ser más difícil entrar/salir sin mover el precio. No implica que deban evitarse, solo verificar liquidez real antes de operar.`
+        );
+      }
+
+      const volatiles = enriquecidos
+        .filter((r) => r.hp?.volatilidad_30d_pct != null)
+        .sort((a, b) => b.hp.volatilidad_30d_pct - a.hp.volatilidad_30d_pct)
+        .slice(0, 5);
+      if (volatiles.length) {
+        bullets.push(
+          `Mayor volatilidad de precio reciente (desvío diario ~30d, dato BYMA): ${volatiles
+            .map((r) => `${r.item.ticker} (${r.hp.volatilidad_30d_pct}%)`)
+            .join(", ")}. Riesgo de precio, distinto del riesgo crediticio del semáforo.`
+        );
+      }
+    }
+
     return bullets;
   }
 

@@ -1,0 +1,17 @@
+# Cloudflare Worker — dispatch seguro del workflow
+name = "cotizaciones-dispatch"
+main = "index.js"
+compatibility_date = "2024-06-01"
+
+# Reemplazar id tras crear el namespace KV en Cloudflare (ver README).
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[vars]
+GITHUB_OWNER = "PabloPoletti"
+GITHUB_REPO = "cotizaciones"
+GITHUB_WORKFLOW = "actualizar.yml"
+RATE_LIMIT_SECONDS = "300"
+
+# Secret (no commitear): wrangler secret put GITHUB_TOKEN

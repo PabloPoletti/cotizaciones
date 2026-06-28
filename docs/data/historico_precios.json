@@ -1,0 +1,7 @@
+{
+  "_comentario": "Generado por scripts/historico_precios.py. Ejecutar bootstrap_historico.yml una vez; el cron incremental lo actualiza.",
+  "ultima_actualizacion": null,
+  "ventana_dias": 90,
+  "dias_liquidez": 25,
+  "instrumentos": {}
+}
