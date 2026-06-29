@@ -463,7 +463,7 @@
         badgesHtml,
       });
     }
-    CH.renderFichaCharts(ticker);
+    CH.renderFichaCharts(ticker, row);
     elFichaPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
