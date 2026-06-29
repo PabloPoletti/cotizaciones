@@ -40,6 +40,115 @@ logger = logging.getLogger(__name__)
 # YMCUO fue removido: ticker existe en mercado pero NO en BYMA Open Data gratuito.
 
 
+def cargar_meta_info_fija() -> dict[str, dict[str, Any]]:
+    """Metadatos completos por ticker desde info_fija.json."""
+    ruta = RAIZ_REPO / "docs" / "data" / "info_fija.json"
+    data = json.loads(ruta.read_text(encoding="utf-8"))
+    return {
+        k: v for k, v in data.items() if not k.startswith("_") and isinstance(v, dict)
+    }
+
+
+INFO_FIJA = cargar_meta_info_fija()
+
+
+def escala_precio_byma(info: dict[str, Any] | None) -> str:
+    """
+    usd_mil — BYMA devuelve USD por 100 nominal × 1000 (AL/GD canje).
+    ars_peso — BYMA devuelve cotización en pesos (pantalla BCBA); convertir con MEP.
+    """
+    if not info:
+        return "usd_mil"
+    return str(info.get("precio_byma_escala") or "usd_mil")
+
+
+def tc_mep_venta(tipo_cambio: dict[str, Any] | None) -> float | None:
+    if not tipo_cambio or tipo_cambio.get("error"):
+        return None
+    mep = tipo_cambio.get("mep") or {}
+    try:
+        v = mep.get("venta_ars")
+        return float(v) if v is not None else None
+    except (TypeError, ValueError):
+        return None
+
+
+def convertir_precio_raw_a_panel(
+    raw: float | None,
+    info: dict[str, Any] | None,
+    tc_mep: float | None,
+) -> tuple[float | None, str | None]:
+    """Normaliza precio BYMA/Data912 al formato interno del panel (USD/100 × 1000)."""
+    if raw is None or raw <= 0:
+        return None, None
+    if escala_precio_byma(info) == "ars_peso":
+        if not tc_mep or tc_mep <= 0:
+            return None, "sin_tipo_cambio"
+        usd_por_100 = raw / tc_mep
+        return round(usd_por_100 * 1000, 4), "ars_peso"
+    return round(float(raw), 4), "usd_mil"
+
+
+def convertir_serie_precios_a_panel(
+    serie: list[dict[str, Any]],
+    info: dict[str, Any] | None,
+    tc_mep: float | None = None,
+    mep_por_fecha: dict[str, float] | None = None,
+    mep_fuentes: dict[str, str] | None = None,
+) -> list[dict[str, Any]]:
+    """Convierte OHLC BYMA (ARS) al formato panel; guarda *_ars y mep_venta por punto."""
+    if escala_precio_byma(info) != "ars_peso":
+        return serie
+
+    mep_map = mep_por_fecha or {}
+    fuente_map = mep_fuentes or {}
+    ohlc = ("open", "high", "low", "close")
+    out: list[dict[str, Any]] = []
+
+    for punto in serie:
+        item = dict(punto)
+        fecha = str(item.get("date", ""))
+        mep = mep_map.get(fecha) or tc_mep
+        if not mep or mep <= 0:
+            out.append(item)
+            continue
+
+        mep_previo = item.get("mep_venta")
+        for col in ohlc:
+            ars_key = f"{col}_ars"
+            raw: float | None = None
+            if item.get(ars_key) is not None:
+                raw = float(item[ars_key])
+            elif item.get(col) is not None:
+                val = float(item[col])
+                if val > 120000:
+                    raw = val
+                elif mep_previo:
+                    raw = val * float(mep_previo) / 1000
+                elif tc_mep:
+                    raw = val * tc_mep / 1000
+            if raw is not None:
+                item[ars_key] = round(raw, 4)
+                item[col] = round(raw / mep * 1000, 4)
+
+        item["mep_venta"] = mep
+        item["conversion_mep_fuente"] = fuente_map.get(fecha, "fetch_actual_fallback")
+        out.append(item)
+    return out
+
+
+def metadata_conversion_ars_peso() -> dict[str, str]:
+    return {
+        "escala": "ars_peso",
+        "mep_fuente": "argentinadatos.com + cache mep_historico.json",
+        "mep_aplicacion": "por_fecha_en_cada_punto",
+        "nota": (
+            "Precios BYMA en pesos (pantalla BCBA) convertidos a USD/100 del panel "
+            "con MEP venta del dia de cada cierre."
+        ),
+    }
+
+
 def cargar_instrumentos_desde_info_fija() -> list[dict[str, str]]:
     """Lee tickers activos del panel desde info_fija.json."""
     ruta = RAIZ_REPO / "docs" / "data" / "info_fija.json"
@@ -417,6 +526,8 @@ def construir_item(
     paneles: pd.DataFrame,
     timestamp_consulta: str,
     mercado_cerrado: bool,
+    info: dict[str, Any] | None = None,
+    tc_mep: float | None = None,
 ) -> dict:
     """Arma el objeto JSON de un instrumento, manejando errores sin detener el resto."""
     ticker = instrumento["ticker"]
@@ -472,6 +583,20 @@ def construir_item(
                 "mensaje_error": msg,
             }
 
+        precio_raw = precio
+        precio_conv, escala_aplicada = convertir_precio_raw_a_panel(precio, info, tc_mep)
+        if precio_conv is None and escala_precio_byma(info) == "ars_peso":
+            return {
+                **base,
+                "nombre": nombre,
+                "precio": None,
+                "precio_tipo": None,
+                "variacion_pct": None,
+                "error": True,
+                "mensaje_error": "Precio en pesos BYMA sin tipo de cambio MEP para convertir a USD",
+            }
+        precio = precio_conv if precio_conv is not None else precio
+
         item: dict[str, Any] = {
             **base,
             "nombre": nombre,
@@ -480,6 +605,13 @@ def construir_item(
             "variacion_pct": variacion,
             "error": False,
         }
+        if escala_aplicada == "ars_peso" and precio_raw is not None:
+            item["precio_byma_raw_ars"] = round(float(precio_raw), 4)
+            item["precio_conversion"] = {
+                "escala": "ars_peso",
+                "tc_mep": tc_mep,
+                "usd_por_100": round(precio / 1000, 4),
+            }
         if fuente_precio:
             item["precio_fuente"] = fuente_precio
         if precio_tipo == "ultimo_cierre":
@@ -566,6 +698,30 @@ def main() -> int:
     logger.info("Cargando paneles de respaldo (ONs y bonos)...")
     paneles = cargar_paneles(cliente)
 
+    logger.info("Consultando tipo de cambio (DolarAPI)...")
+    try:
+        from providers.dolarapi import consultar_tipo_cambio
+
+        tipo_cambio = consultar_tipo_cambio(timestamp_global)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("DolarAPI omitido: %s", exc)
+        tipo_cambio = {
+            "fuente": "dolarapi.com",
+            "timestamp_consulta": timestamp_global,
+            "error": True,
+            "mensaje_error": str(exc),
+        }
+
+    tc_mep = tc_mep_venta(tipo_cambio)
+    if tc_mep:
+        logger.info("  MEP venta (conversión ars_peso): %s", tc_mep)
+    try:
+        from providers.mep_historico import registrar_mep_fetch
+
+        registrar_mep_fetch(tipo_cambio)
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("Cache MEP histórico omitido: %s", exc)
+
     instrumentos_resultado: list[dict] = []
     error_conexion_global = bool(estado_mercado.get("error_market_time"))
 
@@ -578,6 +734,8 @@ def main() -> int:
             paneles,
             timestamp_global,
             mercado_cerrado,
+            INFO_FIJA.get(ticker),
+            tc_mep,
         )
         instrumentos_resultado.append(item)
 
@@ -603,7 +761,7 @@ def main() -> int:
 
         tickers = [i["ticker"] for i in instrumentos_resultado]
         backup_map, data912_meta = consultar_precios_backup(tickers)
-        enriquecer_con_backup(instrumentos_resultado, backup_map)
+        enriquecer_con_backup(instrumentos_resultado, backup_map, INFO_FIJA, tc_mep)
     except Exception as exc:  # noqa: BLE001
         logger.warning("Data912 omitido: %s", exc)
         data912_meta = {
@@ -614,21 +772,9 @@ def main() -> int:
         for item in instrumentos_resultado:
             item["fuentes_consultadas"] = ["byma"]
 
-    logger.info("Consultando tipo de cambio (DolarAPI)...")
-    try:
-        from providers.dolarapi import consultar_tipo_cambio
+    ok_count = sum(1 for i in instrumentos_resultado if not i.get("error"))
 
-        tipo_cambio = consultar_tipo_cambio(timestamp_global)
-    except Exception as exc:  # noqa: BLE001
-        logger.warning("DolarAPI omitido: %s", exc)
-        tipo_cambio = {
-            "fuente": "dolarapi.com",
-            "timestamp_consulta": timestamp_global,
-            "error": True,
-            "mensaje_error": str(exc),
-        }
-
-    payload: dict[str, Any] = {
+    payload = {
         "ultima_actualizacion": timestamp_global,
         "fetch_status": fetch_status,
         "fetch_mensaje": fetch_mensaje,
@@ -647,8 +793,6 @@ def main() -> int:
     with ARCHIVO_SALIDA.open("w", encoding="utf-8") as archivo:
         json.dump(payload, archivo, ensure_ascii=False, indent=2)
         archivo.write("\n")
-
-    ok_count = sum(1 for i in instrumentos_resultado if not i.get("error"))
     logger.info("=== Finalizado ===")
     logger.info("Guardado en %s", ARCHIVO_SALIDA)
     logger.info("fetch_status=%s (%s)", fetch_status, fetch_mensaje)

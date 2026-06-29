@@ -262,6 +262,10 @@
     const { item, info } = row;
     const varFmt = C().formatearVariacion(item.variacion_pct);
     const tirMerc = row.tirMerc || C().calcularTirMercado(item.precio, info);
+    const labelTirMerc =
+      tirMerc.metodo === "cronograma"
+        ? "TIR de mercado (YTM sobre cronograma completo)"
+        : "TIR mercado";
     let tirMercHtml = "—";
     if (tirMerc.valor != null) {
       tirMercHtml = `${tirMerc.valor}% <span class="meta">(${C().escapeHtml(tirMerc.nota)})</span>`;
@@ -289,7 +293,7 @@
               <strong class="num ${varFmt.clase}">${varFmt.texto}</strong>
             </div>
             <div class="ficha-kpi">
-              <span class="label">TIR mercado</span>
+              <span class="label">${C().escapeHtml(labelTirMerc)}</span>
               <strong>${tirMercHtml}</strong>
               <span class="meta ficha-estimado">Calculada en runtime desde precio BYMA</span>
             </div>

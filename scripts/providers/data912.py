@@ -90,13 +90,32 @@ def consultar_precios_backup(tickers: list[str]) -> tuple[dict[str, dict[str, An
     return encontrados, meta
 
 
-def enriquecer_con_backup(instrumentos: list[dict[str, Any]], backup: dict[str, dict[str, Any]]) -> None:
+def enriquecer_con_backup(
+    instrumentos: list[dict[str, Any]],
+    backup: dict[str, dict[str, Any]],
+    info_fija: dict[str, dict[str, Any]] | None = None,
+    tc_mep: float | None = None,
+) -> None:
     """Agrega precio_backup y fuentes_consultadas sin modificar precio BYMA."""
+    from fetch_cotizaciones import convertir_precio_raw_a_panel, escala_precio_byma
+
     for item in instrumentos:
         fuentes = ["byma"]
         ticker = str(item.get("ticker", "")).upper()
         bk = backup.get(ticker)
         if bk and bk.get("precio") is not None:
-            item["precio_backup"] = bk
+            info = (info_fija or {}).get(ticker)
+            raw = float(bk["precio"])
+            conv, escala = convertir_precio_raw_a_panel(raw, info, tc_mep)
+            backup_out = dict(bk)
+            if escala == "ars_peso" and conv is not None:
+                backup_out["precio_raw_ars"] = round(raw, 4)
+                backup_out["precio"] = conv
+                for campo in ("px_bid", "px_ask"):
+                    if backup_out.get(campo) is not None:
+                        c, _ = convertir_precio_raw_a_panel(float(backup_out[campo]), info, tc_mep)
+                        if c is not None:
+                            backup_out[campo] = c
+            item["precio_backup"] = backup_out
             fuentes.append("data912")
         item["fuentes_consultadas"] = fuentes

@@ -84,16 +84,27 @@ function runTests(C, infoFija) {
   test("Bullet USD semestral → ok", () => {
     assert(C.soportaTirMercado(infoFija.TTC9O).ok === true, "TTC9O soporta TIR mercado");
   });
-  test("Cronograma GD38 → no (amort programada)", () => {
+  test("Cronograma GD38 → ok (YTM desde flujos)", () => {
     const s = C.soportaTirMercado(infoFija.GD38);
-    assert(s.ok === false, "GD38 no soporta TIR mercado bullet");
-    assert(/referencia/i.test(s.nota), "nota menciona referencia");
+    assert(s.ok === true, "GD38 soporta TIR mercado cronograma");
+    assert(s.metodo === "cronograma", "metodo cronograma");
+  });
+  test("AL29 cupón fijo + cronograma → ok cronograma", () => {
+    const s = C.soportaTirMercado(infoFija.AL29);
+    assert(s.ok === true && s.metodo === "cronograma", "AL29 cronograma");
   });
   test("ARS-CER → no", () => {
     assert(C.soportaTirMercado(infoFija.TX26).ok === false, "Boncer no soporta TIR mercado");
   });
   test("Lecap mensual → no", () => {
     assert(C.soportaTirMercado(infoFija.S31G6).ok === false, "Lecap no soporta TIR mercado");
+    assert(C.cuponMecanica(infoFija.S31G6) === "capitalizable", "S31G6 capitalizable");
+  });
+  test("AO27 mensual corriente → soporta TIR mercado bullet", () => {
+    assert(C.cuponMecanica(infoFija.AO27) === "corriente", "AO27 corriente");
+    assert(!C.esLecapCapitalizable(infoFija.AO27), "AO27 no es Lecap");
+    assert(C.soportaTirMercado(infoFija.AO27).ok === true, "AO27 soporta TIR");
+    assert(C.soportaDuracion(infoFija.AO27), "AO27 soporta duración");
   });
 
   console.log("\n=== calcularTirMercado ===");
@@ -102,14 +113,46 @@ function runTests(C, infoFija) {
     assert(r.valor != null, "TIR debería calcularse");
     assertNear(r.valor, infoFija.TTC9O.cupon_tasa_anual, 0.15, "TIR a la par");
   });
-  test("Sin soporte → valor null + nota", () => {
-    const r = C.calcularTirMercado(100000, infoFija.GD38);
-    assert(r.valor == null, "GD38 TIR mercado null");
+  test("GD38 TIR mercado desde cronograma (precio panel)", () => {
+    const r = C.calcularTirMercado(132450, infoFija.GD38);
+    assert(r.valor != null, "GD38 TIR mercado calculada");
+    assert(r.metodo === "cronograma", "metodo cronograma");
+    assert(/cronograma completo/i.test(r.nota), "nota cronograma");
+  });
+  test("GD38 TIR mercado = YTM duración (misma base de flujos)", () => {
+    const item = { precio: 132450 };
+    const tir = C.calcularTirMercado(item.precio, infoFija.GD38);
+    const dur = C.calcularDuracionConvexidad(infoFija.GD38, item);
+    assert(dur.ok && tir.valor != null, "ambos cálculos ok");
+    assertNear(tir.valor, dur.ytm, 0.01, "TIR mercado vs YTM duración");
+  });
+  test("Amort parcial sin cronograma → valor null + nota", () => {
+    const r = C.calcularTirMercado(100000, infoFija.YMCIO);
+    assert(r.valor == null, "YMCIO TIR mercado null");
     assert(r.nota, "debe tener nota explicativa");
   });
   test("Vencido → null", () => {
     const r = C.calcularTirMercado(100000, infoFija.TX26);
     assert(r.valor == null, "vencido sin TIR");
+  });
+  test("AO27 TIR mercado mensual corriente (precio panel)", () => {
+    const r = C.calcularTirMercado(102575.7072, infoFija.AO27);
+    assert(r.valor != null, "AO27 TIR calculada");
+    assert(r.valor > 0 && r.valor < 15, "AO27 TIR coherente (~5% esperado, no negativa)");
+    assert(r.metodo === "bullet", "vía bullet mensual");
+    assert(/bullet/i.test(r.nota), "nota bullet");
+  });
+  test("AO27 TIR mercado = YTM duración (mensual corriente)", () => {
+    const item = { precio: 102575.7072 };
+    const tir = C.calcularTirMercado(item.precio, infoFija.AO27);
+    const dur = C.calcularDuracionConvexidad(infoFija.AO27, item);
+    assert(dur.ok && tir.valor != null, "ambos ok");
+    assertNear(tir.valor, dur.ytm, 0.01, "TIR vs YTM AO27");
+  });
+  test("AO28 TIR mercado mensual corriente", () => {
+    const r = C.calcularTirMercado(97830.2829, infoFija.AO28);
+    assert(r.valor != null && r.metodo === "bullet", "AO28 TIR");
+    assert(r.valor > 0 && r.valor < 20, "AO28 TIR coherente (no negativa por escala)");
   });
 
   console.log("\n=== soportaDuracion / motivoDuracionNoDisponible ===");
@@ -164,7 +207,7 @@ function runTests(C, infoFija) {
   });
 
   console.log("\n=== cobertura universo duración ===");
-  test("26 vigentes con flujos modelables", () => {
+  test("29 vigentes con flujos modelables (+ AO27/AO28/AN29)", () => {
     const tickers = Object.keys(infoFija).filter((k) => !k.startsWith("_"));
     let soporta = 0;
     let flujosOk = 0;
@@ -176,8 +219,8 @@ function runTests(C, infoFija) {
         if (C.generarFlujosCaja(info).ok) flujosOk += 1;
       }
     }
-    assert(soporta === 26, `esperado 26 soporta, obtuvo ${soporta}`);
-    assert(flujosOk === 26, `esperado 26 flujos, obtuvo ${flujosOk}`);
+    assert(soporta === 29, `esperado 29 soporta, obtuvo ${soporta}`);
+    assert(flujosOk === 29, `esperado 29 flujos, obtuvo ${flujosOk}`);
   });
 
   console.log("\n=== proximoCuponInfo ===");
@@ -221,6 +264,26 @@ function runTests(C, infoFija) {
     const tickers = Object.keys(infoFija).filter((k) => !k.startsWith("_"));
     const n = tickers.filter((t) => C.proximoCuponInfo(infoFija[t]).metodo === "canje_2020").length;
     assert(n === 10, `esperado 10 canje, obtuvo ${n}`);
+  });
+  test("AO27 próximo cupón calendario mensual (no heurística)", () => {
+    const pc = C.proximoCuponInfo(infoFija.AO27);
+    assert(pc.metodo === "calendario", "calendario");
+    assert(pc.categoria === "calendario_mensual", "mensual");
+    assert(pc.fecha != null, "fecha");
+    assert(pc.fecha.getDate() === 29, "día 29");
+    assert(!/intervalos regulares/i.test(pc.meta), "no heurística");
+  });
+  test("AO28 próximo cupón calendario mensual día 31", () => {
+    const pc = C.proximoCuponInfo(infoFija.AO28);
+    assert(pc.metodo === "calendario" && pc.fecha != null, "calendario AO28");
+    assert(pc.fecha.getDate() === 31, "día 31");
+  });
+  test("AN29 próximo cupón calendario 30 may / 30 nov", () => {
+    const pc = C.proximoCuponInfo(infoFija.AN29);
+    assert(pc.metodo === "calendario", "calendario semestral");
+    assert(pc.fecha != null, "fecha AN29");
+    assert(pc.fecha.getMonth() === 10 && pc.fecha.getDate() === 30, "30 nov");
+    assert(/30 may \/ 30 nov/i.test(pc.meta), "meta calendario");
   });
 
   return passed;

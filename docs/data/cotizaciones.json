@@ -1,7 +1,7 @@
 {
   "ultima_actualizacion": "2026-06-28T21:16:30-03:00",
   "fetch_status": "mercado_cerrado",
-  "fetch_mensaje": "Mercado cerrado. Mostrando últimos cierres disponibles (57/59 instrumentos).",
+  "fetch_mensaje": "Mercado cerrado. Mostrando últimos cierres disponibles (60/62 instrumentos).",
   "mercado": {
     "cerrado": true,
     "motivo": "fin de semana",
@@ -150,6 +150,105 @@
         "byma",
         "data912"
       ]
+    },
+    {
+      "ticker": "AN29",
+      "nombre": "Bonar AN29 (nov 2029)",
+      "sector": "Soberanos USD",
+      "timestamp_consulta": "2026-06-28T21:16:30-03:00",
+      "precio": 95174.7088,
+      "precio_tipo": "ultimo_cierre",
+      "variacion_pct": null,
+      "error": false,
+      "precio_fuente": "historico_2026-06-26_AN29_24HS",
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 95174.7088,
+        "px_bid": 94861.8968,
+        "px_ask": 95174.7088,
+        "pct_change": 0.06,
+        "volumen": 1170330.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com",
+        "precio_raw_ars": 143000.0
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ],
+      "precio_byma_raw_ars": 143000.0,
+      "precio_conversion": {
+        "escala": "ars_peso",
+        "tc_mep": 1502.5,
+        "tc_mep_fuente": "dolarapi_fetch_actual",
+        "usd_por_100": 95.1747
+      }
+    },
+    {
+      "ticker": "AO27",
+      "nombre": "Bonar AO27 (oct 2027)",
+      "sector": "Soberanos USD",
+      "timestamp_consulta": "2026-06-28T21:16:30-03:00",
+      "precio": 102575.7072,
+      "precio_tipo": "ultimo_cierre",
+      "variacion_pct": null,
+      "error": false,
+      "precio_fuente": "historico_2026-06-26_AO27_24HS",
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 102575.7072,
+        "px_bid": 102495.8403,
+        "px_ask": 102575.7072,
+        "pct_change": -0.18,
+        "volumen": 5263894.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com",
+        "precio_raw_ars": 154120.0
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ],
+      "precio_byma_raw_ars": 154120.0,
+      "precio_conversion": {
+        "escala": "ars_peso",
+        "tc_mep": 1502.5,
+        "tc_mep_fuente": "dolarapi_fetch_actual",
+        "usd_por_100": 102.5757
+      }
+    },
+    {
+      "ticker": "AO28",
+      "nombre": "Bonar AO28 (oct 2028)",
+      "sector": "Soberanos USD",
+      "timestamp_consulta": "2026-06-28T21:16:30-03:00",
+      "precio": 97830.2829,
+      "precio_tipo": "ultimo_cierre",
+      "variacion_pct": null,
+      "error": false,
+      "precio_fuente": "historico_2026-06-26_AO28_24HS",
+      "precio_etiqueta": "cierre anterior",
+      "precio_backup": {
+        "precio": 97830.2829,
+        "px_bid": 97504.1597,
+        "px_ask": 97830.2829,
+        "pct_change": 1.09,
+        "volumen": 4831583.0,
+        "panel": "arg_bonds",
+        "fuente": "data912.com",
+        "precio_raw_ars": 146990.0
+      },
+      "fuentes_consultadas": [
+        "byma",
+        "data912"
+      ],
+      "precio_byma_raw_ars": 146990.0,
+      "precio_conversion": {
+        "escala": "ars_peso",
+        "tc_mep": 1502.5,
+        "tc_mep_fuente": "dolarapi_fetch_actual",
+        "usd_por_100": 97.8303
+      }
     },
     {
       "ticker": "BA37D",

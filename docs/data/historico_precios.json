@@ -1,5 +1,5 @@
 {
-  "ultima_actualizacion": "2026-06-28T21:18:00-03:00",
+  "ultima_actualizacion": "2026-06-28T21:33:57-03:00",
   "ventana_dias": 90,
   "dias_liquidez": 25,
   "instrumentos": {
@@ -23016,6 +23016,246 @@
           "volume": 45000.0
         }
       ]
+    },
+    "AN29": {
+      "simbolo_byma": "AN29 24HS",
+      "error": null,
+      "metricas": {
+        "volumen_promedio": 1705767.25,
+        "var_7d_pct": null,
+        "var_30d_pct": null,
+        "var_desde_inicio_pct": -0.12,
+        "volatilidad_30d_pct": null,
+        "drawdown_max_pct": -0.45,
+        "precio_max_ventana": 95286.3962,
+        "fecha_inicio_serie": "2026-06-23",
+        "ultimo_cierre": 95174.7088,
+        "ultima_fecha": "2026-06-26"
+      },
+      "serie": [
+        {
+          "date": "2026-06-23",
+          "open": 93602.4927,
+          "high": 95399.0984,
+          "low": 93595.8631,
+          "close": 95286.3962,
+          "volume": 1453028.0,
+          "open_ars": 141190.0,
+          "high_ars": 143900.0,
+          "low_ars": 141179.9999,
+          "close_ars": 143730.0,
+          "mep_venta": 1508.4,
+          "conversion_mep_fuente": "argentinadatos.com"
+        },
+        {
+          "date": "2026-06-24",
+          "open": 95377.0643,
+          "high": 95841.3477,
+          "low": 94514.8239,
+          "close": 94859.7202,
+          "volume": 2727316.0,
+          "open_ars": 143799.9999,
+          "high_ars": 144500.0,
+          "low_ars": 142500.0,
+          "close_ars": 143020.0001,
+          "mep_venta": 1507.7,
+          "conversion_mep_fuente": "argentinadatos.com"
+        },
+        {
+          "date": "2026-06-25",
+          "open": 95785.0579,
+          "high": 95785.0579,
+          "low": 94999.3341,
+          "close": 95159.1424,
+          "volume": 1471695.0,
+          "open_ars": 143850.0,
+          "high_ars": 143850.0,
+          "low_ars": 142670.0,
+          "close_ars": 142910.0001,
+          "mep_venta": 1501.8,
+          "conversion_mep_fuente": "argentinadatos.com"
+        },
+        {
+          "date": "2026-06-26",
+          "open": 95181.3644,
+          "high": 95520.7987,
+          "low": 94615.6406,
+          "close": 95174.7088,
+          "volume": 1171030.0,
+          "open_ars": 143010.0,
+          "high_ars": 143520.0,
+          "low_ars": 142160.0,
+          "close_ars": 143000.0,
+          "mep_venta": 1502.5,
+          "conversion_mep_fuente": "argentinadatos.com"
+        }
+      ],
+      "conversion_ars_peso": {
+        "escala": "ars_peso",
+        "mep_fuente": "argentinadatos.com + cache mep_historico.json",
+        "mep_aplicacion": "por_fecha_en_cada_punto",
+        "nota": "Precios BYMA en pesos (pantalla BCBA) convertidos a USD/100 del panel con MEP venta del dia de cada cierre."
+      }
+    },
+    "AO27": {
+      "simbolo_byma": "AO27 24HS",
+      "error": null,
+      "metricas": {
+        "volumen_promedio": 8640307.5,
+        "var_7d_pct": null,
+        "var_30d_pct": null,
+        "var_desde_inicio_pct": -0.11,
+        "volatilidad_30d_pct": null,
+        "drawdown_max_pct": -0.23,
+        "precio_max_ventana": 102809.9614,
+        "fecha_inicio_serie": "2026-06-23",
+        "ultimo_cierre": 102575.7072,
+        "ultima_fecha": "2026-06-26"
+      },
+      "serie": [
+        {
+          "date": "2026-06-23",
+          "open": 100894.9881,
+          "high": 102890.48,
+          "low": 100722.6199,
+          "close": 102691.5937,
+          "volume": 7595551.0,
+          "open_ars": 152190.0001,
+          "high_ars": 155200.0001,
+          "low_ars": 151929.9999,
+          "close_ars": 154900.0,
+          "mep_venta": 1508.4,
+          "conversion_mep_fuente": "argentinadatos.com"
+        },
+        {
+          "date": "2026-06-24",
+          "open": 103137.2289,
+          "high": 103793.8582,
+          "low": 102102.5403,
+          "close": 102606.6193,
+          "volume": 15190338.0,
+          "open_ars": 155500.0,
+          "high_ars": 156490.0,
+          "low_ars": 153940.0,
+          "close_ars": 154699.9999,
+          "mep_venta": 1507.7,
+          "conversion_mep_fuente": "argentinadatos.com"
+        },
+        {
+          "date": "2026-06-25",
+          "open": 103642.2959,
+          "high": 103642.2959,
+          "low": 102463.7102,
+          "close": 102809.9614,
+          "volume": 6500204.0,
+          "open_ars": 155650.0,
+          "high_ars": 155650.0,
+          "low_ars": 153880.0,
+          "close_ars": 154400.0,
+          "mep_venta": 1501.8,
+          "conversion_mep_fuente": "argentinadatos.com"
+        },
+        {
+          "date": "2026-06-26",
+          "open": 102755.4077,
+          "high": 103154.7421,
+          "low": 102036.6057,
+          "close": 102575.7072,
+          "volume": 5275137.0,
+          "open_ars": 154390.0001,
+          "high_ars": 154990.0,
+          "low_ars": 153310.0001,
+          "close_ars": 154120.0001,
+          "mep_venta": 1502.5,
+          "conversion_mep_fuente": "argentinadatos.com"
+        }
+      ],
+      "conversion_ars_peso": {
+        "escala": "ars_peso",
+        "mep_fuente": "argentinadatos.com + cache mep_historico.json",
+        "mep_aplicacion": "por_fecha_en_cada_punto",
+        "nota": "Precios BYMA en pesos (pantalla BCBA) convertidos a USD/100 del panel con MEP venta del dia de cada cierre."
+      }
+    },
+    "AO28": {
+      "simbolo_byma": "AO28 24HS",
+      "error": null,
+      "metricas": {
+        "volumen_promedio": 10223013.0,
+        "var_7d_pct": null,
+        "var_30d_pct": null,
+        "var_desde_inicio_pct": 0.8,
+        "volatilidad_30d_pct": null,
+        "drawdown_max_pct": -0.25,
+        "precio_max_ventana": 97830.2829,
+        "fecha_inicio_serie": "2026-06-23",
+        "ultimo_cierre": 97830.2829,
+        "ultima_fecha": "2026-06-26"
+      },
+      "serie": [
+        {
+          "date": "2026-06-23",
+          "open": 95531.6893,
+          "high": 97553.6992,
+          "low": 95114.0281,
+          "close": 97056.4837,
+          "volume": 11298345.0,
+          "open_ars": 144100.0001,
+          "high_ars": 147149.9999,
+          "low_ars": 143470.0,
+          "close_ars": 146400.0,
+          "mep_venta": 1508.4,
+          "conversion_mep_fuente": "argentinadatos.com"
+        },
+        {
+          "date": "2026-06-24",
+          "open": 97632.1549,
+          "high": 97632.1549,
+          "low": 94382.1715,
+          "close": 96902.5668,
+          "volume": 15785303.0,
+          "open_ars": 147200.0,
+          "high_ars": 147200.0,
+          "low_ars": 142299.9999,
+          "close_ars": 146100.0,
+          "mep_venta": 1507.7,
+          "conversion_mep_fuente": "argentinadatos.com"
+        },
+        {
+          "date": "2026-06-25",
+          "open": 98215.4747,
+          "high": 98215.4747,
+          "low": 96550.8057,
+          "close": 96817.1528,
+          "volume": 8975961.0,
+          "open_ars": 147499.9999,
+          "high_ars": 147499.9999,
+          "low_ars": 145000.0,
+          "close_ars": 145400.0,
+          "mep_venta": 1501.8,
+          "conversion_mep_fuente": "argentinadatos.com"
+        },
+        {
+          "date": "2026-06-26",
+          "open": 97164.7255,
+          "high": 98063.228,
+          "low": 96439.2679,
+          "close": 97830.2829,
+          "volume": 4832443.0,
+          "open_ars": 145990.0001,
+          "high_ars": 147340.0001,
+          "low_ars": 144900.0,
+          "close_ars": 146990.0001,
+          "mep_venta": 1502.5,
+          "conversion_mep_fuente": "argentinadatos.com"
+        }
+      ],
+      "conversion_ars_peso": {
+        "escala": "ars_peso",
+        "mep_fuente": "argentinadatos.com + cache mep_historico.json",
+        "mep_aplicacion": "por_fecha_en_cada_punto",
+        "nota": "Precios BYMA en pesos (pantalla BCBA) convertidos a USD/100 del panel con MEP venta del dia de cada cierre."
+      }
     }
   }
 }

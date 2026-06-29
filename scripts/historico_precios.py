@@ -19,12 +19,17 @@ import pandas as pd
 from pyobd import BymaData
 
 from fetch_cotizaciones import (
+    INFO_FIJA,
     INSTRUMENTOS,
     RAIZ_REPO,
     TZ_ARGENTINA,
     ahora_iso_argentina,
     configurar_sesion_byma,
     con_reintentos,
+    convertir_serie_precios_a_panel,
+    escala_precio_byma,
+    metadata_conversion_ars_peso,
+    tc_mep_venta,
 )
 
 ARCHIVO_HISTORICO = RAIZ_REPO / "docs" / "data" / "historico_precios.json"
@@ -212,6 +217,56 @@ def guardar_archivo(data: dict[str, Any]) -> None:
         f.write("\n")
 
 
+def obtener_tc_mep_panel() -> float | None:
+    """MEP venta del último fetch o consulta en vivo."""
+    cot_path = RAIZ_REPO / "docs" / "data" / "cotizaciones.json"
+    if cot_path.exists():
+        data = json.loads(cot_path.read_text(encoding="utf-8"))
+        tc = tc_mep_venta(data.get("tipo_cambio"))
+        if tc:
+            return tc
+    try:
+        from providers.dolarapi import consultar_tipo_cambio
+
+        return tc_mep_venta(consultar_tipo_cambio(ahora_iso_argentina()))
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def aplicar_escala_serie(
+    ticker: str,
+    serie: list[dict],
+    tc_mep: float | None,
+) -> tuple[list[dict], dict[str, Any] | None]:
+    info = INFO_FIJA.get(ticker)
+    if escala_precio_byma(info) != "ars_peso":
+        return serie, None
+
+    fechas = [str(p.get("date", "")) for p in serie if p.get("date")]
+    mep_map: dict[str, float] = {}
+    mep_fuentes: dict[str, str] = {}
+    if fechas:
+        try:
+            from providers.mep_historico import obtener_mep_ventas
+
+            mep_map, mep_fuentes = obtener_mep_ventas(fechas, tc_mep)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("  MEP histórico %s: %s — fallback fetch actual", ticker, exc)
+            if tc_mep:
+                mep_map = {f: tc_mep for f in fechas}
+                mep_fuentes = {f: "fetch_actual_fallback" for f in fechas}
+
+    convertida = convertir_serie_precios_a_panel(
+        serie, info, tc_mep, mep_map, mep_fuentes
+    )
+    meta = metadata_conversion_ars_peso()
+    if any(f == "fetch_actual_fallback" for f in mep_fuentes.values()):
+        meta["advertencia"] = (
+            "Algunas fechas usaron MEP del fetch actual por falta de cotización histórica."
+        )
+    return convertida, meta
+
+
 def procesar_ticker(
     cliente: BymaData,
     ticker: str,
@@ -220,6 +275,7 @@ def procesar_ticker(
     existente: dict | None,
     ventana_dias: int,
     dias_liquidez: int,
+    tc_mep: float | None = None,
 ) -> dict[str, Any]:
     df, simbolo = fetch_daily_history(cliente, ticker, from_date, to_date)
     prev_serie = (existente or {}).get("serie") or []
@@ -227,14 +283,19 @@ def procesar_ticker(
 
     if df is None:
         if prev_serie:
-            serie = trim_series(prev_serie, ventana_dias)
+            serie, conv_meta = aplicar_escala_serie(
+                ticker, trim_series(prev_serie, ventana_dias), tc_mep
+            )
             metricas = calcular_metricas(serie, dias_liquidez)
-            return {
+            out: dict[str, Any] = {
                 "simbolo_byma": prev_simbolo,
                 "error": None,
                 "metricas": metricas,
                 "serie": serie,
             }
+            if conv_meta:
+                out["conversion_ars_peso"] = conv_meta
+            return out
         return {
             "simbolo_byma": None,
             "error": "Sin histórico BYMA",
@@ -243,14 +304,18 @@ def procesar_ticker(
         }
 
     incoming = df_a_serie(df)
-    serie = trim_series(merge_series(prev_serie, incoming), ventana_dias)
+    merged = merge_series(prev_serie, incoming)
+    serie, conv_meta = aplicar_escala_serie(ticker, trim_series(merged, ventana_dias), tc_mep)
     metricas = calcular_metricas(serie, dias_liquidez)
-    return {
+    out = {
         "simbolo_byma": simbolo,
         "error": None,
         "metricas": metricas,
         "serie": serie,
     }
+    if conv_meta:
+        out["conversion_ars_peso"] = conv_meta
+    return out
 
 
 def ejecutar_bootstrap(ventana_dias: int = VENTANA_DIAS_DEFAULT) -> int:
@@ -269,6 +334,9 @@ def ejecutar_bootstrap(ventana_dias: int = VENTANA_DIAS_DEFAULT) -> int:
 
     from_str = inicio.isoformat()
     to_str = fin.isoformat()
+    tc_mep = obtener_tc_mep_panel()
+    if tc_mep:
+        logger.info("MEP venta (escala ars_peso): %s", tc_mep)
 
     for i, inst in enumerate(INSTRUMENTOS, 1):
         ticker = inst["ticker"]
@@ -281,6 +349,7 @@ def ejecutar_bootstrap(ventana_dias: int = VENTANA_DIAS_DEFAULT) -> int:
             None,
             ventana_dias,
             DIAS_LIQUIDEZ_DEFAULT,
+            tc_mep,
         )
 
     data["ultima_actualizacion"] = ahora_iso_argentina()
@@ -307,6 +376,9 @@ def ejecutar_incremental() -> int:
 
     from_str = inicio.isoformat()
     to_str = fin.isoformat()
+    tc_mep = obtener_tc_mep_panel()
+    if tc_mep:
+        logger.info("MEP venta (escala ars_peso): %s", tc_mep)
 
     for i, inst in enumerate(INSTRUMENTOS, 1):
         ticker = inst["ticker"]
@@ -320,6 +392,7 @@ def ejecutar_incremental() -> int:
             existente,
             ventana,
             dias_liq,
+            tc_mep,
         )
 
     data["ultima_actualizacion"] = ahora_iso_argentina()

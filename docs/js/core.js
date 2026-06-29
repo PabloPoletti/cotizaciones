@@ -277,7 +277,75 @@
     };
   }
 
-  function soportaTirMercado(info) {
+  const NOTA_TIR_CRONOGRAMA = "YTM sobre cronograma completo";
+  const NOTA_TIR_BULLET = "aprox. (bullet)";
+
+  /** capitalizable = Lecap (sin cupón corriente); corriente = pagos periódicos reales. */
+  function cuponMecanica(info) {
+    if (info.cupon_mecanica === "capitalizable" || info.cupon_mecanica === "corriente") {
+      return info.cupon_mecanica;
+    }
+    const cuponTxt = (info.cupon || "").toLowerCase();
+    if (cuponTxt.includes("capitalizable")) return "capitalizable";
+    if (info.cupon_frecuencia === "mensual") return "capitalizable";
+    return "corriente";
+  }
+
+  function esLecapCapitalizable(info) {
+    return cuponMecanica(info) === "capitalizable";
+  }
+
+  function esCuponCorrienteMensual(info) {
+    return info.cupon_frecuencia === "mensual" && cuponMecanica(info) === "corriente";
+  }
+
+  function pagosPorAnioDe(info) {
+    const freq = info.cupon_frecuencia;
+    if (freq === "anual") return 1;
+    if (freq === "semestral") return 2;
+    if (esCuponCorrienteMensual(info)) return 12;
+    return null;
+  }
+
+  function esCalendarioCanje2020(info) {
+    return info.cupon_tipo === "step_up" || info.amortizacion_tipo === "parcial_cronograma";
+  }
+
+  function tieneCronogramaFlujos(info) {
+    return (
+      info.amortizacion_tipo === "parcial_cronograma" ||
+      (Array.isArray(info.cronograma_amortizacion) &&
+        info.cronograma_amortizacion.length > 0 &&
+        Array.isArray(info.cronograma_cupon) &&
+        info.cronograma_cupon.length > 0)
+    );
+  }
+
+  function soportaTirMercadoCronograma(info) {
+    if (!info) return { ok: false, nota: "Sin datos del instrumento" };
+    if (estadoVigencia(info) === "vencido") {
+      return { ok: false, nota: "Instrumento vencido" };
+    }
+    if (!tieneCronogramaFlujos(info)) return { ok: false, nota: "" };
+    const moneda = info.moneda || "";
+    if (moneda !== "USD" && moneda !== "ARS") {
+      const etiquetas = {
+        "ARS-CER": "Ajuste CER",
+        "ARS dollar-linked": "Dollar-linked",
+      };
+      const label = etiquetas[moneda] || moneda;
+      return { ok: false, nota: `${label}: ver TIR de referencia` };
+    }
+    const freq = info.cupon_frecuencia;
+    if (freq !== "anual" && freq !== "semestral") {
+      return { ok: false, nota: "Cupón no anual/semestral: ver TIR de referencia" };
+    }
+    const bloqueo = motivoDuracionNoDisponible(info);
+    if (bloqueo) return { ok: false, nota: bloqueo };
+    return { ok: true, metodo: "cronograma", nota: "" };
+  }
+
+  function soportaTirMercadoBullet(info) {
     if (!info) return { ok: false, nota: "Sin datos del instrumento" };
     if (info.cupon_tipo === "step_up" || info.cupon_tipo === "variable") {
       return { ok: false, nota: "Cupón step-up: ver TIR de referencia" };
@@ -303,37 +371,79 @@
       const label = etiquetas[moneda] || moneda;
       return { ok: false, nota: `${label}: ver TIR de referencia` };
     }
-    const freq = info.cupon_frecuencia;
-    if (freq !== "anual" && freq !== "semestral") {
-      return { ok: false, nota: "Cupón no anual/semestral: ver TIR de referencia" };
+    const pagosPorAnio = pagosPorAnioDe(info);
+    if (!pagosPorAnio) {
+      return { ok: false, nota: "Cupón no anual/semestral/mensual corriente: ver TIR de referencia" };
     }
     const tasa = info.cupon_tasa_anual;
     if (tasa == null || tasa <= 0) {
       return { ok: false, nota: "Sin cupón fijo: ver TIR de referencia" };
     }
-    return { ok: true, nota: "" };
+    return { ok: true, metodo: "bullet", nota: "" };
+  }
+
+  function soportaTirMercado(info) {
+    const cron = soportaTirMercadoCronograma(info);
+    if (cron.ok) return cron;
+    return soportaTirMercadoBullet(info);
   }
 
   function calcularTirMercado(precioRaw, info) {
     if (precioRaw == null || !info) {
       return { valor: null, nota: "Sin precio de mercado" };
     }
-    const soporte = soportaTirMercado(info);
+    const precioLimpio = normalizarPrecioByma(precioRaw);
+    if (precioLimpio == null || precioLimpio <= 0) {
+      return { valor: null, nota: "Precio inválido" };
+    }
+
+    const soporteCron = soportaTirMercadoCronograma(info);
+    if (soporteCron.ok) {
+      const flujosRes = generarFlujosCaja(info);
+      if (!flujosRes.ok) {
+        return { valor: null, nota: flujosRes.motivo || "Sin flujos modelables" };
+      }
+      const ytm = calcularYtmDesdeFlujos(precioLimpio, flujosRes.flujos, flujosRes.pagosPorAnio);
+      if (ytm.valor != null) {
+        return {
+          valor: Math.round(ytm.valor * 100) / 100,
+          nota: NOTA_TIR_CRONOGRAMA,
+          metodo: "cronograma",
+        };
+      }
+      return { valor: null, nota: ytm.nota || "YTM no calculable" };
+    }
+
+    const soporte = soportaTirMercadoBullet(info);
     if (!soporte.ok) {
       return { valor: null, nota: soporte.nota };
     }
     const vencimiento = parsearVencimiento(info.vencimiento);
-    const tasaAnual = info.cupon_tasa_anual;
-    if (!vencimiento || tasaAnual == null) {
+    const hoy = new Date();
+    if (!vencimiento) {
       return { valor: null, nota: "Faltan cupón o vencimiento" };
     }
-    const hoy = new Date();
     if (vencimiento <= hoy) return { valor: null, nota: "Instrumento vencido" };
 
-    const pagosPorAnio = info.cupon_frecuencia === "anual" ? 1 : 2;
-    const precioLimpio = normalizarPrecioByma(precioRaw);
-    if (precioLimpio == null || precioLimpio <= 0) {
-      return { valor: null, nota: "Precio inválido" };
+    const flujosRes = generarFlujosCaja(info);
+    if (flujosRes.ok) {
+      const ytm = calcularYtmDesdeFlujos(precioLimpio, flujosRes.flujos, flujosRes.pagosPorAnio);
+      if (ytm.valor != null) {
+        return {
+          valor: Math.round(ytm.valor * 100) / 100,
+          nota: NOTA_TIR_BULLET,
+          metodo: "bullet",
+        };
+      }
+    }
+
+    const tasaAnual = info.cupon_tasa_anual;
+    if (tasaAnual == null) {
+      return { valor: null, nota: "Faltan cupón o vencimiento" };
+    }
+    const pagosPorAnio = pagosPorAnioDe(info);
+    if (!pagosPorAnio) {
+      return { valor: null, nota: "Frecuencia de cupón no modelada" };
     }
 
     const cuponPorPeriodo = (tasaAnual / 100) * 100 / pagosPorAnio;
@@ -360,14 +470,19 @@
       const medio = (bajo + alto) / 2;
       const diff = valorPresente(medio) - precioLimpio;
       if (Math.abs(diff) < 0.01) {
-        return { valor: Math.round(medio * 100) / 100, nota: "aprox. (bullet)" };
+        return {
+          valor: Math.round(medio * 100) / 100,
+          nota: NOTA_TIR_BULLET,
+          metodo: "bullet",
+        };
       }
       if (diff > 0) bajo = medio;
       else alto = medio;
     }
     return {
       valor: Math.round(((bajo + alto) / 2) * 100) / 100,
-      nota: "aprox. (bullet)",
+      nota: NOTA_TIR_BULLET,
+      metodo: "bullet",
     };
   }
 
@@ -464,9 +579,41 @@
     return d;
   }
 
-  function esLecapCapitalizable(info) {
-    const cuponTxt = (info.cupon || "").toLowerCase();
-    return info.cupon_frecuencia === "mensual" || cuponTxt.includes("capitalizable");
+  function diaPagoMensual(info) {
+    if (info.cupon_dia_pago != null) return info.cupon_dia_pago;
+    const venc = parsearVencimiento(info.vencimiento);
+    return venc ? venc.getDate() : null;
+  }
+
+  function generarFechasCupónMensual(info, hoy) {
+    const venc = parsearVencimiento(info.vencimiento);
+    const day = diaPagoMensual(info);
+    if (!venc || day == null) return [];
+    const fechas = [];
+    let y = hoy.getFullYear();
+    let m = hoy.getMonth();
+    for (let i = 0; i < 600; i += 1) {
+      const maxDay = new Date(y, m + 1, 0).getDate();
+      if (day > maxDay) {
+        m += 1;
+        if (m > 11) {
+          m = 0;
+          y += 1;
+        }
+        if (new Date(y, m, 1) > venc) break;
+        continue;
+      }
+      const d = new Date(y, m, day, 12, 0, 0);
+      if (d > hoy && d <= venc) fechas.push(d);
+      m += 1;
+      if (m > 11) {
+        m = 0;
+        y += 1;
+      }
+      if (new Date(y, m, 1) > venc) break;
+    }
+    fechas.sort((a, b) => a - b);
+    return fechas;
   }
 
   function esCuponCero(info) {
@@ -597,6 +744,28 @@
     const hoy = new Date();
     hoy.setHours(12, 0, 0, 0);
 
+    if (esCuponCorrienteMensual(info)) {
+      const fechas = generarFechasCupónMensual(info, hoy);
+      const fecha = fechas[0] || null;
+      if (!fecha) {
+        return {
+          metodo: "no_aplica",
+          categoria: "sin_cupones_futuros",
+          fecha: null,
+          motivo: "Sin fechas de cupón futuras según el calendario mensual registrado.",
+          meta: "",
+        };
+      }
+      const dia = diaPagoMensual(info);
+      return {
+        metodo: "calendario",
+        categoria: "calendario_mensual",
+        fecha,
+        motivo: "",
+        meta: `Calendario mensual registrado (día ${dia} de cada mes).`,
+      };
+    }
+
     if (info.cupon_fecha_pago && info.cupon_frecuencia === "semestral") {
       const fechas = generarFechasCupónSemestral(info, hoy);
       const fecha = fechas[0] || null;
@@ -605,16 +774,19 @@
           metodo: "no_aplica",
           categoria: "sin_cupones_futuros",
           fecha: null,
-          motivo: "Sin fechas de cupón futuras según el calendario del canje 2020 en el panel.",
+          motivo: "Sin fechas de cupón futuras según el calendario registrado en el panel.",
           meta: "",
         };
       }
+      const esCanje = esCalendarioCanje2020(info);
       return {
-        metodo: "canje_2020",
-        categoria: "canje_2020",
+        metodo: esCanje ? "canje_2020" : "calendario",
+        categoria: esCanje ? "canje_2020" : "calendario",
         fecha,
         motivo: "",
-        meta: `Calendario oficial del canje 2020 (${info.cupon_fecha_pago}).`,
+        meta: esCanje
+          ? `Calendario oficial del canje 2020 (${info.cupon_fecha_pago}).`
+          : `Calendario de cupón registrado (${info.cupon_fecha_pago}).`,
       };
     }
 
@@ -668,8 +840,7 @@
     if (moneda === "ARS dollar-linked") {
       return "Duración no disponible — bono dollar-linked: cupón y principal indexados al tipo de cambio, no modelados aquí.";
     }
-    const cuponTxt = (info.cupon || "").toLowerCase();
-    if (info.cupon_frecuencia === "mensual" || cuponTxt.includes("capitalizable")) {
+    if (esLecapCapitalizable(info)) {
       return "Duración no disponible — Lecap/capitalización mensual: no es una serie de cupones fijos; consultar calendario oficial.";
     }
     if (info.amortizacion_tipo === "amortizacion_parcial" && !(info.cronograma_amortizacion?.length > 0)) {
@@ -694,14 +865,14 @@
     if (tasa == null || tasa <= 0) {
       return { ok: false, motivo: motivoDuracionNoDisponible(info) || "Sin tasa de cupón." };
     }
-    const freq = info.cupon_frecuencia;
-    if (freq !== "anual" && freq !== "semestral") {
+    const pagosPorAnio = pagosPorAnioDe(info);
+    if (!pagosPorAnio) {
       return {
         ok: false,
-        motivo: "Duración no disponible — frecuencia de cupón no modelada (solo anual/semestral en el panel).",
+        motivo:
+          "Duración no disponible — frecuencia de cupón no modelada (anual, semestral o mensual corriente).",
       };
     }
-    const pagosPorAnio = freq === "anual" ? 1 : 2;
     const msPeriodo = (365.25 / pagosPorAnio) * 24 * 3600 * 1000;
     const cuponPorPeriodo = (tasa / 100) * 100 / pagosPorAnio;
     const periodos = Math.max(1, Math.ceil((venc - hoy) / msPeriodo));
@@ -806,6 +977,9 @@
     if (precio >= sumaFlujos * 0.995) {
       bajo = -20;
       alto = 5;
+      while (valorPresenteFlujos(bajo, flujos, pagosPorAnio) < precio && bajo > -90) {
+        bajo -= 10;
+      }
     } else {
       bajo = 0.01;
       alto = 80;
@@ -1160,6 +1334,10 @@
     filtrarYOrdenar,
     anosAlVencimiento,
     durationAprox,
+    esLecapCapitalizable,
+    esCuponCorrienteMensual,
+    cuponMecanica,
+    pagosPorAnioDe,
     generarFlujosCaja,
     calcularYtmDesdeFlujos,
     calcularDuracionModificada,
