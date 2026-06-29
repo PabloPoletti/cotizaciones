@@ -1055,11 +1055,13 @@ tr:hover td {
 
 .chart-card--tir-barras {
   grid-column: 1 / -1;
+  overflow: visible;
 }
 
 .chart-card--tir-barras .chart-box {
   min-height: 280px;
   height: auto;
+  overflow: visible;
 }
 
 .historico-controls {

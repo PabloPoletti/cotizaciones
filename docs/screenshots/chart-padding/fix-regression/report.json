@@ -1,0 +1,32 @@
+[
+  {
+    "file": "01-tooltip-sa24d.png",
+    "x": 1252.5199307528408,
+    "y": 20.823404255319147,
+    "xMax": 22.5,
+    "label": "SA24D",
+    "tooltipOpacity": 1,
+    "tooltipTitle": "SA24D",
+    "tooltipBody": "TIR: 51.08% | Fuera de rango razonable del grupo (-5% a 20%) — verificar precio de origen. | ⚠ Truncado visualmente en escala -5% a +20%; ver ficha para dato completo."
+  },
+  {
+    "file": "02-tooltip-al30.png",
+    "x": 84.49658203125,
+    "y": 629.5425531914893,
+    "xMax": 22.5,
+    "label": "AL30",
+    "tooltipOpacity": 1,
+    "tooltipTitle": "AL30",
+    "tooltipBody": "TIR: -11.92% | Fuera de rango razonable del grupo (-5% a 20%) — verificar precio de origen. | ⚠ Truncado visualmente en escala -5% a +20%; ver ficha para dato completo."
+  },
+  {
+    "file": "03-tooltip-gd38.png",
+    "x": 326.04381054687497,
+    "y": 481.07446808510633,
+    "xMax": 22.5,
+    "label": "GD38",
+    "tooltipOpacity": 1,
+    "tooltipTitle": "GD38",
+    "tooltipBody": "TIR: 0.17%"
+  }
+]

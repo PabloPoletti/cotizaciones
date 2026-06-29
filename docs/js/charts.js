@@ -28,9 +28,15 @@
   /** Padding visual compartido para ejes Chart.js (Análisis + ficha). */
   const CHART_AXIS = {
     grace: "12%",
-    tirMaxVisual: 22,
+    /** Aire visual en eje TIR: max dato 20 + ~10% del rango (-5…20). */
+    tirPadRatio: 0.1,
     layout: { padding: { top: 10, right: 16, bottom: 8, left: 6 } },
   };
+
+  function tirMaxEjeVisual() {
+    const { min, max } = ESCALA_TIR_GRAFICO;
+    return max + (max - min) * CHART_AXIS.tirPadRatio;
+  }
 
   function layoutGrafico(extra) {
     return {
@@ -42,41 +48,48 @@
 
   function tooltipAnalisis() {
     return {
-      position: "nearest",
+      enabled: true,
       intersect: false,
-      caretPadding: 14,
+      caretPadding: 10,
       padding: 10,
-      xAlign: "left",
-      yAlign: "center",
       displayColors: false,
     };
   }
 
-  /** Tooltip de barras horizontales: anclado a la derecha del área, no sobre barras vecinas. */
+  /** Barras horizontales: tooltip estándar anclado al extremo de la barra. */
   function tooltipBarrasHorizontales() {
     return {
       ...tooltipAnalisis(),
-      position(context) {
-        const chart = context.chart;
-        const el = context.tooltip.dataPoints?.[0]?.element;
-        if (!el || !chart?.chartArea) return false;
-        return {
-          x: chart.chartArea.right + 14,
-          y: el.y,
-          xAlign: "left",
-          yAlign: "center",
-        };
-      },
+      yAlign: "center",
+      xAlign: "right",
     };
   }
 
-  /** Eje de valor TIR: datos truncados en ±20/-5, borde visual con aire (+22%). */
+  function interaccionBarrasHorizontales() {
+    return {
+      mode: "nearest",
+      axis: "y",
+      intersect: false,
+    };
+  }
+
+  function interaccionScatter() {
+    return {
+      mode: "nearest",
+      intersect: false,
+    };
+  }
+
+  /** Eje TIR: datos truncados en ±20/-5; max del eje un ~10% por encima del tope. */
   function escalaTirValor(opciones = {}) {
     return {
       min: ESCALA_TIR_GRAFICO.min,
-      max: CHART_AXIS.tirMaxVisual,
+      max: tirMaxEjeVisual(),
       title: opciones.title ? { display: true, text: opciones.title } : undefined,
-      ticks: opciones.ticks,
+      ticks: {
+        stepSize: 5,
+        ...opciones.ticks,
+      },
       grid: opciones.grid,
     };
   }
@@ -217,7 +230,8 @@
           indexAxis: "y",
           responsive: true,
           maintainAspectRatio: false,
-          ...layoutGrafico({ right: 28 }),
+          interaction: interaccionBarrasHorizontales(),
+          ...layoutGrafico({ right: 12 }),
           plugins: {
             legend: {
               position: "bottom",
@@ -251,7 +265,7 @@
       actualizarNotaGrafico(
         "chart-tir-barras-nota",
         fueraCount,
-        "Escala fija -5% a +20% (eje hasta +22%); valores extremos truncados visualmente."
+        "Escala fija -5% a +20% (eje hasta ~+22,5%); valores extremos truncados."
       );
     }
 
@@ -292,6 +306,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          interaction: interaccionScatter(),
           ...layoutGrafico(),
           plugins: {
             legend: {
@@ -329,7 +344,7 @@
       actualizarNotaGrafico(
         "chart-scatter-nota",
         scatterFuera,
-        "Eje Y truncado -5% a +20% (eje hasta +22%)."
+        "Eje Y -5% a +20% (tope visual ~+22,5%)."
       );
     }
 
