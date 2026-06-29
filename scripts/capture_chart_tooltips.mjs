@@ -10,7 +10,42 @@ import { fileURLToPath } from "url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DOCS = join(ROOT, "docs");
-const OUT = join(ROOT, "docs", "screenshots", "chart-padding", "fix-regression");
+const OUT = join(ROOT, "docs", "screenshots", "chart-padding", "fix-scatter-tooltip");
+
+async function hoverScatterPoint(page, ticker) {
+  const canvas = page.locator("#chart-scatter");
+  await canvas.scrollIntoViewIfNeeded();
+  const box = await canvas.boundingBox();
+  const rel = await page.evaluate((prefix) => {
+    const c = document.getElementById("chart-scatter");
+    const chart = c ? Chart.getChart(c) : null;
+    if (!chart) return null;
+    const idx = chart.data.datasets[0].data.findIndex((d) => String(d.ticker).startsWith(prefix));
+    if (idx < 0) return null;
+    const el = chart.getDatasetMeta(0).data[idx];
+    if (!el) return null;
+    return {
+      x: el.x,
+      y: el.y,
+      yMax: chart.scales?.y?.max,
+      label: chart.data.datasets[0].data[idx].ticker,
+    };
+  }, ticker);
+  if (!box || !rel) return null;
+  await page.mouse.move(box.x + rel.x, box.y + rel.y);
+  await page.waitForTimeout(450);
+  const tip = await page.evaluate(() => {
+    const c = document.getElementById("chart-scatter");
+    const chart = c ? Chart.getChart(c) : null;
+    const tt = chart?.tooltip;
+    return {
+      tooltipOpacity: tt?.opacity ?? 0,
+      tooltipTitle: tt?.title?.[0] ?? "",
+      tooltipBody: (tt?.body || []).flatMap((b) => b.lines || []).join(" | "),
+    };
+  });
+  return { ...rel, ...tip };
+}
 
 function serveStatic(root) {
   return createServer((req, res) => {
@@ -101,7 +136,18 @@ async function main() {
   await page.locator(".chart-card:has(#chart-scatter)").screenshot({
     path: join(OUT, "04-curva-tir-plazo.png"),
   });
-  console.log("OK 04-curva-tir-plazo.png");
+
+  const scatterHovers = [
+    { ticker: "AL29", name: "05-scatter-al29.png" },
+    { ticker: "AL35", name: "06-scatter-al35.png" },
+    { ticker: "GD38", name: "07-scatter-gd38.png" },
+  ];
+  for (const h of scatterHovers) {
+    const info = await hoverScatterPoint(page, h.ticker);
+    report.push({ file: h.name, ...info });
+    await page.locator(".chart-card--scatter").screenshot({ path: join(OUT, h.name) });
+    console.log("OK", h.name, info);
+  }
 
   writeFileSync(join(OUT, "report.json"), JSON.stringify(report, null, 2));
 
@@ -113,8 +159,14 @@ async function main() {
     console.error("FALLO: tooltip no visible en", failed.map((f) => f.file));
     process.exit(1);
   }
-  if (report[0]?.xMax <= 20.5) {
-    console.error("FALLO: xMax del eje sin padding (", report[0].xMax, ")");
+  const barReport = report.filter((r) => r.file.startsWith("0") && !r.file.startsWith("05"));
+  if (barReport[0]?.xMax <= 20.5) {
+    console.error("FALLO: xMax del eje sin padding (", barReport[0].xMax, ")");
+    process.exit(1);
+  }
+  const scatterReport = report.filter((r) => r.file.startsWith("05") || r.file.startsWith("06") || r.file.startsWith("07"));
+  if (scatterReport.some((r) => r.yMax <= 20.5)) {
+    console.error("FALLO: yMax scatter sin padding");
     process.exit(1);
   }
 }

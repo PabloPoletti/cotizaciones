@@ -76,7 +76,15 @@
   function interaccionScatter() {
     return {
       mode: "nearest",
-      intersect: false,
+      intersect: true,
+    };
+  }
+
+  /** Scatter: title recibe TooltipItem[] (no un solo item). */
+  function tooltipScatter() {
+    return {
+      ...tooltipAnalisis(),
+      intersect: true,
     };
   }
 
@@ -320,16 +328,18 @@
               onClick: () => {},
             },
             tooltip: {
-              ...tooltipAnalisis(),
+              ...tooltipScatter(),
               callbacks: {
-                title(ctx) {
-                  return ctx.raw.ticker || "";
+                title(items) {
+                  return items[0]?.raw?.ticker || "";
                 },
                 label(ctx) {
-                  const row = scatterRows.find((r) => r.item.ticker === ctx.raw.ticker);
+                  const raw = ctx.raw;
+                  if (!raw?.ticker) return "";
+                  const row = scatterRows.find((r) => r.item.ticker === raw.ticker);
                   if (!row) return "";
-                  const lines = [`Plazo: ${ctx.raw.x.toFixed(1)} años`];
-                  lines.push(...tooltipTirGrafico(row, ctx.raw.meta));
+                  const lines = [`Plazo: ${raw.x.toFixed(1)} años`];
+                  lines.push(...tooltipTirGrafico(row, raw.meta));
                   return lines;
                 },
               },
