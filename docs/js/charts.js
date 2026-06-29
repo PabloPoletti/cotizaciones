@@ -26,39 +26,61 @@
   function initAnalisis(enriquecidos) {
     if (typeof Chart === "undefined") return;
 
-    const tirRows = enriquecidos
-      .filter((r) => r.tirRef != null)
-      .sort((a, b) => b.tirRef - a.tirRef);
+    const barRows = enriquecidos
+      .filter((r) => r.tirEff != null && C().esTirComparable(r))
+      .sort((a, b) => b.tirEff - a.tirEff);
 
     destruir("tirBarras");
     const ctx1 = document.getElementById("chart-tir-barras");
     if (ctx1) {
-      const barCount = tirRows.length;
+      const barCount = barRows.length;
       const box = ctx1.parentElement;
       if (box) {
         const h = Math.min(Math.max(barCount * 15, 280), 760);
         box.style.height = `${h}px`;
       }
+      const labels = barRows.map((r) => {
+        const ref = r.tirCalc?.fuente === "referencia" ? " (ref.)" : "";
+        return `${r.item.ticker}${ref}`;
+      });
+      const grupos = C().ORDEN_GRUPOS_TIR.filter((g) =>
+        barRows.some((r) => r.tirComparableGrupo === g)
+      );
+      const barThickness = barCount > 30 ? 10 : barCount > 20 ? 12 : 16;
+      const datasets = grupos.map((grupo) => ({
+        label: C().GRUPO_TIR_LABELS[grupo] || grupo,
+        data: barRows.map((r) => (r.tirComparableGrupo === grupo ? r.tirEff : null)),
+        backgroundColor: C().COLORES_GRUPO_TIR[grupo] || C().COLORES_SECTOR.Otros,
+        barThickness,
+      }));
       charts.tirBarras = new Chart(ctx1, {
         type: "bar",
-        data: {
-          labels: tirRows.map((r) => r.item.ticker),
-          datasets: [
-            {
-              label: "TIR referencia (%)",
-              data: tirRows.map((r) => r.tirRef),
-              backgroundColor: tirRows.map((r) => r.colorSector),
-              barThickness: barCount > 30 ? 10 : barCount > 20 ? 12 : 16,
-            },
-          ],
-        },
+        data: { labels, datasets },
         options: {
           indexAxis: "y",
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                boxWidth: 10,
+                font: { size: grupos.length > 4 ? 9 : 11 },
+                padding: 8,
+              },
+            },
+            tooltip: {
+              callbacks: {
+                label(ctx) {
+                  const row = barRows[ctx.dataIndex];
+                  const ref = row?.tirCalc?.fuente === "referencia" ? " (ref.)" : "";
+                  return `${ctx.dataset.label}: ${ctx.parsed.x.toFixed(2)}%${ref}`;
+                },
+              },
+            },
+          },
           scales: {
-            x: { title: { display: true, text: "TIR ref. %" } },
+            x: { title: { display: true, text: "TIR efectiva (%)" } },
             y: {
               ticks: {
                 font: { size: barCount > 30 ? 9 : 10 },

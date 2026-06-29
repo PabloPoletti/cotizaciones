@@ -2,9 +2,15 @@
 """Diagnóstico escala precios BYMA: AO27/AO28/AN29 vs AL30/GD30/AL29."""
 from __future__ import annotations
 
+from pathlib import Path
+import sys
+
+_SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+
 import json
 from datetime import date, timedelta
-from pathlib import Path
 
 import pandas as pd
 from pyobd import BymaData

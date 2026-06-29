@@ -313,13 +313,13 @@
   "panel_activo_a_reverificar": [
     {
       "ticker": "BPO27",
-      "nota": "En panel pero sin histórico BYMA Open Data — re-verificar día hábil",
-      "motivo": "En panel activo — re-verificar día hábil"
+      "nota": "Cotización BYMA OK en horario hábil; get_daily_history devuelve 400 en CI/24HS/ticker plano en todas las corridas del workflow (jun-2026). historico_precios.json: serie vacía, error «Sin histórico BYMA». Analogía parcial YMCUO (quote sí, histórico no).",
+      "motivo": "Histórico BYMA Open Data no disponible — patrón recurrente"
     },
     {
       "ticker": "BPO28",
-      "nota": "En panel pero sin histórico BYMA Open Data — re-verificar día hábil",
-      "motivo": "En panel activo — re-verificar día hábil"
+      "nota": "Mismo patrón que BPO27: 400 Client Error en history-BPO28 (CI, ticker, a veces 24HS) en cada corrida automática desde jun-2026; «No historical data for BPO28 24HS». Serie vacía en historico_precios.json. No reintentar indefinidamente — ver BPOD7 (sí tiene serie) como referencia BOPREAL.",
+      "motivo": "Histórico BYMA Open Data no disponible — patrón recurrente"
     }
   ],
   "candidatos_pendientes": [
