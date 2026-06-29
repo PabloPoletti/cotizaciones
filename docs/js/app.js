@@ -332,11 +332,22 @@
   function renderMiniKpi(rows) {
     const kpis = A.calcularKPIs(rows);
     elMiniKpi.innerHTML = `
-      <div class="kpi-chip"><span>Instrumentos</span><strong>${rows.length}</strong></div>
+      <div class="kpi-chip"><span>Inst.</span><strong>${rows.length}</strong></div>
       <div class="kpi-chip"><span>ON</span><strong>${kpis.countOn}</strong></div>
-      <div class="kpi-chip"><span>Soberanos</span><strong>${kpis.countSoberano}</strong></div>
+      <div class="kpi-chip"><span>Sob.</span><strong>${kpis.countSoberano}</strong></div>
       <div class="kpi-chip"><span>TIR prom.</span><strong>${kpis.tirProm != null ? kpis.tirProm.toFixed(2) + "%" : "—"}</strong></div>
     `;
+  }
+
+  function syncOrdenDirBtn() {
+    const btn = document.getElementById("btn-filtro-orden-dir");
+    const sel = document.getElementById("filtro-orden-dir");
+    if (!btn) return;
+    const desc = filtros.ordenDir === "desc";
+    btn.textContent = desc ? "↓" : "↑";
+    btn.setAttribute("aria-label", desc ? "Orden descendente" : "Orden ascendente");
+    btn.title = desc ? "Descendente" : "Ascendente";
+    if (sel) sel.value = filtros.ordenDir;
   }
 
   function poblarFiltroSubtipo() {
@@ -996,7 +1007,16 @@
     bind("filtro-busqueda", "busqueda");
     bind("filtro-moneda", "moneda");
     bind("filtro-orden", "orden");
-    bind("filtro-orden-dir", "ordenDir");
+
+    const btnOrdenDir = document.getElementById("btn-filtro-orden-dir");
+    if (btnOrdenDir) {
+      btnOrdenDir.addEventListener("click", () => {
+        filtros.ordenDir = filtros.ordenDir === "desc" ? "asc" : "desc";
+        syncOrdenDirBtn();
+        renderCotizacionesView();
+      });
+    }
+    syncOrdenDirBtn();
 
     const elTipo = document.getElementById("filtro-tipo");
     if (elTipo) {

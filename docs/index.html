@@ -50,13 +50,23 @@
       <div id="cotiz-lista-view">
       <div id="cotiz-toolbar" class="cotiz-toolbar hidden">
         <details class="filter-panel" open>
-          <summary>Filtrar y ordenar</summary>
-          <div class="filter-grid">
-            <div>
+          <summary class="filter-panel__head">
+            <span class="filter-panel__title">Filtrar y ordenar</span>
+            <div class="filter-panel__head-right">
+              <div id="cotiz-mini-kpi" class="kpi-row kpi-row--inline hidden" aria-label="Resumen del universo filtrado"></div>
+              <div class="view-toggle">
+                <span class="header__meta view-toggle__label">Vista:</span>
+                <button type="button" class="btn btn--sm btn--active" id="btn-vista-cards">Cards</button>
+                <button type="button" class="btn btn--sm" id="btn-vista-tabla">Tabla</button>
+              </div>
+            </div>
+          </summary>
+          <div class="filter-grid filter-grid--main">
+            <div class="filter-cell filter-cell--buscar">
               <label for="filtro-busqueda">Buscar</label>
               <input type="search" id="filtro-busqueda" placeholder="Ticker o nombre…" autocomplete="off">
             </div>
-            <div>
+            <div class="filter-cell">
               <label for="filtro-tipo">Tipo</label>
               <select id="filtro-tipo">
                 <option value="todos">Todos</option>
@@ -69,7 +79,7 @@
                 <option value="CEDEAR">CEDEAR</option>
               </select>
             </div>
-            <div>
+            <div class="filter-cell">
               <label for="filtro-moneda">Moneda</label>
               <select id="filtro-moneda">
                 <option value="todos">Todas</option>
@@ -79,58 +89,57 @@
                 <option value="ARS dollar-linked">ARS dollar-linked</option>
               </select>
             </div>
-            <div id="filtro-subtipo-wrap" class="hidden">
-              <label for="filtro-subtipo" id="filtro-subtipo-label">Subfiltro</label>
-              <select id="filtro-subtipo"><option value="todos">Todos</option></select>
-            </div>
-            <div>
-              <label for="filtro-confiabilidad">Confiabilidad</label>
+            <div class="filter-cell filter-cell--conf">
+              <label for="filtro-confiabilidad">Confiab.</label>
               <select id="filtro-confiabilidad">
                 <option value="todos">Todos</option>
                 <option value="confirmados">Confirmados (2 fuentes)</option>
                 <option value="liquidez-alta">Liquidez alta</option>
                 <option value="ambos">Confirmados + liquidez alta</option>
               </select>
-            </div>
-            <div class="filtro-checkbox-wrap">
-              <label class="checkbox-label">
+              <label class="checkbox-label checkbox-label--compact" title="Mostrar vencidos">
                 <input type="checkbox" id="filtro-mostrar-vencidos">
-                Mostrar vencidos
+                <span class="checkbox-label__text">Vencidos</span>
               </label>
+            </div>
+            <div class="filter-cell filter-cell--orden">
+              <label for="filtro-orden">Orden</label>
+              <div class="orden-controls">
+                <select id="filtro-orden">
+                  <option value="ticker">Ticker</option>
+                  <option value="tir">TIR efectiva</option>
+                  <option value="tirRef">TIR referencia</option>
+                  <option value="vencimiento">Vencimiento</option>
+                  <option value="variacion">Variación %</option>
+                  <option value="precio">Precio</option>
+                </select>
+                <button
+                  type="button"
+                  class="btn btn--sm btn-orden-dir"
+                  id="btn-filtro-orden-dir"
+                  aria-label="Orden ascendente"
+                  title="Ascendente"
+                >↑</button>
+              </div>
             </div>
             <div class="hidden" id="filtro-sector-legacy-wrap" aria-hidden="true">
               <label for="filtro-sector">Sector</label>
               <select id="filtro-sector"><option value="todos">Todos</option></select>
             </div>
-            <div>
-              <label for="filtro-orden">Ordenar por</label>
-              <select id="filtro-orden">
-                <option value="ticker">Ticker</option>
-                <option value="tir">TIR efectiva</option>
-                <option value="tirRef">TIR referencia</option>
-                <option value="vencimiento">Vencimiento</option>
-                <option value="variacion">Variación %</option>
-                <option value="precio">Precio</option>
-              </select>
-            </div>
-            <div>
-              <label for="filtro-orden-dir">Dirección</label>
-              <select id="filtro-orden-dir">
-                <option value="asc">Ascendente</option>
-                <option value="desc">Descendente</option>
-              </select>
+            <select id="filtro-orden-dir" class="visually-hidden" aria-hidden="true" tabindex="-1">
+              <option value="asc">Ascendente</option>
+              <option value="desc">Descendente</option>
+            </select>
+          </div>
+          <div id="filtro-subtipo-wrap" class="filter-grid filter-grid--sub hidden">
+            <div class="filter-cell">
+              <label for="filtro-subtipo" id="filtro-subtipo-label">Subfiltro</label>
+              <select id="filtro-subtipo"><option value="todos">Todos</option></select>
             </div>
           </div>
         </details>
-
-        <div class="view-toggle">
-          <span class="header__meta">Vista:</span>
-          <button type="button" class="btn btn--sm btn--active" id="btn-vista-cards">Cards</button>
-          <button type="button" class="btn btn--sm" id="btn-vista-tabla">Tabla</button>
-        </div>
       </div>
 
-      <div id="cotiz-mini-kpi" class="kpi-row hidden"></div>
       <div id="sectores-container"></div>
       <div id="tabla-container" class="hidden"></div>
       </div>
