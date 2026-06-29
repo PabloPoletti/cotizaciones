@@ -155,6 +155,39 @@ function runTests(C, infoFija) {
     assert(r.valor > 0 && r.valor < 20, "AO28 TIR coherente (no negativa por escala)");
   });
 
+  console.log("\n=== flujos bullet calendario (AO27/AO28) ===");
+  test("AO27 primer flujo coincide con proximoCuponInfo", () => {
+    const flujos = C.generarFlujosCaja(infoFija.AO27);
+    assert(flujos.ok && flujos.flujos[0]?.fecha, "AO27 flujos con fecha calendario");
+    const pc = C.proximoCuponInfo(infoFija.AO27);
+    assert(pc.fecha, "próximo cupón AO27");
+    assert(
+      flujos.flujos[0].fecha.getTime() === pc.fecha.getTime(),
+      `flujo ${flujos.flujos[0].fecha.toISOString()} vs cupón ${pc.fecha.toISOString()}`
+    );
+  });
+  test("AO28 primer flujo coincide con proximoCuponInfo", () => {
+    const flujos = C.generarFlujosCaja(infoFija.AO28);
+    assert(flujos.ok && flujos.flujos[0]?.fecha, "AO28 flujos con fecha calendario");
+    const pc = C.proximoCuponInfo(infoFija.AO28);
+    assert(pc.fecha, "próximo cupón AO28");
+    assert(
+      flujos.flujos[0].fecha.getTime() === pc.fecha.getTime(),
+      `flujo vs cupón AO28`
+    );
+  });
+  test("AO27 flujos mensuales espaciados por calendario (no 1/12 fijo)", () => {
+    const flujos = C.generarFlujosCaja(infoFija.AO27);
+    assert(flujos.ok && flujos.flujos.length > 2, "varios cupones");
+    const d0 = flujos.flujos[0].tAnios;
+    const d1 = flujos.flujos[1].tAnios - flujos.flujos[0].tAnios;
+    const equidistante = 1 / 12;
+    assert(
+      Math.abs(d1 - equidistante) > 0.002 || Math.abs(d0 - equidistante) > 0.002,
+      "al menos un intervalo distinto de 1/12 año exacto"
+    );
+  });
+
   console.log("\n=== soportaDuracion / motivoDuracionNoDisponible ===");
   test("Bullet USD → soporta", () => {
     assert(C.soportaDuracion(infoFija.TTC9O), "TTC9O soporta duración");
@@ -273,10 +306,11 @@ function runTests(C, infoFija) {
     assert(pc.fecha.getDate() === 29, "día 29");
     assert(!/intervalos regulares/i.test(pc.meta), "no heurística");
   });
-  test("AO28 próximo cupón calendario mensual día 31", () => {
+  test("AO28 próximo cupón calendario mensual (día 31 → fin de mes si aplica)", () => {
     const pc = C.proximoCuponInfo(infoFija.AO28);
     assert(pc.metodo === "calendario" && pc.fecha != null, "calendario AO28");
-    assert(pc.fecha.getDate() === 31, "día 31");
+    assert(pc.fecha.getDate() >= 28, "pago cerca de fin de mes");
+    assert(/día 31/.test(pc.meta), "meta día nominal 31");
   });
   test("AN29 próximo cupón calendario 30 may / 30 nov", () => {
     const pc = C.proximoCuponInfo(infoFija.AN29);

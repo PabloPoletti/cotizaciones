@@ -200,6 +200,36 @@
     ARS_DOLLAR_LINKED: "#7c3aed",
   };
 
+  /**
+   * ESQUEMA DE COLORES DEL PANEL (convención única — no inventar paletas nuevas por gráfico)
+   *
+   * 1) COLORES_GRUPO_TIR — Análisis TIR (barras + scatter) y cualquier vista que compare
+   *    rendimientos entre instrumentos comparables. Significa grupo TIR (USD nominal, ARS
+   *    nominal, CER, dollar-linked), NO sector emisor.
+   *
+   * 2) COLORES_SECTOR — Composición por sector, cards agrupadas por sector, donuts de
+   *    distribución sectorial. Significa sector económico/emisor del panel.
+   *
+   * 3) PALETA_CARTERA — Calculadora de cartera (pie de composición): colores neutros
+   *    cíclicos por ticker, sin significado semántico de grupo ni sector (solo distinguir
+   *    visualmente pesos de la cartera armada por el usuario).
+   *
+   * Regla: TIR comparable → COLORES_GRUPO_TIR; conteo/composición sectorial → COLORES_SECTOR;
+   * cartera ad-hoc del usuario → PALETA_CARTERA.
+   */
+  const PALETA_CARTERA = [
+    "#1e4d8c",
+    "#0d7a4a",
+    "#b54708",
+    "#7c3aed",
+    "#0891b2",
+    "#64748b",
+    "#dc2626",
+    "#059669",
+    "#d97706",
+    "#2563eb",
+  ];
+
   const ORDEN_GRUPOS_TIR = ["USD_HARD", "ARS_NOMINAL", "ARS_CER_REAL", "ARS_DOLLAR_LINKED"];
 
   function inferirTirComparableGrupo(info) {
@@ -594,16 +624,8 @@
     let m = hoy.getMonth();
     for (let i = 0; i < 600; i += 1) {
       const maxDay = new Date(y, m + 1, 0).getDate();
-      if (day > maxDay) {
-        m += 1;
-        if (m > 11) {
-          m = 0;
-          y += 1;
-        }
-        if (new Date(y, m, 1) > venc) break;
-        continue;
-      }
-      const d = new Date(y, m, day, 12, 0, 0);
+      const payDay = Math.min(day, maxDay);
+      const d = new Date(y, m, payDay, 12, 0, 0);
       if (d > hoy && d <= venc) fechas.push(d);
       m += 1;
       if (m > 11) {
@@ -873,8 +895,30 @@
           "Duración no disponible — frecuencia de cupón no modelada (anual, semestral o mensual corriente).",
       };
     }
-    const msPeriodo = (365.25 / pagosPorAnio) * 24 * 3600 * 1000;
     const cuponPorPeriodo = (tasa / 100) * 100 / pagosPorAnio;
+    const msAnio = 365.25 * 24 * 3600 * 1000;
+
+    let fechasCalendario = [];
+    if (esCuponCorrienteMensual(info)) {
+      fechasCalendario = generarFechasCupónMensual(info, hoy);
+    } else if (info.cupon_frecuencia === "semestral" && info.cupon_fecha_pago) {
+      fechasCalendario = generarFechasCupónSemestral(info, hoy);
+    }
+
+    if (fechasCalendario.length) {
+      const flujos = fechasCalendario.map((fc, idx) => {
+        const tAnios = (fc - hoy) / msAnio;
+        const esUltimo = idx === fechasCalendario.length - 1;
+        return {
+          tAnios,
+          monto: esUltimo ? cuponPorPeriodo + 100 : cuponPorPeriodo,
+          fecha: fc,
+        };
+      });
+      return { ok: true, flujos, pagosPorAnio };
+    }
+
+    const msPeriodo = msAnio / pagosPorAnio;
     const periodos = Math.max(1, Math.ceil((venc - hoy) / msPeriodo));
     const flujos = [];
     for (let i = 1; i <= periodos; i += 1) {
@@ -1360,6 +1404,7 @@
     GRUPOS_TIR_COMPARABLE,
     GRUPO_TIR_LABELS,
     COLORES_GRUPO_TIR,
+    PALETA_CARTERA,
     ORDEN_GRUPOS_TIR,
     inferirTirComparableGrupo,
     tirComparableGrupo,

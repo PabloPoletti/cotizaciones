@@ -301,7 +301,7 @@
     });
   }
 
-  const PALETA = [
+  const PALETA = C().PALETA_CARTERA || [
     "#1e4d8c", "#0d7a4a", "#b54708", "#7c3aed", "#0891b2",
     "#64748b", "#dc2626", "#059669", "#d97706", "#2563eb",
   ];

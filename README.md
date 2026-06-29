@@ -13,7 +13,8 @@ Panel estático de **59 instrumentos** del mercado argentino (ONs corporativas, 
 cotizaciones/
 ├── .github/workflows/
 │   ├── actualizar.yml              # Cron + manual: cotizaciones + histórico incremental
-│   └── bootstrap_historico.yml     # Manual una vez: carga ~90 días OHLCV
+│   ├── bootstrap_historico.yml     # Manual una vez: carga ~90 días OHLCV
+│   └── tests.yml                   # Push/PR: test_calculos + integridad universo
 ├── docs/                           # Raíz GitHub Pages
 │   ├── index.html                  # Dashboard (5 pestañas)
 │   ├── css/styles.css
@@ -231,6 +232,26 @@ cd docs && python -m http.server 8080
 
 Verificación Playwright local: `node scripts/verify_panel.mjs`  
 Verificación producción (59 inst., filtros 2 niveles, DolarAPI, badge): `node scripts/verify_prod_deploy.mjs`
+
+### Tests automatizados (CI)
+
+```bash
+node scripts/run_tests.mjs
+```
+
+Ejecuta `test_calculos.mjs` (TIR, duración, cupones) e `test_integridad_universo.mjs` (alineación `info_fija` ↔ `cotizaciones.json` ↔ `data912.tickers_solicitados`). GitHub Actions workflow `.github/workflows/tests.yml` corre la suite en cada push/PR a `main`.
+
+Para exigir merge solo con tests verdes: en GitHub → **Settings → Branches → Branch protection** → agregar required check **Tests / test**.
+
+### Esquema de colores (gráficos)
+
+Documentado en `docs/js/core.js` (`COLORES_GRUPO_TIR`, `COLORES_SECTOR`, `PALETA_CARTERA`):
+
+| Paleta | Uso |
+|--------|-----|
+| **COLORES_GRUPO_TIR** | Análisis TIR (barras, scatter): grupo comparable (USD nominal, ARS nominal, CER, dollar-linked) |
+| **COLORES_SECTOR** | Composición por sector, cards agrupadas |
+| **PALETA_CARTERA** | Pie de la calculadora: colores neutros por ticker, sin significado de grupo/sector |
 
 ---
 
