@@ -16,6 +16,7 @@ concurrency:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   bootstrap:
@@ -42,7 +43,9 @@ jobs:
       - name: Bootstrap histórico BYMA
         run: python scripts/bootstrap_historico.py --dias "${{ inputs.dias }}"
 
-      - name: Commit y push si hubo cambios
+      - name: Commit y publicar vía PR si hubo cambios
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -57,13 +60,20 @@ jobs:
             exit 0
           fi
 
+          BRANCH="bot/bootstrap-historico-$(date -u +%Y%m%dT%H%M%SZ)"
+          git checkout -b "$BRANCH"
           git add "${DATA_FILES[@]}"
           git commit -m "Bootstrap histórico precios BYMA [skip ci]"
+          git push -u origin "$BRANCH"
 
-          if git push; then
-            echo "Push exitoso."
-          else
-            echo "Push falló; reintentando tras rebase..."
-            git pull --rebase origin main
-            git push
-          fi
+          PR_URL="$(gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "Bootstrap histórico precios BYMA" \
+            --body "Carga histórica automática (workflow bootstrap).")"
+          echo "PR creado: $PR_URL"
+
+          PR_NUMBER="$(gh pr view "$PR_URL" --json number --jq .number)"
+          gh pr checks "$PR_NUMBER" --watch --fail-fast --interval 15
+          gh pr merge "$PR_NUMBER" --merge --delete-branch
+          echo "Datos publicados en main vía PR #${PR_NUMBER}."

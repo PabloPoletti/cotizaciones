@@ -14,9 +14,10 @@ concurrency:
   group: cotizaciones-actualizar
   cancel-in-progress: false
 
-# Permiso para hacer push del JSON actualizado
+# Push vía PR: main exige check "test"; el bot no puede pushear directo con GITHUB_TOKEN.
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   actualizar:
@@ -88,8 +89,10 @@ jobs:
         if: steps.mercado.outputs.abierto == 'true'
         run: python scripts/fetch_cotizaciones.py
 
-      - name: Commit y push si hubo cambios
+      - name: Commit y publicar vía PR si hubo cambios
         if: steps.mercado.outputs.abierto == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -106,13 +109,22 @@ jobs:
             exit 0
           fi
 
+          BRANCH="bot/cotizaciones-$(date -u +%Y%m%dT%H%M%SZ)"
+          git checkout -b "$BRANCH"
           git add "${DATA_FILES[@]}"
           git commit -m "Actualizar cotizaciones BYMA [skip ci]"
+          git push -u origin "$BRANCH"
 
-          if git push; then
-            echo "Push exitoso."
-          else
-            echo "Push falló; reintentando tras rebase..."
-            git pull --rebase origin main
-            git push
-          fi
+          PR_URL="$(gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "Actualizar cotizaciones BYMA" \
+            --body "Actualización automática de datos del panel (BYMA).")"
+          echo "PR creado: $PR_URL"
+
+          PR_NUMBER="$(gh pr view "$PR_URL" --json number --jq .number)"
+          echo "Esperando check test en PR #${PR_NUMBER}..."
+          gh pr checks "$PR_NUMBER" --watch --fail-fast --interval 15
+
+          gh pr merge "$PR_NUMBER" --merge --delete-branch
+          echo "Datos publicados en main vía PR #${PR_NUMBER}."
