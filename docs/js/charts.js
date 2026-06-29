@@ -25,6 +25,86 @@
 
   const ESCALA_TIR_GRAFICO = { min: -5, max: 20 };
 
+  /** Padding visual compartido para ejes Chart.js (Análisis + ficha). */
+  const CHART_AXIS = {
+    grace: "12%",
+    tirMaxVisual: 22,
+    layout: { padding: { top: 10, right: 16, bottom: 8, left: 6 } },
+  };
+
+  function layoutGrafico(extra) {
+    return {
+      layout: {
+        padding: { ...CHART_AXIS.layout.padding, ...extra },
+      },
+    };
+  }
+
+  function tooltipAnalisis() {
+    return {
+      position: "nearest",
+      intersect: false,
+      caretPadding: 14,
+      padding: 10,
+      xAlign: "left",
+      yAlign: "center",
+      displayColors: false,
+    };
+  }
+
+  /** Tooltip de barras horizontales: anclado a la derecha del área, no sobre barras vecinas. */
+  function tooltipBarrasHorizontales() {
+    return {
+      ...tooltipAnalisis(),
+      position(context) {
+        const chart = context.chart;
+        const el = context.tooltip.dataPoints?.[0]?.element;
+        if (!el || !chart?.chartArea) return false;
+        return {
+          x: chart.chartArea.right + 14,
+          y: el.y,
+          xAlign: "left",
+          yAlign: "center",
+        };
+      },
+    };
+  }
+
+  /** Eje de valor TIR: datos truncados en ±20/-5, borde visual con aire (+22%). */
+  function escalaTirValor(opciones = {}) {
+    return {
+      min: ESCALA_TIR_GRAFICO.min,
+      max: CHART_AXIS.tirMaxVisual,
+      title: opciones.title ? { display: true, text: opciones.title } : undefined,
+      ticks: opciones.ticks,
+      grid: opciones.grid,
+    };
+  }
+
+  /** Eje drawdown (≤0): grace inferior para que el mínimo no toque el borde. */
+  function escalaDrawdown(titulo = "% desde máximo") {
+    return {
+      max: 0,
+      grace: CHART_AXIS.grace,
+      title: { display: true, text: titulo },
+    };
+  }
+
+  function ticksEjeCategoriasBarras(barCount, labels) {
+    return {
+      offset: true,
+      ticks: {
+        padding: 8,
+        autoSkip: barCount > 24,
+        maxTicksLimit: barCount > 24 ? 28 : undefined,
+        callback(_value, index) {
+          return labels[index] ?? "";
+        },
+        font: { size: barCount > 30 ? 9 : 10 },
+      },
+    };
+  }
+
   function valorTirGrafico(row) {
     if (C().esTirMercadoConfiable(row.tirMerc)) return row.tirMerc.valor;
     if (row.tirCalc?.fuente === "referencia" && row.tirCalc.valor != null) return row.tirCalc.valor;
@@ -51,7 +131,6 @@
   function labelTickerGrafico(row, meta) {
     let label = row.item.ticker;
     if (meta.esReferencia) label += " (ref.)";
-    if (meta.fueraEscalaGrupo || meta.fueraEscalaGrafico) label += " ⚠";
     return label;
   }
 
@@ -65,10 +144,8 @@
         `Fuera de rango razonable del grupo (${meta.rangoGrupo.min}% a ${meta.rangoGrupo.max}%) — verificar precio de origen.`
       );
     }
-    if (meta.fueraEscalaGrafico && !meta.fueraEscalaGrupo) {
-      lines.push("Valor truncado en el gráfico (-5% a +20%); ver ficha para dato completo.");
-    } else if (meta.fueraEscalaGrafico) {
-      lines.push("Barra truncada en escala -5% a +20%; ver ficha.");
+    if (meta.fueraEscalaGrafico) {
+      lines.push("⚠ Truncado visualmente en escala -5% a +20%; ver ficha para dato completo.");
     }
     return lines;
   }
@@ -111,7 +188,8 @@
       const barCount = barRows.length;
       const box = ctx1.parentElement;
       if (box) {
-        const h = Math.min(Math.max(barCount * 15, 280), 760);
+        const pxPorBarra = barCount > 30 ? 17 : barCount > 20 ? 16 : 18;
+        const h = Math.min(Math.max(barCount * pxPorBarra, 280), 820);
         box.style.height = `${h}px`;
       }
       const labels = barRows.map((r, i) => labelTickerGrafico(r, barMetas[i]));
@@ -139,6 +217,7 @@
           indexAxis: "y",
           responsive: true,
           maintainAspectRatio: false,
+          ...layoutGrafico({ right: 28 }),
           plugins: {
             legend: {
               position: "bottom",
@@ -151,6 +230,7 @@
               onClick: () => {},
             },
             tooltip: {
+              ...tooltipBarrasHorizontales(),
               callbacks: {
                 title(ctx) {
                   return barRows[ctx[0].dataIndex]?.item.ticker || "";
@@ -163,25 +243,15 @@
             },
           },
           scales: {
-            x: {
-              min: ESCALA_TIR_GRAFICO.min,
-              max: ESCALA_TIR_GRAFICO.max,
-              title: { display: true, text: "TIR efectiva (%)" },
-            },
-            y: {
-              ticks: {
-                font: { size: barCount > 30 ? 9 : 10 },
-                autoSkip: barCount > 24,
-                maxTicksLimit: barCount > 24 ? 28 : undefined,
-              },
-            },
+            x: escalaTirValor({ title: "TIR efectiva (%)" }),
+            y: ticksEjeCategoriasBarras(barCount, labels),
           },
         },
       });
       actualizarNotaGrafico(
         "chart-tir-barras-nota",
         fueraCount,
-        "Escala fija -5% a +20%; valores extremos truncados visualmente."
+        "Escala fija -5% a +20% (eje hasta +22%); valores extremos truncados visualmente."
       );
     }
 
@@ -222,6 +292,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          ...layoutGrafico(),
           plugins: {
             legend: {
               position: "bottom",
@@ -234,6 +305,7 @@
               onClick: () => {},
             },
             tooltip: {
+              ...tooltipAnalisis(),
               callbacks: {
                 title(ctx) {
                   return ctx.raw.ticker || "";
@@ -249,19 +321,15 @@
             },
           },
           scales: {
-            x: { title: { display: true, text: "Años al vencimiento" } },
-            y: {
-              min: ESCALA_TIR_GRAFICO.min,
-              max: ESCALA_TIR_GRAFICO.max,
-              title: { display: true, text: "TIR efectiva (%)" },
-            },
+            x: { title: { display: true, text: "Años al vencimiento" }, grace: CHART_AXIS.grace },
+            y: escalaTirValor({ title: "TIR efectiva (%)" }),
           },
         },
       });
       actualizarNotaGrafico(
         "chart-scatter-nota",
         scatterFuera,
-        "Eje Y truncado -5% a +20%."
+        "Eje Y truncado -5% a +20% (eje hasta +22%)."
       );
     }
 
@@ -413,11 +481,10 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        ...layoutGrafico(),
         scales: {
-          y: {
-            title: { display: true, text: "% desde máximo" },
-            max: 0,
-          },
+          x: { ticks: { maxRotation: 40, autoSkip: true } },
+          y: escalaDrawdown("% desde máximo"),
         },
       },
     });
@@ -499,7 +566,7 @@
     const fichaChartOptions = {
       responsive: true,
       maintainAspectRatio: false,
-      layout: { padding: { top: 10, right: 18, bottom: 6, left: 6 } },
+      layout: { padding: CHART_AXIS.layout.padding },
     };
 
     if (!serie.length) {
@@ -578,13 +645,13 @@
             y: {
               position: "left",
               title: { display: true, text: "Precio ref." },
-              grace: "5%",
+              grace: CHART_AXIS.grace,
             },
             y1: {
               position: "right",
               display: durHist.ok,
               title: { display: true, text: "Duración mod. (años)" },
-              grace: "5%",
+              grace: CHART_AXIS.grace,
               grid: { drawOnChartArea: false },
             },
           },
@@ -616,7 +683,7 @@
               offset: true,
               ticks: { maxRotation: 40, autoSkip: true, maxTicksLimit: 8 },
             },
-            y: { max: 0, grace: "5%", title: { display: true, text: "% desde máximo" } },
+            y: escalaDrawdown(),
           },
         },
       });
