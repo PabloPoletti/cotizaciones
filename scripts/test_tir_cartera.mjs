@@ -38,6 +38,7 @@ function main() {
   assert(bacad.tirMerc.valor == null, "BACAD: mercado no calculable");
   assert(bacad.tirCalc.fuente === "referencia", "BACAD: tirCalc sigue pudiendo usar ref (análisis)");
   assert(C.valorTirCartera(bacad.tirMerc) === null, "BACAD: cartera no usa referencia");
+  assert(!C.esTirElegibleCartera(bacad), "BACAD: no elegible para preset");
 
   const html = C.formatearCeldaTirCartera(bacad.info, bacad.item, bacad.tirMerc);
   assert(html.includes("solo informativa"), "BACAD UI: ref marcada informativa");
@@ -49,6 +50,9 @@ function main() {
   assert(C.valorTirCartera(ao28.tirMerc) === ao28.tirMerc.valor, "AO28: mercado entra en cartera");
   const aoHtml = C.formatearCeldaTirCartera(ao28.info, ao28.item, ao28.tirMerc);
   assert(aoHtml.includes(`${ao28.tirMerc.valor}%`), "AO28 UI muestra mismo valor que cartera");
+
+  const co27 = u.find((r) => r.item.ticker === "CO27D");
+  assert(!C.esTirElegibleCartera(co27), "CO27D fuera de rango preset USD (-5..20)");
 
   console.log("OK test_tir_cartera.mjs");
 }

@@ -280,14 +280,14 @@
     return pesos;
   }
 
-  function rowsComparableConTir(enriquecidos) {
-    return enriquecidos.filter((r) => r.tirEff != null && C().esTirComparable(r));
+  function rowsElegiblesPreset(enriquecidos) {
+    return enriquecidos.filter((r) => C().esTirElegibleCartera(r));
   }
 
   function agruparPorTirGrupo(enriquecidos) {
     const map = new Map();
     for (const g of C().ORDEN_GRUPOS_TIR) map.set(g, []);
-    for (const row of rowsComparableConTir(enriquecidos)) {
+    for (const row of rowsElegiblesPreset(enriquecidos)) {
       const g = row.tirComparableGrupo;
       if (map.has(g)) map.get(g).push(row);
     }
@@ -297,9 +297,9 @@
   function metaPresetRow(row) {
     return {
       ticker: row.item.ticker,
-      tirEff: row.tirEff,
+      tirEff: row.tirMerc.valor,
       sector: row.sector,
-      tirFuente: row.tirCalc?.fuente || null,
+      tirFuente: "mercado",
       grupo: row.tirComparableGrupo,
     };
   }
@@ -328,20 +328,21 @@
     const TIR_MAX = 8;
     const { seleccionados, porGrupo } = seleccionPresetPorGrupo(
       agruparPorTirGrupo(enriquecidos),
-      (rows) => [...rows].filter((r) => r.tirEff < TIR_MAX).sort((a, b) => a.tirEff - b.tirEff)
+      (rows) =>
+        [...rows].filter((r) => r.tirMerc.valor < TIR_MAX).sort((a, b) => a.tirMerc.valor - b.tirMerc.valor)
     );
     if (!seleccionados.length) {
       return {
         pesos: {},
         porGrupo: {},
-        nota: `Ningún instrumento comparable cumple TIR efectiva < ${TIR_MAX}% dentro de su grupo.`,
+        nota: `Ningún instrumento con TIR mercado confiable cumple TIR < ${TIR_MAX}% dentro de su grupo.`,
       };
     }
     const pesos = distribuirPesosIguales(seleccionados.map((r) => r.item.ticker));
     return {
       pesos,
       porGrupo,
-      nota: `Ejemplo ilustrativo: TIR efectiva < ${TIR_MAX}% dentro de cada grupo comparable (no ranking global), pesos iguales.`,
+      nota: `Ejemplo ilustrativo: TIR mercado < ${TIR_MAX}% dentro de cada grupo comparable (no ranking global), pesos iguales.`,
     };
   }
 
@@ -362,12 +363,19 @@
       }
       const picked = [];
       for (const [sector, sectorRows] of porSector) {
-        const sorted = [...sectorRows].sort((a, b) => b.tirEff - a.tirEff);
+        const sorted = [...sectorRows].sort((a, b) => b.tirMerc.valor - a.tirMerc.valor);
         picked.push(...sorted.slice(0, 2));
-        if (sectorRows.length <= 2) {
+        const totalSector = enriquecidos.filter(
+          (r) =>
+            C().esTirComparable(r) &&
+            r.tirComparableGrupo === g &&
+            r.sector === sector &&
+            r.tirEff != null
+        ).length;
+        if (totalSector > 0 && totalSector <= 2) {
           const grupoLabel = C().GRUPO_TIR_LABELS[g] || g;
           notasSector.push(
-            `${grupoLabel} · ${sector}: solo ${sectorRows.length} instrumento(s) en el panel.`
+            `${grupoLabel} · ${sector}: solo ${totalSector} instrumento(s) en el panel.`
           );
         }
       }
@@ -386,7 +394,7 @@
       return {
         pesos: {},
         porGrupo: {},
-        nota: "No hay TIR comparables para armar el preset.",
+        nota: "No hay instrumentos con TIR mercado confiable en rango para armar el preset.",
         notasSector,
       };
     }
@@ -394,7 +402,7 @@
     return {
       pesos,
       porGrupo,
-      nota: "Ejemplo ilustrativo: hasta 2 tickers por sector dentro de cada grupo TIR comparable, pesos iguales.",
+      nota: "Ejemplo ilustrativo: hasta 2 tickers por sector (TIR mercado confiable en rango) dentro de cada grupo comparable, pesos iguales.",
       notasSector,
     };
   }
@@ -403,16 +411,16 @@
     const TOP_N = 2;
     const { seleccionados, porGrupo } = seleccionPresetPorGrupo(
       agruparPorTirGrupo(enriquecidos),
-      (rows) => [...rows].sort((a, b) => b.tirEff - a.tirEff).slice(0, TOP_N)
+      (rows) => [...rows].sort((a, b) => b.tirMerc.valor - a.tirMerc.valor).slice(0, TOP_N)
     );
     if (!seleccionados.length) {
-      return { pesos: {}, porGrupo: {}, nota: "Sin TIR efectiva comparable disponible." };
+      return { pesos: {}, porGrupo: {}, nota: "Sin TIR mercado confiable en rango para presets." };
     }
     const pesos = distribuirPesosIguales(seleccionados.map((r) => r.item.ticker));
     return {
       pesos,
       porGrupo,
-      nota: `Ejemplo ilustrativo: hasta ${TOP_N} mayores TIR efectivas por grupo comparable (no ranking global), pesos iguales. Mayor TIR no implica mejor inversión ni comparabilidad entre grupos.`,
+      nota: `Ejemplo ilustrativo: hasta ${TOP_N} mayores TIR mercado confiables por grupo comparable (no ranking global), pesos iguales. Mayor TIR no implica mejor inversión ni comparabilidad entre grupos.`,
     };
   }
 

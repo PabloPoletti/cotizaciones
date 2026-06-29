@@ -13,6 +13,7 @@ const node = process.execPath;
 const SUITE = [
   { script: "test_calculos.mjs", label: "Cálculos (core.js)" },
   { script: "test_tir_cartera.mjs", label: "TIR cartera (UI vs ponderada)" },
+  { script: "test_presets.mjs", label: "Presets cartera" },
   { script: "test_integridad_universo.mjs", label: "Integridad universo" },
 ];
 

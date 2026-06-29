@@ -232,6 +232,14 @@
 
   const ORDEN_GRUPOS_TIR = ["USD_HARD", "ARS_NOMINAL", "ARS_CER_REAL", "ARS_DOLLAR_LINKED"];
 
+  /** Rango de TIR mercado considerada elegible para presets y alertas de cartera. */
+  const RANGO_TIR_CARTERA_POR_GRUPO = {
+    USD_HARD: { min: -5, max: 20 },
+    ARS_NOMINAL: { min: 0, max: 35 },
+    ARS_CER_REAL: { min: 0, max: 20 },
+    ARS_DOLLAR_LINKED: { min: 0, max: 20 },
+  };
+
   function inferirTirComparableGrupo(info) {
     if (estadoVigencia(info) === "vencido") return "NO_COMPARABLE";
     const cat = categoriaDe(info);
@@ -532,6 +540,19 @@
 
   function valorTirCartera(tirMerc) {
     return esTirMercadoConfiable(tirMerc) ? tirMerc.valor : null;
+  }
+
+  function rangoTirCarteraPorGrupo(grupo) {
+    return RANGO_TIR_CARTERA_POR_GRUPO[grupo] || { min: -5, max: 20 };
+  }
+
+  function esTirElegibleCartera(row) {
+    if (!esTirComparable(row)) return false;
+    if (!esTirMercadoConfiable(row.tirMerc)) return false;
+    const v = row.tirMerc.valor;
+    if (v < 0) return false;
+    const r = rangoTirCarteraPorGrupo(row.tirComparableGrupo);
+    return v >= r.min && v <= r.max;
   }
 
   function tirEfectiva(info, item) {
@@ -1398,6 +1419,9 @@
     tirParaCalculo,
     esTirMercadoConfiable,
     valorTirCartera,
+    rangoTirCarteraPorGrupo,
+    esTirElegibleCartera,
+    RANGO_TIR_CARTERA_POR_GRUPO,
     formatearCeldaTirCartera,
     tirEfectiva,
     agruparPorSector,
