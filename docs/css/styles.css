@@ -730,6 +730,23 @@ tr:hover td {
   }
 }
 
+.preset-grupos {
+  margin: 0.45rem 0 0;
+  padding-left: 1.15rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.preset-grupos li {
+  margin: 0.2rem 0;
+}
+
+.preset-grupos__meta {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
 .kpi-chip span {
   display: block;
   font-size: 0.72rem;

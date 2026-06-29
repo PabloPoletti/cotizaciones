@@ -280,56 +280,139 @@
     return pesos;
   }
 
-  function presetConservador(enriquecidos) {
-    const sel = enriquecidos.filter((r) => r.tirEff != null && r.tirEff < 8);
-    if (!sel.length) return { pesos: {}, nota: "Ningún instrumento cumple TIR < 8%." };
-    const pesos = distribuirPesosIguales(sel.map((r) => r.item.ticker));
+  function rowsComparableConTir(enriquecidos) {
+    return enriquecidos.filter((r) => r.tirEff != null && C().esTirComparable(r));
+  }
+
+  function agruparPorTirGrupo(enriquecidos) {
+    const map = new Map();
+    for (const g of C().ORDEN_GRUPOS_TIR) map.set(g, []);
+    for (const row of rowsComparableConTir(enriquecidos)) {
+      const g = row.tirComparableGrupo;
+      if (map.has(g)) map.get(g).push(row);
+    }
+    return map;
+  }
+
+  function metaPresetRow(row) {
     return {
-      pesos,
-      nota: "Ejemplo ilustrativo: reparto igualitario entre instrumentos con TIR efectiva < 8%.",
+      ticker: row.item.ticker,
+      tirEff: row.tirEff,
+      sector: row.sector,
+      tirFuente: row.tirCalc?.fuente || null,
+      grupo: row.tirComparableGrupo,
     };
   }
 
-  function presetBalanceado(enriquecidos) {
-    const porSector = new Map();
-    const notasSector = [];
-    for (const row of enriquecidos) {
-      if (row.tirEff == null) continue;
-      if (!porSector.has(row.sector)) porSector.set(row.sector, []);
-      porSector.get(row.sector).push(row);
-    }
+  function seleccionPresetPorGrupo(porGrupoMap, selectorFn) {
+    const porGrupo = {};
     const seleccionados = [];
-    for (const [sector, rows] of porSector) {
-      const sorted = [...rows].sort((a, b) => b.tirEff - a.tirEff);
-      const top = sorted.slice(0, 2);
-      if (rows.length <= 2) {
-        notasSector.push(
-          `${sector}: solo ${rows.length} instrumento(s) en el panel — el preset incluye el 100% del sector sin comparación real entre alternativas.`
-        );
+    const vistos = new Set();
+    for (const g of C().ORDEN_GRUPOS_TIR) {
+      const rows = porGrupoMap.get(g) || [];
+      const picked = selectorFn(rows, g);
+      if (!picked.length) continue;
+      porGrupo[g] = picked.map(metaPresetRow);
+      for (const row of picked) {
+        const t = row.item.ticker;
+        if (!vistos.has(t)) {
+          vistos.add(t);
+          seleccionados.push(row);
+        }
       }
-      seleccionados.push(...top);
     }
+    return { seleccionados, porGrupo };
+  }
+
+  function presetConservador(enriquecidos) {
+    const TIR_MAX = 8;
+    const { seleccionados, porGrupo } = seleccionPresetPorGrupo(
+      agruparPorTirGrupo(enriquecidos),
+      (rows) => [...rows].filter((r) => r.tirEff < TIR_MAX).sort((a, b) => a.tirEff - b.tirEff)
+    );
     if (!seleccionados.length) {
-      return { pesos: {}, nota: "No hay TIR calculables para armar el preset.", notasSector };
+      return {
+        pesos: {},
+        porGrupo: {},
+        nota: `Ningún instrumento comparable cumple TIR efectiva < ${TIR_MAX}% dentro de su grupo.`,
+      };
     }
     const pesos = distribuirPesosIguales(seleccionados.map((r) => r.item.ticker));
     return {
       pesos,
-      nota: "Ejemplo ilustrativo: hasta 2 tickers por sector con mayor TIR efectiva, pesos iguales.",
+      porGrupo,
+      nota: `Ejemplo ilustrativo: TIR efectiva < ${TIR_MAX}% dentro de cada grupo comparable (no ranking global), pesos iguales.`,
+    };
+  }
+
+  function presetBalanceado(enriquecidos) {
+    const porGrupoMap = agruparPorTirGrupo(enriquecidos);
+    const porGrupo = {};
+    const seleccionados = [];
+    const vistos = new Set();
+    const notasSector = [];
+
+    for (const g of C().ORDEN_GRUPOS_TIR) {
+      const rows = porGrupoMap.get(g) || [];
+      if (!rows.length) continue;
+      const porSector = new Map();
+      for (const row of rows) {
+        if (!porSector.has(row.sector)) porSector.set(row.sector, []);
+        porSector.get(row.sector).push(row);
+      }
+      const picked = [];
+      for (const [sector, sectorRows] of porSector) {
+        const sorted = [...sectorRows].sort((a, b) => b.tirEff - a.tirEff);
+        picked.push(...sorted.slice(0, 2));
+        if (sectorRows.length <= 2) {
+          const grupoLabel = C().GRUPO_TIR_LABELS[g] || g;
+          notasSector.push(
+            `${grupoLabel} · ${sector}: solo ${sectorRows.length} instrumento(s) en el panel.`
+          );
+        }
+      }
+      if (!picked.length) continue;
+      porGrupo[g] = picked.map(metaPresetRow);
+      for (const row of picked) {
+        const t = row.item.ticker;
+        if (!vistos.has(t)) {
+          vistos.add(t);
+          seleccionados.push(row);
+        }
+      }
+    }
+
+    if (!seleccionados.length) {
+      return {
+        pesos: {},
+        porGrupo: {},
+        nota: "No hay TIR comparables para armar el preset.",
+        notasSector,
+      };
+    }
+    const pesos = distribuirPesosIguales(seleccionados.map((r) => r.item.ticker));
+    return {
+      pesos,
+      porGrupo,
+      nota: "Ejemplo ilustrativo: hasta 2 tickers por sector dentro de cada grupo TIR comparable, pesos iguales.",
       notasSector,
     };
   }
 
   function presetMayorTir(enriquecidos) {
-    const sorted = enriquecidos
-      .filter((r) => r.tirEff != null)
-      .sort((a, b) => b.tirEff - a.tirEff)
-      .slice(0, 5);
-    if (!sorted.length) return { pesos: {}, nota: "Sin TIR efectiva disponible." };
-    const pesos = distribuirPesosIguales(sorted.map((r) => r.item.ticker));
+    const TOP_N = 2;
+    const { seleccionados, porGrupo } = seleccionPresetPorGrupo(
+      agruparPorTirGrupo(enriquecidos),
+      (rows) => [...rows].sort((a, b) => b.tirEff - a.tirEff).slice(0, TOP_N)
+    );
+    if (!seleccionados.length) {
+      return { pesos: {}, porGrupo: {}, nota: "Sin TIR efectiva comparable disponible." };
+    }
+    const pesos = distribuirPesosIguales(seleccionados.map((r) => r.item.ticker));
     return {
       pesos,
-      nota: "Ejemplo ilustrativo: 5 mayores TIR efectivas, pesos iguales. Mayor TIR no implica mejor inversión.",
+      porGrupo,
+      nota: `Ejemplo ilustrativo: hasta ${TOP_N} mayores TIR efectivas por grupo comparable (no ranking global), pesos iguales. Mayor TIR no implica mejor inversión ni comparabilidad entre grupos.`,
     };
   }
 

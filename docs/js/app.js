@@ -335,8 +335,39 @@
       <div class="kpi-chip"><span>Inst.</span><strong>${rows.length}</strong></div>
       <div class="kpi-chip"><span>ON</span><strong>${kpis.countOn}</strong></div>
       <div class="kpi-chip"><span>Sob.</span><strong>${kpis.countSoberano}</strong></div>
-      <div class="kpi-chip"><span>TIR prom.</span><strong>${kpis.tirProm != null ? kpis.tirProm.toFixed(2) + "%" : "—"}</strong></div>
     `;
+  }
+
+  function renderPresetNota(result) {
+    const elNota = document.getElementById("preset-nota");
+    if (!elNota) return;
+    if (!result?.nota && !result?.porGrupo) {
+      elNota.textContent = "";
+      elNota.classList.add("hidden");
+      return;
+    }
+    let html = C.escapeHtml(result.nota || "");
+    if (result.porGrupo && Object.keys(result.porGrupo).length) {
+      html += '<ul class="preset-grupos">';
+      for (const g of C.ORDEN_GRUPOS_TIR) {
+        const items = result.porGrupo[g];
+        if (!items?.length) continue;
+        const label = C.GRUPO_TIR_LABELS[g] || g;
+        const tickers = items
+          .map((i) => {
+            const ref = i.tirFuente === "referencia" ? " (ref.)" : "";
+            return `${C.escapeHtml(i.ticker)} ~${i.tirEff.toFixed(1)}%${ref}`;
+          })
+          .join(", ");
+        html += `<li><strong>${C.escapeHtml(label)}:</strong> ${tickers}</li>`;
+      }
+      html += "</ul>";
+    }
+    if (result.notasSector?.length) {
+      html += `<p class="preset-grupos__meta">${C.escapeHtml(result.notasSector.join(" "))}</p>`;
+    }
+    elNota.innerHTML = html;
+    elNota.classList.remove("hidden");
   }
 
   function syncOrdenDirBtn() {
@@ -687,6 +718,7 @@
     let usaMercado = false;
     const pieLabels = [];
     const pieData = [];
+    const gruposTirActivos = new Set();
 
     inputs.forEach((input) => {
       const pct = parseFloat(input.value) || 0;
@@ -705,8 +737,18 @@
       if (pct > 0) {
         pieLabels.push(input.dataset.ticker);
         pieData.push(pct);
+        const row = enriquecidos.find((r) => r.item.ticker === input.dataset.ticker);
+        if (row?.tirComparableGrupo && C.esTirComparable(row)) {
+          gruposTirActivos.add(row.tirComparableGrupo);
+        }
       }
     });
+
+    if (gruposTirActivos.size > 1) {
+      warnings.push(
+        "La cartera mezcla grupos TIR distintos (USD nominal, ARS nominal, etc.); la TIR ponderada no es comparable entre ellos."
+      );
+    }
 
     elSumaPct.textContent = sumaPct.toFixed(1) + "%";
     let tirAjustada = null;
@@ -900,7 +942,6 @@
   }
 
   function aplicarPreset(tipo) {
-    const elNota = document.getElementById("preset-nota");
     let result;
     const base = enriquecidosVigentes.length ? enriquecidosVigentes : enriquecidos.filter(C.esVigente);
     if (tipo === "conservador") result = A.presetConservador(base);
@@ -909,15 +950,7 @@
     else return;
 
     aplicarPesosEnInputs(result.pesos);
-
-    let notaTexto = result.nota || "";
-    if (result.notasSector?.length) {
-      notaTexto += " " + result.notasSector.join(" ");
-    }
-    if (elNota) {
-      elNota.textContent = notaTexto;
-      elNota.classList.remove("hidden");
-    }
+    renderPresetNota(result);
     calcSoloPreset = true;
     document.getElementById("btn-calc-mostrar-todos")?.classList.remove("hidden");
     recalcularCartera();
