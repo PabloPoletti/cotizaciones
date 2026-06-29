@@ -47,14 +47,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          if git diff --quiet HEAD -- docs/data/historico_precios.json; then
-            echo "Sin cambios en historico_precios.json"
+          DATA_FILES=(
+            docs/data/historico_precios.json
+            docs/data/mep_historico.json
+          )
+
+          if git diff --quiet HEAD -- "${DATA_FILES[@]}"; then
+            echo "Sin cambios en datos del bootstrap"
             exit 0
           fi
 
-          git add docs/data/historico_precios.json
+          git add "${DATA_FILES[@]}"
           git commit -m "Bootstrap histórico precios BYMA [skip ci]"
-          git pull --rebase origin main
 
           if git push; then
             echo "Push exitoso."

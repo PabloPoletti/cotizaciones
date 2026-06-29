@@ -94,14 +94,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          if git diff --quiet HEAD -- docs/data/cotizaciones.json docs/data/historico_precios.json; then
-            echo "Sin cambios reales en cotizaciones.json / historico_precios.json (idénticos a HEAD)"
+          # Archivos que puede tocar fetch_cotizaciones.py (+ histórico incremental + cache MEP).
+          DATA_FILES=(
+            docs/data/cotizaciones.json
+            docs/data/historico_precios.json
+            docs/data/mep_historico.json
+          )
+
+          if git diff --quiet HEAD -- "${DATA_FILES[@]}"; then
+            echo "Sin cambios en datos del fetch (idénticos a HEAD)"
             exit 0
           fi
 
-          git add docs/data/cotizaciones.json docs/data/historico_precios.json
+          git add "${DATA_FILES[@]}"
           git commit -m "Actualizar cotizaciones BYMA [skip ci]"
-          git pull --rebase origin main
 
           if git push; then
             echo "Push exitoso."

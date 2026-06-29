@@ -137,8 +137,8 @@ concurrency:
 En el job, además:
 
 1. **`git pull --rebase origin main`** antes de ejecutar el script Python (HEAD actualizado para corridas encoladas).
-2. **Skip de commit** si `cotizaciones.json` / `historico_precios.json` son idénticos a HEAD (byte a byte).
-3. **`git pull --rebase`** antes del push; si falla, **un reintento** de pull + push.
+2. **Skip de commit** si los JSON de datos del fetch son idénticos a HEAD (`cotizaciones.json`, `historico_precios.json`, `mep_historico.json`).
+3. **`git add`** de esos tres archivos, **commit** y **push** sin pull intermedio (evita unstaged si el fetch tocó `mep_historico.json`). Si el push falla, **un reintento** de pull + push.
 
 ### `bootstrap_historico.yml` — carga inicial OHLCV (una vez)
 
