@@ -23,12 +23,87 @@
     return labels.map((l) => C().COLORES_SECTOR[l] || C().COLORES_SECTOR.Otros);
   }
 
+  const ESCALA_TIR_GRAFICO = { min: -5, max: 20 };
+
+  function valorTirGrafico(row) {
+    if (C().esTirMercadoConfiable(row.tirMerc)) return row.tirMerc.valor;
+    if (row.tirCalc?.fuente === "referencia" && row.tirCalc.valor != null) return row.tirCalc.valor;
+    return row.tirEff;
+  }
+
+  function metaTirGrafico(row) {
+    const valorReal = valorTirGrafico(row);
+    const rangoGrupo = C().rangoTirCarteraPorGrupo(row.tirComparableGrupo);
+    const esReferencia = !C().esTirMercadoConfiable(row.tirMerc) && row.tirCalc?.fuente === "referencia";
+    const fueraEscalaGrupo =
+      valorReal != null && (valorReal < rangoGrupo.min || valorReal > rangoGrupo.max);
+    const fueraEscalaGrafico =
+      valorReal != null &&
+      (valorReal < ESCALA_TIR_GRAFICO.min || valorReal > ESCALA_TIR_GRAFICO.max);
+    return { valorReal, rangoGrupo, esReferencia, fueraEscalaGrupo, fueraEscalaGrafico };
+  }
+
+  function tirDisplayGrafico(meta) {
+    if (meta.valorReal == null) return null;
+    return Math.max(ESCALA_TIR_GRAFICO.min, Math.min(ESCALA_TIR_GRAFICO.max, meta.valorReal));
+  }
+
+  function labelTickerGrafico(row, meta) {
+    let label = row.item.ticker;
+    if (meta.esReferencia) label += " (ref.)";
+    if (meta.fueraEscalaGrupo || meta.fueraEscalaGrafico) label += " ⚠";
+    return label;
+  }
+
+  function tooltipTirGrafico(row, meta) {
+    const lines = [];
+    if (meta.valorReal != null) {
+      lines.push(`TIR: ${meta.valorReal.toFixed(2)}%${meta.esReferencia ? " (referencia)" : ""}`);
+    }
+    if (meta.fueraEscalaGrupo) {
+      lines.push(
+        `Fuera de rango razonable del grupo (${meta.rangoGrupo.min}% a ${meta.rangoGrupo.max}%) — verificar precio de origen.`
+      );
+    }
+    if (meta.fueraEscalaGrafico && !meta.fueraEscalaGrupo) {
+      lines.push("Valor truncado en el gráfico (-5% a +20%); ver ficha para dato completo.");
+    } else if (meta.fueraEscalaGrafico) {
+      lines.push("Barra truncada en escala -5% a +20%; ver ficha.");
+    }
+    return lines;
+  }
+
+  function leyendaGruposTir(barRows) {
+    return C()
+      .ORDEN_GRUPOS_TIR.filter((g) => barRows.some((r) => r.tirComparableGrupo === g))
+      .map((g) => ({
+        text: C().GRUPO_TIR_LABELS[g] || g,
+        fillStyle: C().COLORES_GRUPO_TIR[g] || C().COLORES_SECTOR.Otros,
+        strokeStyle: C().COLORES_GRUPO_TIR[g] || C().COLORES_SECTOR.Otros,
+        lineWidth: 0,
+      }));
+  }
+
+  function actualizarNotaGrafico(id, count, extra) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (count > 0) {
+      el.textContent = `${count} instrumento(s) fuera de escala o con posible artefacto de cálculo — ver ficha. ${extra || ""}`.trim();
+      el.classList.remove("hidden");
+    } else {
+      el.textContent = extra || "";
+      el.classList.toggle("hidden", !extra);
+    }
+  }
+
   function initAnalisis(enriquecidos) {
     if (typeof Chart === "undefined") return;
 
     const barRows = enriquecidos
       .filter((r) => r.tirEff != null && C().esTirComparable(r))
-      .sort((a, b) => b.tirEff - a.tirEff);
+      .sort((a, b) => valorTirGrafico(b) - valorTirGrafico(a));
+    const barMetas = barRows.map((r) => metaTirGrafico(r));
+    const fueraCount = barMetas.filter((m) => m.fueraEscalaGrupo || m.fueraEscalaGrafico).length;
 
     destruir("tirBarras");
     const ctx1 = document.getElementById("chart-tir-barras");
@@ -39,23 +114,27 @@
         const h = Math.min(Math.max(barCount * 15, 280), 760);
         box.style.height = `${h}px`;
       }
-      const labels = barRows.map((r) => {
-        const ref = r.tirCalc?.fuente === "referencia" ? " (ref.)" : "";
-        return `${r.item.ticker}${ref}`;
-      });
-      const grupos = C().ORDEN_GRUPOS_TIR.filter((g) =>
-        barRows.some((r) => r.tirComparableGrupo === g)
-      );
+      const labels = barRows.map((r, i) => labelTickerGrafico(r, barMetas[i]));
       const barThickness = barCount > 30 ? 10 : barCount > 20 ? 12 : 16;
-      const datasets = grupos.map((grupo) => ({
-        label: C().GRUPO_TIR_LABELS[grupo] || grupo,
-        data: barRows.map((r) => (r.tirComparableGrupo === grupo ? r.tirEff : null)),
-        backgroundColor: C().COLORES_GRUPO_TIR[grupo] || C().COLORES_SECTOR.Otros,
-        barThickness,
-      }));
       charts.tirBarras = new Chart(ctx1, {
         type: "bar",
-        data: { labels, datasets },
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "TIR efectiva",
+              data: barMetas.map((m) => tirDisplayGrafico(m)),
+              backgroundColor: barRows.map(
+                (r) => C().COLORES_GRUPO_TIR[r.tirComparableGrupo] || C().COLORES_SECTOR.Otros
+              ),
+              borderColor: barMetas.map((m) =>
+                m.fueraEscalaGrupo || m.fueraEscalaGrafico ? "#92400e" : "transparent"
+              ),
+              borderWidth: barMetas.map((m) => (m.fueraEscalaGrupo || m.fueraEscalaGrafico ? 2 : 0)),
+              barThickness,
+            },
+          ],
+        },
         options: {
           indexAxis: "y",
           responsive: true,
@@ -64,23 +143,31 @@
             legend: {
               position: "bottom",
               labels: {
+                generateLabels: () => leyendaGruposTir(barRows),
                 boxWidth: 10,
-                font: { size: grupos.length > 4 ? 9 : 11 },
+                font: { size: 11 },
                 padding: 8,
               },
+              onClick: () => {},
             },
             tooltip: {
               callbacks: {
+                title(ctx) {
+                  return barRows[ctx[0].dataIndex]?.item.ticker || "";
+                },
                 label(ctx) {
                   const row = barRows[ctx.dataIndex];
-                  const ref = row?.tirCalc?.fuente === "referencia" ? " (ref.)" : "";
-                  return `${ctx.dataset.label}: ${ctx.parsed.x.toFixed(2)}%${ref}`;
+                  return tooltipTirGrafico(row, barMetas[ctx.dataIndex]);
                 },
               },
             },
           },
           scales: {
-            x: { title: { display: true, text: "TIR efectiva (%)" } },
+            x: {
+              min: ESCALA_TIR_GRAFICO.min,
+              max: ESCALA_TIR_GRAFICO.max,
+              title: { display: true, text: "TIR efectiva (%)" },
+            },
             y: {
               ticks: {
                 font: { size: barCount > 30 ? 9 : 10 },
@@ -91,29 +178,47 @@
           },
         },
       });
+      actualizarNotaGrafico(
+        "chart-tir-barras-nota",
+        fueraCount,
+        "Escala fija -5% a +20%; valores extremos truncados visualmente."
+      );
     }
 
     const scatterRows = enriquecidos.filter(
       (r) => r.tirEff != null && r.anosVto != null && C().esTirComparable(r)
     );
+    const scatterMetas = scatterRows.map((r) => metaTirGrafico(r));
+    const scatterFuera = scatterMetas.filter((m) => m.fueraEscalaGrupo || m.fueraEscalaGrafico).length;
     destruir("scatter");
     const ctx2 = document.getElementById("chart-scatter");
     if (ctx2) {
-      const grupos = C()
-        .ORDEN_GRUPOS_TIR.filter((g) => scatterRows.some((r) => r.tirComparableGrupo === g));
       const manyPoints = scatterRows.length > 24;
-      const datasets = grupos.map((grupo) => ({
-        label: C().GRUPO_TIR_LABELS[grupo] || grupo,
-        data: scatterRows
-          .filter((r) => r.tirComparableGrupo === grupo)
-          .map((r) => ({ x: r.anosVto, y: r.tirEff, ticker: r.item.ticker })),
-        backgroundColor: C().COLORES_GRUPO_TIR[grupo] || C().COLORES_SECTOR.Otros,
-        pointRadius: manyPoints ? 4 : 7,
-        pointHoverRadius: manyPoints ? 6 : 9,
-      }));
       charts.scatter = new Chart(ctx2, {
         type: "scatter",
-        data: { datasets },
+        data: {
+          datasets: [
+            {
+              label: "TIR vs plazo",
+              data: scatterRows.map((r, i) => ({
+                x: r.anosVto,
+                y: tirDisplayGrafico(scatterMetas[i]),
+                yReal: scatterMetas[i].valorReal,
+                ticker: r.item.ticker,
+                meta: scatterMetas[i],
+              })),
+              backgroundColor: scatterRows.map(
+                (r) => C().COLORES_GRUPO_TIR[r.tirComparableGrupo] || C().COLORES_SECTOR.Otros
+              ),
+              borderColor: scatterMetas.map((m) =>
+                m.fueraEscalaGrupo || m.fueraEscalaGrafico ? "#92400e" : "transparent"
+              ),
+              borderWidth: scatterMetas.map((m) => (m.fueraEscalaGrupo || m.fueraEscalaGrafico ? 2 : 0)),
+              pointRadius: manyPoints ? 4 : 7,
+              pointHoverRadius: manyPoints ? 6 : 9,
+            },
+          ],
+        },
         options: {
           responsive: true,
           maintainAspectRatio: false,
@@ -121,26 +226,43 @@
             legend: {
               position: "bottom",
               labels: {
+                generateLabels: () => leyendaGruposTir(scatterRows),
                 boxWidth: 10,
-                font: { size: grupos.length > 4 ? 9 : 11 },
+                font: { size: 11 },
                 padding: 8,
               },
+              onClick: () => {},
             },
             tooltip: {
               callbacks: {
+                title(ctx) {
+                  return ctx.raw.ticker || "";
+                },
                 label(ctx) {
-                  const t = ctx.raw.ticker || "";
-                  return `${t}: ${ctx.raw.y.toFixed(2)}% / ${ctx.raw.x.toFixed(1)} años`;
+                  const row = scatterRows.find((r) => r.item.ticker === ctx.raw.ticker);
+                  if (!row) return "";
+                  const lines = [`Plazo: ${ctx.raw.x.toFixed(1)} años`];
+                  lines.push(...tooltipTirGrafico(row, ctx.raw.meta));
+                  return lines;
                 },
               },
             },
           },
           scales: {
             x: { title: { display: true, text: "Años al vencimiento" } },
-            y: { title: { display: true, text: "TIR efectiva (%)" } },
+            y: {
+              min: ESCALA_TIR_GRAFICO.min,
+              max: ESCALA_TIR_GRAFICO.max,
+              title: { display: true, text: "TIR efectiva (%)" },
+            },
           },
         },
       });
+      actualizarNotaGrafico(
+        "chart-scatter-nota",
+        scatterFuera,
+        "Eje Y truncado -5% a +20%."
+      );
     }
 
     const comp = A().composicionPorSector(enriquecidos);

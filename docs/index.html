@@ -158,13 +158,15 @@
       <div class="chart-grid">
         <section class="chart-card chart-card--tir-barras">
           <h2>TIR efectiva por instrumento</h2>
-          <p class="header__meta">Barras por grupo TIR comparable (mismo criterio que la curva de rendimientos). <span class="meta">(ref.)</span> = TIR de referencia, no cálculo de mercado. Excluye BOPREAL, CEDEAR y vencidos.</p>
+          <p class="header__meta">Barras por grupo TIR comparable (mismo criterio que la curva de rendimientos). <span class="meta">(ref.)</span> = TIR de referencia, no cálculo de mercado. <span class="meta">⚠</span> = fuera de rango o truncado en escala. Excluye BOPREAL, CEDEAR y vencidos.</p>
           <div class="chart-box"><canvas id="chart-tir-barras"></canvas></div>
+          <p id="chart-tir-barras-nota" class="header__meta hidden"></p>
         </section>
         <section class="chart-card">
           <h2>Curva de rendimientos (TIR vs plazo)</h2>
-          <p class="header__meta">Puntos agrupados por grupo TIR comparable; no mezclar colores entre grupos (USD nominal, ARS nominal, etc.).</p>
+          <p class="header__meta">Puntos agrupados por grupo TIR comparable; no mezclar colores entre grupos (USD nominal, ARS nominal, etc.). <span class="meta">⚠</span> = fuera de rango razonable.</p>
           <div class="chart-box"><canvas id="chart-scatter"></canvas></div>
+          <p id="chart-scatter-nota" class="header__meta hidden"></p>
         </section>
         <section class="chart-card">
           <h2>Composición por sector</h2>
