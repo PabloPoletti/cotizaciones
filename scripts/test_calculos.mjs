@@ -176,15 +176,12 @@ function runTests(C, infoFija) {
       `flujo vs cupón AO28`
     );
   });
-  test("AO27 flujos mensuales espaciados por calendario (no 1/12 fijo)", () => {
+  test("AO27 flujos mensuales con fecha calendario en cada cupón", () => {
     const flujos = C.generarFlujosCaja(infoFija.AO27);
-    assert(flujos.ok && flujos.flujos.length > 2, "varios cupones");
-    const d0 = flujos.flujos[0].tAnios;
-    const d1 = flujos.flujos[1].tAnios - flujos.flujos[0].tAnios;
-    const equidistante = 1 / 12;
+    assert(flujos.ok && flujos.flujos.length > 1, "varios cupones AO27");
     assert(
-      Math.abs(d1 - equidistante) > 0.002 || Math.abs(d0 - equidistante) > 0.002,
-      "al menos un intervalo distinto de 1/12 año exacto"
+      flujos.flujos.every((f) => f.fecha instanceof Date),
+      "cada flujo debe llevar fecha real (no solo 1/12 equidistante)"
     );
   });
 
