@@ -121,6 +121,7 @@ jobs:
           git add "${DATA_FILES[@]}"
           git commit -m "Actualizar cotizaciones BYMA [skip ci]"
           HEAD_SHA="$(git rev-parse HEAD)"
+          git push -u origin "$BRANCH"
 
           # PRs creados con GITHUB_TOKEN no disparan workflow Tests; publicamos check "test" acá.
           if node scripts/run_tests.mjs; then
@@ -137,8 +138,6 @@ jobs:
             echo "Tests fallaron; abortando publicación."
             exit 1
           fi
-
-          git push -u origin "$BRANCH"
 
           PR_URL="$(gh pr create \
             --base main \

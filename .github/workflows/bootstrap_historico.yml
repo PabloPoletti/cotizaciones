@@ -71,6 +71,7 @@ jobs:
           git add "${DATA_FILES[@]}"
           git commit -m "Bootstrap histórico precios BYMA [skip ci]"
           HEAD_SHA="$(git rev-parse HEAD)"
+          git push -u origin "$BRANCH"
 
           if node scripts/run_tests.mjs; then
             TEST_CONCLUSION=success
@@ -86,8 +87,6 @@ jobs:
             echo "Tests fallaron; abortando publicación."
             exit 1
           fi
-
-          git push -u origin "$BRANCH"
 
           PR_URL="$(gh pr create \
             --base main \
