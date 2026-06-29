@@ -18,6 +18,7 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+  checks: write
 
 jobs:
   actualizar:
@@ -89,6 +90,12 @@ jobs:
         if: steps.mercado.outputs.abierto == 'true'
         run: python scripts/fetch_cotizaciones.py
 
+      - name: Configurar Node.js (tests pre-merge)
+        if: steps.mercado.outputs.abierto == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Commit y publicar vía PR si hubo cambios
         if: steps.mercado.outputs.abierto == 'true'
         env:
@@ -113,6 +120,24 @@ jobs:
           git checkout -b "$BRANCH"
           git add "${DATA_FILES[@]}"
           git commit -m "Actualizar cotizaciones BYMA [skip ci]"
+          HEAD_SHA="$(git rev-parse HEAD)"
+
+          # PRs creados con GITHUB_TOKEN no disparan workflow Tests; publicamos check "test" acá.
+          if node scripts/run_tests.mjs; then
+            TEST_CONCLUSION=success
+          else
+            TEST_CONCLUSION=failure
+          fi
+          gh api repos/${{ github.repository }}/check-runs \
+            -f name=test \
+            -f head_sha="$HEAD_SHA" \
+            -f status=completed \
+            -f conclusion="$TEST_CONCLUSION"
+          if [ "$TEST_CONCLUSION" != success ]; then
+            echo "Tests fallaron; abortando publicación."
+            exit 1
+          fi
+
           git push -u origin "$BRANCH"
 
           PR_URL="$(gh pr create \
@@ -123,8 +148,6 @@ jobs:
           echo "PR creado: $PR_URL"
 
           PR_NUMBER="$(gh pr view "$PR_URL" --json number --jq .number)"
-          echo "Esperando check test en PR #${PR_NUMBER}..."
-          gh pr checks "$PR_NUMBER" --watch --fail-fast --interval 15
-
+          sleep 10
           gh pr merge "$PR_NUMBER" --merge --delete-branch
           echo "Datos publicados en main vía PR #${PR_NUMBER}."

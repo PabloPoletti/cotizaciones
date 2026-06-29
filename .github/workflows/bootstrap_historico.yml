@@ -17,6 +17,7 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+  checks: write
 
 jobs:
   bootstrap:
@@ -43,6 +44,11 @@ jobs:
       - name: Bootstrap histórico BYMA
         run: python scripts/bootstrap_historico.py --dias "${{ inputs.dias }}"
 
+      - name: Configurar Node.js (tests pre-merge)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Commit y publicar vía PR si hubo cambios
         env:
           GH_TOKEN: ${{ github.token }}
@@ -64,6 +70,23 @@ jobs:
           git checkout -b "$BRANCH"
           git add "${DATA_FILES[@]}"
           git commit -m "Bootstrap histórico precios BYMA [skip ci]"
+          HEAD_SHA="$(git rev-parse HEAD)"
+
+          if node scripts/run_tests.mjs; then
+            TEST_CONCLUSION=success
+          else
+            TEST_CONCLUSION=failure
+          fi
+          gh api repos/${{ github.repository }}/check-runs \
+            -f name=test \
+            -f head_sha="$HEAD_SHA" \
+            -f status=completed \
+            -f conclusion="$TEST_CONCLUSION"
+          if [ "$TEST_CONCLUSION" != success ]; then
+            echo "Tests fallaron; abortando publicación."
+            exit 1
+          fi
+
           git push -u origin "$BRANCH"
 
           PR_URL="$(gh pr create \
@@ -74,6 +97,6 @@ jobs:
           echo "PR creado: $PR_URL"
 
           PR_NUMBER="$(gh pr view "$PR_URL" --json number --jq .number)"
-          gh pr checks "$PR_NUMBER" --watch --fail-fast --interval 15
+          sleep 10
           gh pr merge "$PR_NUMBER" --merge --delete-branch
           echo "Datos publicados en main vía PR #${PR_NUMBER}."
