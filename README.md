@@ -241,7 +241,7 @@ node scripts/run_tests.mjs
 
 Ejecuta `test_calculos.mjs` (TIR, duración, cupones) e `test_integridad_universo.mjs` (alineación `info_fija` ↔ `cotizaciones.json` ↔ `data912.tickers_solicitados`). GitHub Actions workflow `.github/workflows/tests.yml` corre la suite en cada push/PR a `main`.
 
-Para exigir merge solo con tests verdes: en GitHub → **Settings → Branches → Branch protection** → agregar required check **Tests / test**.
+**Branch protection en `main` (activo):** el merge exige el required status check **Tests / test** (strict mode: la rama debe estar al día con `main`). Configurado en GitHub → **Settings → Branches → Branch protection rules**.
 
 ### Esquema de colores (gráficos)
 
