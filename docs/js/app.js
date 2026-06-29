@@ -674,18 +674,19 @@
       const info = C.infoDeTicker(item.ticker);
       const row = rowMap.get(item.ticker);
       const tirMercado = row?.tirMerc || C.calcularTirMercado(item.precio, info);
-      const tirCalc = row?.tirCalc || C.tirParaCalculo(info, item, tirMercado);
+      const tirCartera = C.valorTirCartera(tirMercado);
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${C.escapeHtml(item.nombre || info.nombre || item.ticker)}</td>
         <td class="ticker">${C.escapeHtml(item.ticker)}</td>
-        <td class="num tir-cell">${C.formatearCeldaTir(info, item, tirMercado)}</td>
+        <td class="num tir-cell">${C.formatearCeldaTirCartera(info, item, tirMercado)}</td>
         <td class="num">
           <input type="number" min="0" max="100" step="0.1" value="0"
                  data-ticker="${C.escapeHtml(item.ticker)}"
                  data-tir-ref="${info.tir_referencia ?? ""}"
                  data-tir-merc="${tirMercado.valor ?? ""}"
-                 data-tir-usada="${tirCalc.valor ?? ""}"
+                 data-tir-usada="${tirCartera ?? ""}"
+                 data-tir-confiable="${tirCartera != null ? "1" : "0"}"
                  class="pct-input">
         </td>
         <td class="num monto-asignado" data-ticker="${C.escapeHtml(item.ticker)}">—</td>`;
@@ -711,35 +712,39 @@
     const inputs = document.querySelectorAll(".pct-input");
     const warnings = [];
     let sumaPct = 0;
-    let tirPonderada = 0;
-    let tirPonderadaRef = 0;
-    let tieneTir = false;
-    let tieneTirRef = false;
-    let usaMercado = false;
+    let tirPonderadaSum = 0;
+    let instAsignados = 0;
+    let instConfiables = 0;
+    let instSinConfiable = 0;
+    let pctConfiable = 0;
+    let pctSinConfiable = 0;
     const pieLabels = [];
     const pieData = [];
     const gruposTirActivos = new Set();
 
     inputs.forEach((input) => {
       const pct = parseFloat(input.value) || 0;
+      const confiable = input.dataset.tirConfiable === "1";
       const tirUsada = parseFloat(input.dataset.tirUsada);
-      const tirRef = parseFloat(input.dataset.tirRef);
       sumaPct += pct;
       const monto = (capital * pct) / 100;
       const celdaMonto = document.querySelector(`.monto-asignado[data-ticker="${input.dataset.ticker}"]`);
       if (celdaMonto) celdaMonto.textContent = capital > 0 ? C.formatearPrecio(monto) + " USD" : "—";
-      if (!Number.isNaN(tirUsada) && pct > 0) {
-        tirPonderada += (pct / 100) * tirUsada;
-        tieneTir = true;
-        if (input.dataset.tirMerc) usaMercado = true;
-      }
-      if (!Number.isNaN(tirRef) && pct > 0) tirPonderadaRef += (pct / 100) * tirRef;
       if (pct > 0) {
+        instAsignados += 1;
         pieLabels.push(input.dataset.ticker);
         pieData.push(pct);
         const row = enriquecidos.find((r) => r.item.ticker === input.dataset.ticker);
         if (row?.tirComparableGrupo && C.esTirComparable(row)) {
           gruposTirActivos.add(row.tirComparableGrupo);
+        }
+        if (confiable && !Number.isNaN(tirUsada)) {
+          instConfiables += 1;
+          pctConfiable += pct;
+          tirPonderadaSum += (pct / 100) * tirUsada;
+        } else {
+          instSinConfiable += 1;
+          pctSinConfiable += pct;
         }
       }
     });
@@ -752,11 +757,10 @@
 
     elSumaPct.textContent = sumaPct.toFixed(1) + "%";
     let tirAjustada = null;
-    if (tieneTir && sumaPct > 0) {
-      const factor = sumaPct / 100;
-      tirAjustada = tirPonderada / factor;
+    if (pctConfiable > 0) {
+      tirAjustada = tirPonderadaSum / (pctConfiable / 100);
       elTirPonderada.textContent = tirAjustada.toFixed(2) + "%";
-      elRentaAnual.textContent = C.formatearPrecio((capital * tirAjustada) / 100) + " USD";
+      elRentaAnual.textContent = C.formatearPrecio((capital * tirPonderadaSum) / 100) + " USD";
     } else {
       elTirPonderada.textContent = "—";
       elRentaAnual.textContent = "—";
@@ -764,11 +768,24 @@
 
     if (sumaPct > 100.01) warnings.push("La suma de porcentajes supera el 100%.");
     if (capital > 0 && sumaPct === 0) warnings.push("Asigná al menos un porcentaje.");
+    if (instAsignados > 0 && instSinConfiable > 0) {
+      warnings.push(
+        `${instSinConfiable} instrumento(s) sin TIR mercado confiable (${pctSinConfiable.toFixed(1)}% del capital) quedaron fuera de la ponderada.`
+      );
+    }
 
     const notaMercado = document.getElementById("calc-nota-tir");
     if (notaMercado) {
-      if (usaMercado && tieneTir) {
-        notaMercado.textContent = "TIR ponderada con TIR mercado (aprox.) cuando está disponible.";
+      if (instAsignados > 0 && instConfiables > 0) {
+        notaMercado.textContent =
+          `TIR ponderada: ${tirAjustada.toFixed(2)}% sobre ${instConfiables} de ${instAsignados} instrumentos (${pctConfiable.toFixed(1)}% del capital)` +
+          (instSinConfiable > 0
+            ? `; ${instSinConfiable} sin TIR confiable representan ${pctSinConfiable.toFixed(1)}% del capital.`
+            : ".");
+        notaMercado.classList.remove("hidden");
+      } else if (instAsignados > 0) {
+        notaMercado.textContent =
+          `Ningún instrumento asignado tiene TIR mercado confiable (${instAsignados} instrumento(s), ${sumaPct.toFixed(1)}% del capital).`;
         notaMercado.classList.remove("hidden");
       } else {
         notaMercado.classList.add("hidden");
@@ -788,8 +805,9 @@
 
     const horizontes = [3, 5, 10];
     const tbody = document.getElementById("proyeccion-body");
-    if (tbody && tirAjustada != null && capital > 0) {
-      const proyData = horizontes.map((a) => A.proyeccionCompuesta(capital, tirAjustada, a));
+    const capitalProy = pctConfiable > 0 ? (capital * pctConfiable) / 100 : 0;
+    if (tbody && tirAjustada != null && capitalProy > 0) {
+      const proyData = horizontes.map((a) => A.proyeccionCompuesta(capitalProy, tirAjustada, a));
       tbody.innerHTML = horizontes
         .map(
           (a, i) =>
@@ -811,31 +829,42 @@
     const capital = parseFloat(elCapital?.value) || 0;
     const lineas = [];
     let sumaPct = 0;
-    let tirPonderada = 0;
-    let tieneTir = false;
+    let tirPonderadaSum = 0;
+    let instAsignados = 0;
+    let instConfiables = 0;
+    let instSinConfiable = 0;
+    let pctConfiable = 0;
+    let pctSinConfiable = 0;
 
     document.querySelectorAll(".pct-input").forEach((input) => {
       const pct = parseFloat(input.value) || 0;
       if (pct <= 0) return;
+      const confiable = input.dataset.tirConfiable === "1";
       const tirUsada = parseFloat(input.dataset.tirUsada);
       sumaPct += pct;
-      if (!Number.isNaN(tirUsada)) {
-        tirPonderada += (pct / 100) * tirUsada;
-        tieneTir = true;
+      instAsignados += 1;
+      if (confiable && !Number.isNaN(tirUsada)) {
+        instConfiables += 1;
+        pctConfiable += pct;
+        tirPonderadaSum += (pct / 100) * tirUsada;
+      } else {
+        instSinConfiable += 1;
+        pctSinConfiable += pct;
       }
       lineas.push({
         ticker: input.dataset.ticker,
         pct,
         monto: (capital * pct) / 100,
-        tirUsada: Number.isNaN(tirUsada) ? null : tirUsada,
+        tirUsada: confiable && !Number.isNaN(tirUsada) ? tirUsada : null,
+        tirConfiable: confiable && !Number.isNaN(tirUsada),
       });
     });
 
     let tirFinal = null;
     let rentaAnual = null;
-    if (tieneTir && sumaPct > 0) {
-      tirFinal = tirPonderada / (sumaPct / 100);
-      rentaAnual = (capital * tirFinal) / 100;
+    if (pctConfiable > 0) {
+      tirFinal = tirPonderadaSum / (pctConfiable / 100);
+      rentaAnual = (capital * tirPonderadaSum) / 100;
     }
 
     return {
@@ -845,18 +874,30 @@
       sumaPct,
       tirPonderada: tirFinal,
       rentaAnual,
+      instAsignados,
+      instConfiables,
+      instSinConfiable,
+      pctConfiable,
+      pctSinConfiable,
       lineas,
     };
   }
 
   function formatearResumenCarteraTexto(resumen) {
+    const detalleTir =
+      resumen.instConfiables > 0
+        ? `TIR ponderada: ${resumen.tirPonderada.toFixed(2)}% sobre ${resumen.instConfiables} de ${resumen.instAsignados} instrumentos (${resumen.pctConfiable.toFixed(1)}% del capital)` +
+          (resumen.instSinConfiable > 0
+            ? `; ${resumen.instSinConfiable} sin TIR confiable representan ${resumen.pctSinConfiable.toFixed(1)}% del capital.`
+            : ".")
+        : "TIR ponderada: — (ningún instrumento con TIR mercado confiable).";
     const lines = [
       "Cartera — Panel Cotizaciones",
       `Fecha: ${resumen.fechaLocal}`,
       `Capital total: ${C.formatearPrecio(resumen.capital)} USD`,
       `Suma asignada: ${resumen.sumaPct.toFixed(1)}%`,
-      `TIR ponderada: ${resumen.tirPonderada != null ? resumen.tirPonderada.toFixed(2) + "%" : "—"}`,
-      `Renta anual estimada: ${resumen.rentaAnual != null ? C.formatearPrecio(resumen.rentaAnual) + " USD" : "—"}`,
+      detalleTir,
+      `Renta anual estimada (solo TIR confiable): ${resumen.rentaAnual != null ? C.formatearPrecio(resumen.rentaAnual) + " USD" : "—"}`,
       "",
       "Instrumentos:",
     ];
@@ -864,10 +905,8 @@
       lines.push("  (sin asignaciones)");
     } else {
       resumen.lineas.forEach((l) => {
-        lines.push(
-          `  ${l.ticker}: ${l.pct.toFixed(1)}% → ${C.formatearPrecio(l.monto)} USD` +
-            (l.tirUsada != null ? ` (TIR ${l.tirUsada.toFixed(2)}%)` : "")
-        );
+        const tirTxt = l.tirConfiable ? ` (TIR mercado ${l.tirUsada.toFixed(2)}%)` : " (sin TIR confiable)";
+        lines.push(`  ${l.ticker}: ${l.pct.toFixed(1)}% → ${C.formatearPrecio(l.monto)} USD${tirTxt}`);
       });
     }
     lines.push("", "Referencia ilustrativa — no es asesoramiento ni orden de operación.");
@@ -887,13 +926,23 @@
       ["capital_usd", resumen.capital].join(","),
       ["suma_pct", resumen.sumaPct.toFixed(2)].join(","),
       ["tir_ponderada_pct", resumen.tirPonderada != null ? resumen.tirPonderada.toFixed(4) : ""].join(","),
+      ["inst_confiables", resumen.instConfiables].join(","),
+      ["inst_sin_confiable", resumen.instSinConfiable].join(","),
+      ["pct_confiable", resumen.pctConfiable.toFixed(2)].join(","),
+      ["pct_sin_confiable", resumen.pctSinConfiable.toFixed(2)].join(","),
       ["renta_anual_estimada_usd", resumen.rentaAnual != null ? resumen.rentaAnual.toFixed(2) : ""].join(","),
       [],
-      ["ticker", "pct", "monto_usd", "tir_usada_pct"].join(","),
+      ["ticker", "pct", "monto_usd", "tir_mercado_pct", "tir_confiable"].join(","),
     ];
     resumen.lineas.forEach((l) => {
       rows.push(
-        [l.ticker, l.pct.toFixed(2), l.monto.toFixed(2), l.tirUsada != null ? l.tirUsada.toFixed(4) : ""].join(",")
+        [
+          l.ticker,
+          l.pct.toFixed(2),
+          l.monto.toFixed(2),
+          l.tirUsada != null ? l.tirUsada.toFixed(4) : "",
+          l.tirConfiable ? "si" : "no",
+        ].join(",")
       );
     });
     const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8" });

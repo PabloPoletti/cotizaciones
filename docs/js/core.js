@@ -525,6 +525,15 @@
     return { valor: null, fuente: null };
   }
 
+  /** TIR usable en cartera / presets: solo YTM de mercado cuando converge (sin fallback a referencia). */
+  function esTirMercadoConfiable(tirMerc) {
+    return tirMerc != null && tirMerc.valor != null && Number.isFinite(tirMerc.valor);
+  }
+
+  function valorTirCartera(tirMerc) {
+    return esTirMercadoConfiable(tirMerc) ? tirMerc.valor : null;
+  }
+
   function tirEfectiva(info, item) {
     return tirParaCalculo(info, item).valor;
   }
@@ -1242,6 +1251,27 @@
     `;
   }
 
+  /** Celda calculadora: lo mostrado en la línea "cartera" es exactamente lo que entra (o no) en la ponderada. */
+  function formatearCeldaTirCartera(info, item, tirMercPrecalc) {
+    const mercado =
+      tirMercPrecalc || item?.tirMerc || (item ? calcularTirMercado(item.precio, info) : { valor: null, nota: "" });
+    const ref = info.tir_referencia != null ? `${info.tir_referencia}%` : "—";
+    const refFecha = info.tir_fecha_referencia
+      ? ` · ref. ${escapeHtml(info.tir_fecha_referencia)}`
+      : "";
+    const refLine = `<span class="tir-ref-line" title="TIR de referencia — no entra en ponderada">${ref}<span class="tir-meta"> solo informativa${refFecha}</span></span>`;
+
+    let carteraLine;
+    if (esTirMercadoConfiable(mercado)) {
+      carteraLine = `<span class="tir-cartera-line" title="TIR usada en ponderada">${mercado.valor}%<span class="tir-meta">${escapeHtml(mercado.nota || "TIR mercado")}</span></span>`;
+    } else {
+      const motivo = mercado.nota ? escapeHtml(mercado.nota) : "sin TIR mercado";
+      carteraLine = `<span class="tir-cartera-line tir-cartera-line--na" title="Excluido de TIR ponderada">—<span class="tir-meta"> sin TIR confiable (${motivo})</span></span>`;
+    }
+
+    return `<div class="tir-stack">${refLine}${carteraLine}</div>`;
+  }
+
   function formatearPrecioConTipo(item) {
     if (item.error || item.precio == null) {
       return escapeHtml(item.mensaje_error || "Sin dato");
@@ -1366,6 +1396,9 @@
     calcularTirMercado,
     soportaTirMercado,
     tirParaCalculo,
+    esTirMercadoConfiable,
+    valorTirCartera,
+    formatearCeldaTirCartera,
     tirEfectiva,
     agruparPorSector,
     listaInstrumentos,

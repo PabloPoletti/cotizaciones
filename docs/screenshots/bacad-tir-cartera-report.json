@@ -1,0 +1,9 @@
+{
+  "ticker": "BACAD",
+  "cellText": "15% solo informativa · ref. 2026-06 — sin TIR confiable (TIR fuera de rango calculable)",
+  "dataTirUsada": "",
+  "dataTirConfiable": "0",
+  "tirPonderada100pct": "—",
+  "notaTir": "Ningún instrumento asignado tiene TIR mercado confiable (1 instrumento(s), 100.0% del capital).",
+  "ok": true
+}

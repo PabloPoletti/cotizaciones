@@ -129,6 +129,15 @@ body {
   color: var(--accent);
 }
 
+.tir-cartera-line {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.tir-cartera-line--na {
+  color: var(--muted);
+}
+
 .tir-meta {
   display: block;
   font-size: 0.72rem;
