@@ -32,9 +32,9 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 1.25rem;
+  padding: 1rem 1.25rem;
 }
 
 /* Encabezado */
@@ -192,7 +192,7 @@ body {
   flex-wrap: wrap;
   gap: 0.75rem;
   align-items: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.85rem;
 }
 
 .btn {
@@ -285,15 +285,15 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.85rem;
   overflow: hidden;
 }
 
 .sector__title {
   margin: 0;
-  padding: 0.85rem 1rem;
+  padding: 0.6rem 0.85rem;
   background: var(--accent-light);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--accent);
   border-bottom: 1px solid var(--border);
@@ -370,15 +370,22 @@ tr:hover td {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.25rem;
+  padding: 0.85rem 1rem;
   box-shadow: var(--shadow);
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.85rem;
 }
 
 .calc-card h2 {
-  margin: 0 0 1rem;
-  font-size: 1.15rem;
+  margin: 0 0 0.65rem;
+  font-size: 1.05rem;
   color: var(--accent);
+}
+
+.calc-card > .header__meta {
+  margin-top: 0;
+  margin-bottom: 0.65rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
 }
 
 .calc-inputs {
@@ -737,16 +744,16 @@ tr:hover td {
 
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 0.65rem;
+  margin-bottom: 1rem;
 }
 
 .kpi-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1rem;
+  padding: 0.65rem 0.75rem;
   box-shadow: var(--shadow);
 }
 
@@ -758,7 +765,7 @@ tr:hover td {
 }
 
 .kpi-card strong {
-  font-size: 1.35rem;
+  font-size: 1.15rem;
   color: var(--accent);
 }
 
@@ -772,9 +779,9 @@ tr:hover td {
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+  padding: 0.65rem;
 }
 
 .sector__count {
@@ -795,7 +802,7 @@ tr:hover td {
 }
 
 .inst-card__head {
-  padding: 0.75rem 1rem;
+  padding: 0.6rem 0.85rem;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
@@ -985,15 +992,15 @@ tr:hover td {
 
 .chart-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 0.85rem;
 }
 
 .chart-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1rem;
+  padding: 0.75rem;
   box-shadow: var(--shadow);
 }
 
@@ -1002,9 +1009,17 @@ tr:hover td {
 }
 
 .chart-card h2 {
-  margin: 0 0 0.75rem;
-  font-size: 1rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
   color: var(--accent);
+}
+
+.chart-card h2 + .header__meta,
+.chart-card .header__meta:first-of-type {
+  margin-top: 0;
+  margin-bottom: 0.45rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
 }
 
 .chart-box {
@@ -1048,21 +1063,28 @@ tr:hover td {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1rem;
-  margin-bottom: 1.25rem;
+  padding: 0.75rem;
+  margin-bottom: 0.85rem;
   box-shadow: var(--shadow);
 }
 
 .panel-section h2 {
-  margin: 0 0 0.75rem;
-  font-size: 1.05rem;
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
   color: var(--accent);
+}
+
+.panel-section h2 + .header__meta {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
 }
 
 .two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
+  gap: 0.85rem;
 }
 
 .timeline-list {
@@ -1086,7 +1108,7 @@ tr:hover td {
 .obs-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .obs-item {
@@ -1094,15 +1116,16 @@ tr:hover td {
   border: 1px solid var(--border);
   border-left: 4px solid var(--accent);
   border-radius: var(--radius);
-  padding: 1rem;
-  font-size: 0.92rem;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
 }
 
 .calc-toolbar {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  margin-bottom: 0.65rem;
 }
 
 .calc-actions__row {
@@ -1416,6 +1439,17 @@ tr:hover td {
 
 .inst-row:hover {
   background: rgba(30, 77, 140, 0.04);
+}
+
+@media (min-width: 769px) {
+  th,
+  td {
+    padding: 0.5rem 0.65rem;
+  }
+
+  table {
+    font-size: 0.875rem;
+  }
 }
 
 @media (max-width: 768px) {
