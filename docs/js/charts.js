@@ -479,18 +479,22 @@
     }
   }
 
-  function renderFichaCharts(ticker) {
+  function renderFichaCharts(ticker, row) {
     if (typeof Chart === "undefined") return;
+    const info = row?.info;
     const serie = H()?.seriePrecioChart(ticker) || [];
     const dd = H()?.serieDrawdown(ticker) || [];
+    const durHist = info ? C().serieDuracionModificadaHistorica(info, ticker) : { ok: false, puntos: [] };
+    const bloqueoDur = info ? C().motivoDuracionNoDisponible(info) : null;
 
-    destruir("fichaHistorico");
+    destruir("fichaPrecioDuracion");
     destruir("fichaDrawdown");
 
-    const ctxPrecio = document.getElementById("ficha-chart-precio");
+    const ctxCombo = document.getElementById("ficha-chart-precio-duracion");
     const ctxDd = document.getElementById("ficha-chart-drawdown");
     const emptyEl = document.getElementById("ficha-charts-empty");
     const gridEl = document.querySelector(".ficha-charts-grid");
+    const durNaEl = document.getElementById("ficha-duracion-na");
 
     const fichaChartOptions = {
       responsive: true,
@@ -506,31 +510,83 @@
     if (emptyEl) emptyEl.classList.add("hidden");
     if (gridEl) gridEl.classList.remove("hidden");
 
-    if (ctxPrecio) {
-      charts.fichaHistorico = new Chart(ctxPrecio, {
-        type: "line",
-        data: {
-          labels: serie.map((p) => p.fecha),
-          datasets: [
-            {
-              label: `${ticker} (precio/1000)`,
-              data: serie.map((p) => p.precio),
-              borderColor: "#1e4d8c",
-              tension: 0.2,
-              fill: false,
-              pointRadius: 0,
-              pointHitRadius: 8,
-            },
-          ],
+    if (durNaEl) {
+      if (bloqueoDur) {
+        durNaEl.textContent = bloqueoDur;
+        durNaEl.classList.remove("hidden");
+      } else if (!durHist.ok && durHist.motivo) {
+        durNaEl.textContent = durHist.motivo;
+        durNaEl.classList.remove("hidden");
+      } else {
+        durNaEl.classList.add("hidden");
+      }
+    }
+
+    if (ctxCombo) {
+      const labels = serie.map((p) => p.fecha);
+      const datasets = [
+        {
+          label: `${ticker} precio ref.`,
+          data: serie.map((p) => p.precio),
+          borderColor: "#1e4d8c",
+          backgroundColor: "rgba(30,77,140,0.06)",
+          tension: 0.2,
+          fill: false,
+          pointRadius: 0,
+          pointHitRadius: 8,
+          yAxisID: "y",
         },
+      ];
+      if (durHist.ok) {
+        const durByFecha = new Map(durHist.puntos.map((p) => [p.fecha, p.duracion]));
+        datasets.push({
+          label: "Duración modificada (años)",
+          data: labels.map((f) => durByFecha.get(f) ?? null),
+          borderColor: "#0d7a4a",
+          backgroundColor: "rgba(13,122,74,0.08)",
+          tension: 0.25,
+          fill: false,
+          pointRadius: 0,
+          pointHitRadius: 8,
+          yAxisID: "y1",
+          spanGaps: true,
+        });
+      }
+      charts.fichaPrecioDuracion = new Chart(ctxCombo, {
+        type: "line",
+        data: { labels, datasets },
         options: {
           ...fichaChartOptions,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label(ctx) {
+                  const v = ctx.parsed.y;
+                  if (v == null) return `${ctx.dataset.label}: —`;
+                  if (ctx.dataset.yAxisID === "y1") return `Duración mod.: ${v.toFixed(2)} años`;
+                  return `Precio: ${v.toFixed(2)}`;
+                },
+              },
+            },
+          },
           scales: {
             x: {
               offset: true,
               ticks: { maxRotation: 40, autoSkip: true, maxTicksLimit: 8 },
             },
-            y: { title: { display: true, text: "Precio ref." }, grace: "5%" },
+            y: {
+              position: "left",
+              title: { display: true, text: "Precio ref." },
+              grace: "5%",
+            },
+            y1: {
+              position: "right",
+              display: durHist.ok,
+              title: { display: true, text: "Duración mod. (años)" },
+              grace: "5%",
+              grid: { drawOnChartArea: false },
+            },
           },
         },
       });

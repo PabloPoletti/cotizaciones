@@ -20,7 +20,7 @@ function loadCore() {
   };
   createContext(sandbox);
   runInContext(code, sandbox);
-  return sandbox.window.CotizCore;
+  return { C: sandbox.window.CotizCore, window: sandbox.window };
 }
 
 function assert(cond, msg) {
@@ -34,7 +34,7 @@ function assertNear(actual, expected, tol, label) {
   );
 }
 
-function runTests(C, infoFija) {
+function runTests(C, infoFija, win) {
   let passed = 0;
   const fail = (name, err) => {
     console.error(`  FAIL ${name}: ${err.message}`);
@@ -245,6 +245,29 @@ function runTests(C, infoFija) {
     assert(flujosOk === 29, `esperado 29 flujos, obtuvo ${flujosOk}`);
   });
 
+  console.log("\n=== serieDuracionModificadaHistorica ===");
+  test("GD38 duración en ventana histórica simulada", () => {
+    win.CotizHistorico = {
+      serie: (ticker) =>
+        ticker === "GD38"
+          ? [
+              { date: "2026-01-15", close: 72000 },
+              { date: "2026-02-15", close: 73500 },
+              { date: "2026-03-15", close: 74800 },
+            ]
+          : [],
+    };
+    const r = C.serieDuracionModificadaHistorica(infoFija.GD38, "GD38");
+    assert(r.ok, r.motivo || "serie ok");
+    assert(r.puntos.length === 3, `3 puntos, obtuvo ${r.puntos.length}`);
+    assert(r.puntos.every((p) => p.duracion > 0), "duración positiva");
+  });
+  test("S31G6 Lecap → motivo Tier C", () => {
+    const r = C.serieDuracionModificadaHistorica(infoFija.S31G6, "S31G6");
+    assert(!r.ok, "Lecap sin serie duración");
+    assert(/Lecap|capitalización/i.test(r.motivo), "motivo Lecap");
+  });
+
   console.log("\n=== proximoCuponInfo ===");
   test("Lecap S30O6 → no_aplica capitalizable", () => {
     const pc = C.proximoCuponInfo(infoFija.S30O6);
@@ -313,10 +336,10 @@ function runTests(C, infoFija) {
 }
 
 function main() {
-  const C = loadCore();
+  const { C, window: win } = loadCore();
   const infoFija = JSON.parse(readFileSync(INFO_PATH, "utf8"));
   console.log("test_calculos.mjs — core.js");
-  const passed = runTests(C, infoFija);
+  const passed = runTests(C, infoFija, win);
   const failed = process.exitCode === 1;
   console.log(`\n${failed ? "FALLÓ" : "OK"}: ${passed} tests${failed ? " (con errores)" : ""}`);
   if (failed) process.exit(1);

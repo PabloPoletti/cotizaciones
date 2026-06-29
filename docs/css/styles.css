@@ -1395,6 +1395,14 @@ tr:hover td {
   overflow: visible;
 }
 
+.ficha-chart-box--tall {
+  height: 280px;
+}
+
+.ficha-chart-card--wide {
+  grid-column: 1 / -1;
+}
+
 .ficha-cronograma-wrap {
   margin-top: 1.25rem;
   padding-top: 1rem;

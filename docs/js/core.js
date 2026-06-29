@@ -1113,17 +1113,19 @@
     return Math.round((conv / p) * 100) / 100;
   }
 
-  function calcularDuracionConvexidad(info, item) {
+  function calcularDuracionConvexidad(info, item, opts = {}) {
     const bloqueo = motivoDuracionNoDisponible(info);
     if (bloqueo) return { ok: false, motivo: bloqueo };
-    if (!item || item.error || item.precio == null) {
+    const precioRaw = opts.precioRaw ?? item?.precio;
+    if (precioRaw == null || (item?.error && opts.precioRaw == null)) {
       return { ok: false, motivo: "Duración no disponible — sin precio de mercado BYMA." };
     }
-    const precio = normalizarPrecioByma(item.precio);
+    const precio = normalizarPrecioByma(precioRaw);
     if (precio == null || precio <= 0) {
       return { ok: false, motivo: "Duración no disponible — precio inválido." };
     }
-    const flujosRes = generarFlujosCaja(info);
+    const flujosOpts = opts.fechaValuacion ? { fechaValuacion: opts.fechaValuacion } : {};
+    const flujosRes = generarFlujosCaja(info, flujosOpts);
     if (!flujosRes.ok) return { ok: false, motivo: flujosRes.motivo };
     const ytm = calcularYtmDesdeFlujos(precio, flujosRes.flujos, flujosRes.pagosPorAnio);
     if (ytm.valor == null) {
@@ -1144,6 +1146,34 @@
       impacto1ppPct: dur.impacto1ppPct,
       flujosCount: flujosRes.flujos.length,
     };
+  }
+
+  /** Duración modificada en cada punto del histórico BYMA (~90d), recalculada con precio y fecha de valuación. */
+  function serieDuracionModificadaHistorica(info, ticker) {
+    const bloqueo = motivoDuracionNoDisponible(info);
+    if (bloqueo) return { ok: false, motivo: bloqueo, puntos: [] };
+    const serie = window.CotizHistorico?.serie(ticker) || [];
+    if (!serie.length) {
+      return { ok: false, motivo: "Sin serie histórica BYMA para este ticker.", puntos: [] };
+    }
+    const puntos = [];
+    for (const p of serie) {
+      const r = calcularDuracionConvexidad(
+        info,
+        { precio: p.close },
+        { precioRaw: p.close, fechaValuacion: p.date }
+      );
+      if (r.ok) puntos.push({ fecha: p.date, duracion: r.duracionModificada });
+    }
+    if (!puntos.length) {
+      return {
+        ok: false,
+        motivo:
+          "Duración no disponible — no se pudo calcular YTM/duración en la ventana histórica con los precios BYMA guardados.",
+        puntos: [],
+      };
+    }
+    return { ok: true, puntos };
   }
 
   /** @deprecated Usar calcularDuracionConvexidad; conservado por compatibilidad. */
@@ -1444,6 +1474,7 @@
     calcularDuracionModificada,
     calcularConvexidad,
     calcularDuracionConvexidad,
+    serieDuracionModificadaHistorica,
     motivoDuracionNoDisponible,
     soportaDuracion,
     proximoCuponInfo,

@@ -388,8 +388,13 @@
     `;
   }
 
-  function renderChartsBlock(ticker) {
+  function renderChartsBlock(row) {
+    const ticker = row.item.ticker;
     const hasData = H()?.serie(ticker)?.length > 0;
+    const bloqueoDur =
+      row.riesgoPrecio?.motivo ||
+      C().motivoDuracionNoDisponible(row.info) ||
+      "Duración no disponible — no se pudo calcular con los datos del panel.";
     return `
       <section class="ficha-section ficha-section--live">
         <div class="ficha-section__head">
@@ -400,9 +405,11 @@
           Sin serie BYMA para este ticker — ${C().escapeHtml(datoNoDisponible())}.
         </div>
         <div class="ficha-charts-grid ${hasData ? "" : "hidden"}">
-          <div class="ficha-chart-card">
-            <h3>Evolución precio ~90d</h3>
-            <div class="chart-box ficha-chart-box"><canvas id="ficha-chart-precio"></canvas></div>
+          <div class="ficha-chart-card ficha-chart-card--wide">
+            <h3>Precio y duración ~90d</h3>
+            <p class="header__meta">Precio BYMA diario y duración modificada recalculada en cada fecha (varía con el precio y el paso del tiempo hacia el vencimiento).</p>
+            <div class="chart-box ficha-chart-box ficha-chart-box--tall"><canvas id="ficha-chart-precio-duracion"></canvas></div>
+            <p id="ficha-duracion-na" class="ficha-empty hidden" role="status">${C().escapeHtml(bloqueoDur)}</p>
           </div>
           <div class="ficha-chart-card">
             <h3>Drawdown desde máximo</h3>
@@ -449,7 +456,7 @@
       ${renderManualBlock(info)}
       ${renderAmortizacionBlock(info)}
       ${renderRiesgoBlock(row)}
-      ${renderChartsBlock(item.ticker)}
+      ${renderChartsBlock(row)}
       ${renderComisionesBlock()}
     `;
   }
