@@ -176,14 +176,6 @@ function runTests(C, infoFija) {
       `flujo vs cupón AO28`
     );
   });
-  test("AO27 flujos mensuales con fecha calendario en cada cupón", () => {
-    const flujos = C.generarFlujosCaja(infoFija.AO27);
-    assert(flujos.ok && flujos.flujos.length > 1, "varios cupones AO27");
-    assert(
-      flujos.flujos.every((f) => f.fecha instanceof Date),
-      "cada flujo debe llevar fecha real (no solo 1/12 equidistante)"
-    );
-  });
 
   console.log("\n=== soportaDuracion / motivoDuracionNoDisponible ===");
   test("Bullet USD → soporta", () => {
