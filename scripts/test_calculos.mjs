@@ -300,10 +300,16 @@ function runTests(C, infoFija, win) {
     const pc = C.proximoCuponInfo(infoFija.BPO27);
     assert(pc.metodo === "no_aplica" && pc.categoria === "cupon_cero_bcra", "bcra");
   });
-  test("BACAD fin de mes → 30/6 no 1/7", () => {
+  test("BACAD fin de mes → día 30 jun/dic (no 1/7 por desborde addMonths)", () => {
     const pc = C.proximoCuponInfo(infoFija.BACAD);
     assert(pc.metodo === "heuristica", "heuristica");
-    assert(pc.fecha.getDate() === 30 && pc.fecha.getMonth() === 5, "30 jun");
+    assert(pc.fecha != null, "fecha");
+    assert(pc.fecha.getDate() === 30, "día 30 fin de mes");
+    const mes = pc.fecha.getMonth();
+    assert(mes === 5 || mes === 11, `semestral jun/dic, obtuvo mes ${mes + 1}`);
+    const hoy = new Date();
+    hoy.setHours(12, 0, 0, 0);
+    assert(pc.fecha >= hoy, "próximo cupón futuro (o hoy al mediodía)");
   });
   test("10 tickers canje 2020 en universo", () => {
     const tickers = Object.keys(infoFija).filter((k) => !k.startsWith("_"));
