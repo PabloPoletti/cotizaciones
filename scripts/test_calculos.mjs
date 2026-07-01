@@ -292,9 +292,17 @@ function runTests(C, infoFija, win) {
     assert(pc.metodo === "heuristica", "heuristica");
     assert(/intervalos regulares/i.test(pc.meta), "advertencia fuerte");
   });
-  test("TZX26 Boncer 0% → no_aplica", () => {
-    const pc = C.proximoCuponInfo(infoFija.TZX26);
-    assert(pc.metodo === "no_aplica" && pc.categoria === "cupon_cero_boncer", "boncer cero");
+  test("Boncer cupón cero → no_aplica (vigente o vencido)", () => {
+    for (const ticker of ["TZX26", "TZXD6"]) {
+      const info = infoFija[ticker];
+      const pc = C.proximoCuponInfo(info);
+      assert(pc.metodo === "no_aplica", `${ticker} no_aplica`);
+      if (C.estadoVigencia(info) === "vencido") {
+        assert(pc.categoria === "vencido", `${ticker} vencido (esperado tras vencimiento)`);
+      } else {
+        assert(pc.categoria === "cupon_cero_boncer", `${ticker} boncer cero vigente`);
+      }
+    }
   });
   test("BPO27 → no_aplica BCRA", () => {
     const pc = C.proximoCuponInfo(infoFija.BPO27);
