@@ -1,5 +1,5 @@
 {
-  "ultima_actualizacion": "2026-07-06T15:54:03-03:00",
+  "ultima_actualizacion": "2026-07-07T13:03:11-03:00",
   "ventana_dias": 90,
   "dias_liquidez": 25,
   "instrumentos": {
@@ -7,26 +7,18 @@
       "simbolo_byma": "AL29 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 1568628.8,
-        "var_7d_pct": 0.97,
-        "var_30d_pct": 5.5,
-        "var_desde_inicio_pct": 10.4,
-        "volatilidad_30d_pct": 0.69,
+        "volumen_promedio": 1562105.16,
+        "var_7d_pct": 1.3,
+        "var_30d_pct": 6.24,
+        "var_desde_inicio_pct": 11.63,
+        "volatilidad_30d_pct": 0.7,
         "drawdown_max_pct": -1.02,
         "precio_max_ventana": 99770.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 99000.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 99700.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 89060.0,
-          "high": 89670.0,
-          "low": 88120.0,
-          "close": 89670.0,
-          "volume": 871958.0
-        },
         {
           "date": "2026-04-08",
           "open": 90570.0,
@@ -506,6 +498,14 @@
           "low": 98730.0,
           "close": 99000.0,
           "volume": 1046166.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 99050.0,
+          "high": 99990.0,
+          "low": 98350.0,
+          "close": 99700.0,
+          "volume": 1530508.0
         }
       ]
     },
@@ -513,26 +513,18 @@
       "simbolo_byma": "AL30 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 130124222.52,
-        "var_7d_pct": 1.11,
-        "var_30d_pct": 4.67,
-        "var_desde_inicio_pct": 10.85,
-        "volatilidad_30d_pct": 0.51,
+        "volumen_promedio": 130820026.04,
+        "var_7d_pct": 0.68,
+        "var_30d_pct": 4.7,
+        "var_desde_inicio_pct": 10.6,
+        "volatilidad_30d_pct": 0.5,
         "drawdown_max_pct": -1.46,
         "precio_max_ventana": 98410.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 98180.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 98210.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 88100.0,
-          "high": 88670.0,
-          "low": 87850.0,
-          "close": 88570.0,
-          "volume": 138355522.0
-        },
         {
           "date": "2026-04-08",
           "open": 88650.0,
@@ -1012,6 +1004,14 @@
           "low": 97910.0,
           "close": 98180.0,
           "volume": 82800109.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 98500.0,
+          "high": 98500.0,
+          "low": 97840.0,
+          "close": 98210.0,
+          "volume": 125712448.0
         }
       ]
     },
@@ -1019,26 +1019,18 @@
       "simbolo_byma": "AL35 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 6859012.16,
-        "var_7d_pct": 1.41,
-        "var_30d_pct": 8.57,
-        "var_desde_inicio_pct": 16.74,
-        "volatilidad_30d_pct": 0.64,
+        "volumen_promedio": 7167362.12,
+        "var_7d_pct": 1.28,
+        "var_30d_pct": 8.34,
+        "var_desde_inicio_pct": 14.76,
+        "volatilidad_30d_pct": 0.62,
         "drawdown_max_pct": -1.08,
         "precio_max_ventana": 124970.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 124950.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 124690.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 107100.0,
-          "high": 107970.0,
-          "low": 106320.0,
-          "close": 107030.0,
-          "volume": 4177528.0
-        },
         {
           "date": "2026-04-08",
           "open": 107200.0,
@@ -1518,6 +1510,14 @@
           "low": 124110.0,
           "close": 124950.0,
           "volume": 5456349.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 124950.0,
+          "high": 125480.0,
+          "low": 124180.0,
+          "close": 124690.0,
+          "volume": 12409976.0
         }
       ]
     },
@@ -1525,26 +1525,18 @@
       "simbolo_byma": "AL41 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 2755472.6,
-        "var_7d_pct": 2.87,
+        "volumen_promedio": 2780812.44,
+        "var_7d_pct": 2.03,
         "var_30d_pct": 11.11,
-        "var_desde_inicio_pct": 19.98,
-        "volatilidad_30d_pct": 0.6,
+        "var_desde_inicio_pct": 18.67,
+        "volatilidad_30d_pct": 0.59,
         "drawdown_max_pct": -0.8,
         "precio_max_ventana": 119920.0,
-        "fecha_inicio_serie": "2026-04-07",
+        "fecha_inicio_serie": "2026-04-08",
         "ultimo_cierre": 119900.0,
-        "ultima_fecha": "2026-07-03"
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 99370.0,
-          "high": 100380.0,
-          "low": 98470.0,
-          "close": 99930.0,
-          "volume": 1653528.0
-        },
         {
           "date": "2026-04-08",
           "open": 100100.0,
@@ -2024,6 +2016,14 @@
           "low": 119120.0,
           "close": 119900.0,
           "volume": 984171.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 119680.0,
+          "high": 120790.0,
+          "low": 119330.0,
+          "close": 119900.0,
+          "volume": 3044706.0
         }
       ]
     },
@@ -2031,26 +2031,18 @@
       "simbolo_byma": "BA37D 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 258047.0,
-        "var_7d_pct": 1.96,
-        "var_30d_pct": 8.06,
-        "var_desde_inicio_pct": 16.94,
-        "volatilidad_30d_pct": 0.83,
+        "volumen_promedio": 265117.8,
+        "var_7d_pct": 1.12,
+        "var_30d_pct": 7.99,
+        "var_desde_inicio_pct": 16.41,
+        "volatilidad_30d_pct": 0.84,
         "drawdown_max_pct": -1.7,
         "precio_max_ventana": 119570.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 119400.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 119320.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 102690.0,
-          "high": 102700.0,
-          "low": 101300.0,
-          "close": 102100.0,
-          "volume": 156233.0
-        },
         {
           "date": "2026-04-08",
           "open": 101810.0,
@@ -2530,6 +2522,14 @@
           "low": 118460.0,
           "close": 119400.0,
           "volume": 170272.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 120100.0,
+          "high": 120400.0,
+          "low": 118040.0,
+          "close": 119320.0,
+          "volume": 224028.0
         }
       ]
     },
@@ -2544,19 +2544,11 @@
         "volatilidad_30d_pct": 0.0,
         "drawdown_max_pct": 0.0,
         "precio_max_ventana": 100.903,
-        "fecha_inicio_serie": "2026-04-07",
+        "fecha_inicio_serie": "2026-04-08",
         "ultimo_cierre": 100.903,
-        "ultima_fecha": "2026-07-03"
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 100.899,
-          "volume": 0.0
-        },
         {
           "date": "2026-04-08",
           "open": 0.0,
@@ -3031,6 +3023,14 @@
         },
         {
           "date": "2026-07-03",
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 100.903,
+          "volume": 0.0
+        },
+        {
+          "date": "2026-07-06",
           "open": 0.0,
           "high": 0.0,
           "low": 0.0,
@@ -3050,19 +3050,11 @@
         "volatilidad_30d_pct": 0.0,
         "drawdown_max_pct": 0.0,
         "precio_max_ventana": 142682.005,
-        "fecha_inicio_serie": "2026-04-07",
+        "fecha_inicio_serie": "2026-04-08",
         "ultimo_cierre": 142682.005,
-        "ultima_fecha": "2026-07-03"
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 142679.037,
-          "volume": 0.0
-        },
         {
           "date": "2026-04-08",
           "open": 0.0,
@@ -3537,6 +3529,14 @@
         },
         {
           "date": "2026-07-03",
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 142682.005,
+          "volume": 0.0
+        },
+        {
+          "date": "2026-07-06",
           "open": 0.0,
           "high": 0.0,
           "low": 0.0,
@@ -3561,26 +3561,18 @@
       "simbolo_byma": "BPOD7 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 3012352.0,
-        "var_7d_pct": 0.47,
-        "var_30d_pct": 4.51,
-        "var_desde_inicio_pct": 8.1,
-        "volatilidad_30d_pct": 0.49,
+        "volumen_promedio": 3050797.28,
+        "var_7d_pct": 0.73,
+        "var_30d_pct": 4.94,
+        "var_desde_inicio_pct": 9.23,
+        "volatilidad_30d_pct": 0.42,
         "drawdown_max_pct": -1.47,
-        "precio_max_ventana": 155800.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 155400.0,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 156050.0,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 156050.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 142588.075,
-          "high": 143759.149,
-          "low": 142480.726,
-          "close": 143749.39,
-          "volume": 1282743.0
-        },
         {
           "date": "2026-04-08",
           "open": 142939.397,
@@ -4060,6 +4052,14 @@
           "low": 154770.0,
           "close": 155400.0,
           "volume": 664446.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 155000.0,
+          "high": 156180.0,
+          "low": 154620.0,
+          "close": 156050.0,
+          "volume": 1925636.0
         }
       ]
     },
@@ -4067,26 +4067,18 @@
       "simbolo_byma": "CO26D 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 38760.0,
-        "var_7d_pct": 4.41,
-        "var_30d_pct": -0.7,
-        "var_desde_inicio_pct": -0.42,
-        "volatilidad_30d_pct": 2.12,
+        "volumen_promedio": 38160.0,
+        "var_7d_pct": 0.0,
+        "var_30d_pct": -2.1,
+        "var_desde_inicio_pct": 0.56,
+        "volatilidad_30d_pct": 2.14,
         "drawdown_max_pct": -8.47,
         "precio_max_ventana": 7.32,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 7.1,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 7.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 7.13,
-          "volume": 0.0
-        },
         {
           "date": "2026-04-08",
           "open": 7.164,
@@ -4566,6 +4558,14 @@
           "low": 0.0,
           "close": 7.1,
           "volume": 0.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 7.0,
+          "high": 7.0,
+          "low": 7.0,
+          "close": 7.0,
+          "volume": 7000.0
         }
       ]
     },
@@ -4580,19 +4580,11 @@
         "volatilidad_30d_pct": 0.0,
         "drawdown_max_pct": 0.0,
         "precio_max_ventana": 145723.928,
-        "fecha_inicio_serie": "2026-04-07",
+        "fecha_inicio_serie": "2026-04-08",
         "ultimo_cierre": 145723.928,
-        "ultima_fecha": "2026-07-03"
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 145723.928,
-          "volume": 0.0
-        },
         {
           "date": "2026-04-08",
           "open": 0.0,
@@ -5072,6 +5064,14 @@
           "low": 0.0,
           "close": 145723.928,
           "volume": 0.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 145723.928,
+          "volume": 0.0
         }
       ]
     },
@@ -5079,26 +5079,18 @@
       "simbolo_byma": "DICP 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 5675783.92,
-        "var_7d_pct": 1.04,
-        "var_30d_pct": -7.97,
-        "var_desde_inicio_pct": -0.51,
+        "volumen_promedio": 6114051.0,
+        "var_7d_pct": 0.32,
+        "var_30d_pct": -8.26,
+        "var_desde_inicio_pct": -1.04,
         "volatilidad_30d_pct": 1.87,
         "drawdown_max_pct": -11.39,
         "precio_max_ventana": 53600.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 48600.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 48450.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 49160.0,
-          "high": 49200.0,
-          "low": 48740.0,
-          "close": 48850.0,
-          "volume": 4971570.0
-        },
         {
           "date": "2026-04-08",
           "open": 49000.0,
@@ -5578,6 +5570,14 @@
           "low": 48355.0,
           "close": 48600.0,
           "volume": 1947093.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 48870.0,
+          "high": 48870.0,
+          "low": 48360.0,
+          "close": 48450.0,
+          "volume": 16293293.0
         }
       ]
     },
@@ -5585,26 +5585,18 @@
       "simbolo_byma": "DNC7O 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 115276.0,
-        "var_7d_pct": 1.8,
-        "var_30d_pct": 6.11,
-        "var_desde_inicio_pct": 11.46,
-        "volatilidad_30d_pct": 0.85,
+        "volumen_promedio": 117008.0,
+        "var_7d_pct": -0.08,
+        "var_30d_pct": 5.94,
+        "var_desde_inicio_pct": 12.31,
+        "volatilidad_30d_pct": 0.86,
         "drawdown_max_pct": -1.47,
         "precio_max_ventana": 166600.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 166600.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 166320.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 148234.733,
-          "high": 149475.191,
-          "low": 147404.58,
-          "close": 149475.191,
-          "volume": 115700.0
-        },
         {
           "date": "2026-04-08",
           "open": 148902.672,
@@ -6084,6 +6076,14 @@
           "low": 164900.0,
           "close": 166600.0,
           "volume": 108900.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 165820.0,
+          "high": 166320.0,
+          "low": 164260.0,
+          "close": 166320.0,
+          "volume": 266300.0
         }
       ]
     },
@@ -6091,26 +6091,18 @@
       "simbolo_byma": "GD29 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 206368.32,
-        "var_7d_pct": 1.61,
-        "var_30d_pct": 6.55,
-        "var_desde_inicio_pct": 10.65,
-        "volatilidad_30d_pct": 0.69,
+        "volumen_promedio": 199607.6,
+        "var_7d_pct": 0.62,
+        "var_30d_pct": 6.76,
+        "var_desde_inicio_pct": 9.89,
+        "volatilidad_30d_pct": 0.67,
         "drawdown_max_pct": -0.89,
         "precio_max_ventana": 102000.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 101280.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 101480.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 92120.0,
-          "high": 92120.0,
-          "low": 91000.0,
-          "close": 91530.0,
-          "volume": 61780.0
-        },
         {
           "date": "2026-04-08",
           "open": 91530.0,
@@ -6590,6 +6582,14 @@
           "low": 99870.0,
           "close": 101280.0,
           "volume": 91525.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 103250.0,
+          "high": 103250.0,
+          "low": 100200.0,
+          "close": 101480.0,
+          "volume": 92355.0
         }
       ]
     },
@@ -6597,26 +6597,18 @@
       "simbolo_byma": "GD30 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 9739660.88,
-        "var_7d_pct": 1.33,
-        "var_30d_pct": 5.85,
-        "var_desde_inicio_pct": 11.57,
+        "volumen_promedio": 10048581.24,
+        "var_7d_pct": 0.89,
+        "var_30d_pct": 5.68,
+        "var_desde_inicio_pct": 10.87,
         "volatilidad_30d_pct": 0.58,
         "drawdown_max_pct": -1.44,
         "precio_max_ventana": 101400.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 101000.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 100840.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 90300.0,
-          "high": 90700.0,
-          "low": 89890.0,
-          "close": 90530.0,
-          "volume": 12566425.0
-        },
         {
           "date": "2026-04-08",
           "open": 90520.0,
@@ -7096,6 +7088,14 @@
           "low": 100510.0,
           "close": 101000.0,
           "volume": 2990569.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 101090.0,
+          "high": 101090.0,
+          "low": 100350.0,
+          "close": 100840.0,
+          "volume": 12465364.0
         }
       ]
     },
@@ -7103,26 +7103,18 @@
       "simbolo_byma": "GD35 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 13304165.6,
-        "var_7d_pct": 1.83,
-        "var_30d_pct": 9.78,
-        "var_desde_inicio_pct": 17.94,
+        "volumen_promedio": 12779457.24,
+        "var_7d_pct": 1.53,
+        "var_30d_pct": 9.91,
+        "var_desde_inicio_pct": 17.06,
         "volatilidad_30d_pct": 0.59,
         "drawdown_max_pct": -0.83,
-        "precio_max_ventana": 130150.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 130150.0,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 130300.0,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 130300.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 109400.0,
-          "high": 110410.0,
-          "low": 108400.0,
-          "close": 110350.0,
-          "volume": 8065867.0
-        },
         {
           "date": "2026-04-08",
           "open": 111490.0,
@@ -7602,6 +7594,14 @@
           "low": 129610.0,
           "close": 130150.0,
           "volume": 8103315.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 131000.0,
+          "high": 131000.0,
+          "low": 129610.0,
+          "close": 130300.0,
+          "volume": 9333032.0
         }
       ]
     },
@@ -7609,26 +7609,18 @@
       "simbolo_byma": "GD38 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 3740586.12,
-        "var_7d_pct": 1.88,
-        "var_30d_pct": 9.51,
-        "var_desde_inicio_pct": 18.26,
-        "volatilidad_30d_pct": 0.71,
+        "volumen_promedio": 3793984.16,
+        "var_7d_pct": 1.08,
+        "var_30d_pct": 9.71,
+        "var_desde_inicio_pct": 17.07,
+        "volatilidad_30d_pct": 0.69,
         "drawdown_max_pct": -1.54,
-        "precio_max_ventana": 136000.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 136000.0,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 136250.0,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 136250.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 114800.0,
-          "high": 115500.0,
-          "low": 113310.0,
-          "close": 115000.0,
-          "volume": 5223939.0
-        },
         {
           "date": "2026-04-08",
           "open": 115580.0,
@@ -8108,6 +8100,14 @@
           "low": 135050.0,
           "close": 136000.0,
           "volume": 649029.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 136000.0,
+          "high": 136910.0,
+          "low": 135310.0,
+          "close": 136250.0,
+          "volume": 2736759.0
         }
       ]
     },
@@ -8115,26 +8115,18 @@
       "simbolo_byma": "GD41 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 6610035.52,
-        "var_7d_pct": 1.95,
-        "var_30d_pct": 10.4,
-        "var_desde_inicio_pct": 18.83,
-        "volatilidad_30d_pct": 0.8,
+        "volumen_promedio": 6794662.56,
+        "var_7d_pct": 1.85,
+        "var_30d_pct": 10.83,
+        "var_desde_inicio_pct": 17.79,
+        "volatilidad_30d_pct": 0.78,
         "drawdown_max_pct": -1.79,
-        "precio_max_ventana": 121790.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 121550.0,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 122020.0,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 122020.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 101400.0,
-          "high": 102290.0,
-          "low": 100200.0,
-          "close": 102290.0,
-          "volume": 12403347.0
-        },
         {
           "date": "2026-04-08",
           "open": 102350.0,
@@ -8614,6 +8606,14 @@
           "low": 121100.0,
           "close": 121550.0,
           "volume": 1037565.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 121210.0,
+          "high": 122290.0,
+          "low": 120980.0,
+          "close": 122020.0,
+          "volume": 10356664.0
         }
       ]
     },
@@ -8621,26 +8621,18 @@
       "simbolo_byma": "GD46 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 428148.24,
-        "var_7d_pct": 1.66,
-        "var_30d_pct": 9.93,
-        "var_desde_inicio_pct": 19.04,
-        "volatilidad_30d_pct": 1.1,
+        "volumen_promedio": 421166.08,
+        "var_7d_pct": 0.78,
+        "var_30d_pct": 9.98,
+        "var_desde_inicio_pct": 18.61,
+        "volatilidad_30d_pct": 1.11,
         "drawdown_max_pct": -1.57,
         "precio_max_ventana": 116500.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 116350.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 116400.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 98480.0,
-          "high": 98480.0,
-          "low": 96610.0,
-          "close": 97740.0,
-          "volume": 53527.0
-        },
         {
           "date": "2026-04-08",
           "open": 97750.0,
@@ -9120,6 +9112,14 @@
           "low": 115510.0,
           "close": 116350.0,
           "volume": 37702.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 117380.0,
+          "high": 117380.0,
+          "low": 115510.0,
+          "close": 116400.0,
+          "volume": 71116.0
         }
       ]
     },
@@ -9127,26 +9127,18 @@
       "simbolo_byma": "GN49O 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 71480.0,
-        "var_7d_pct": 0.82,
-        "var_30d_pct": 2.23,
-        "var_desde_inicio_pct": 8.21,
+        "volumen_promedio": 75320.0,
+        "var_7d_pct": 0.83,
+        "var_30d_pct": 2.75,
+        "var_desde_inicio_pct": 9.54,
         "volatilidad_30d_pct": 1.03,
         "drawdown_max_pct": -3.79,
-        "precio_max_ventana": 161510.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 161510.0,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 162330.0,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 162330.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 147129.764,
-          "high": 150400.386,
-          "low": 146657.019,
-          "close": 149252.291,
-          "volume": 114000.0
-        },
         {
           "date": "2026-04-08",
           "open": 147226.242,
@@ -9626,6 +9618,14 @@
           "low": 161510.0,
           "close": 161510.0,
           "volume": 129000.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 159510.0,
+          "high": 162330.0,
+          "low": 159510.0,
+          "close": 162330.0,
+          "volume": 105000.0
         }
       ]
     },
@@ -9633,26 +9633,18 @@
       "simbolo_byma": "IRCFO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 51062.96,
-        "var_7d_pct": 0.85,
-        "var_30d_pct": 4.98,
-        "var_desde_inicio_pct": 7.99,
-        "volatilidad_30d_pct": 0.85,
-        "drawdown_max_pct": -1.23,
-        "precio_max_ventana": 77800.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 76950.0,
-        "ultima_fecha": "2026-07-03"
+        "volumen_promedio": 52499.52,
+        "var_7d_pct": 2.56,
+        "var_30d_pct": 7.74,
+        "var_desde_inicio_pct": 12.2,
+        "volatilidad_30d_pct": 0.91,
+        "drawdown_max_pct": -1.22,
+        "precio_max_ventana": 78970.0,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 78970.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 69995.759,
-          "high": 71253.887,
-          "low": 69988.691,
-          "close": 71253.887,
-          "volume": 39238.0
-        },
         {
           "date": "2026-04-08",
           "open": 70801.527,
@@ -10132,6 +10124,14 @@
           "low": 76950.0,
           "close": 76950.0,
           "volume": 61020.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 76950.0,
+          "high": 79990.0,
+          "low": 76950.0,
+          "close": 78970.0,
+          "volume": 70333.0
         }
       ]
     },
@@ -10139,26 +10139,18 @@
       "simbolo_byma": "NDT5D 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 65478.56,
+        "volumen_promedio": 67439.2,
         "var_7d_pct": -0.16,
-        "var_30d_pct": -0.95,
-        "var_desde_inicio_pct": 1.82,
+        "var_30d_pct": -0.8,
+        "var_desde_inicio_pct": 1.24,
         "volatilidad_30d_pct": 0.57,
         "drawdown_max_pct": -2.45,
         "precio_max_ventana": 64.6,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 63.4,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 63.5,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 62.646,
-          "high": 62.819,
-          "low": 61.566,
-          "close": 62.266,
-          "volume": 82791.0
-        },
         {
           "date": "2026-04-08",
           "open": 62.905,
@@ -10638,6 +10630,14 @@
           "low": 63.37,
           "close": 63.4,
           "volume": 46577.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 63.4,
+          "high": 64.29,
+          "low": 63.36,
+          "close": 63.5,
+          "volume": 75591.0
         }
       ]
     },
@@ -10645,26 +10645,18 @@
       "simbolo_byma": "PM29D 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 56040.0,
-        "var_7d_pct": -0.21,
-        "var_30d_pct": 0.26,
-        "var_desde_inicio_pct": 0.02,
+        "volumen_promedio": 55840.0,
+        "var_7d_pct": -0.53,
+        "var_30d_pct": 0.47,
+        "var_desde_inicio_pct": 2.17,
         "volatilidad_30d_pct": 0.67,
         "drawdown_max_pct": -2.26,
         "precio_max_ventana": 47.69,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 46.9,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 47.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 45.7,
-          "high": 46.889,
-          "low": 45.58,
-          "close": 46.889,
-          "volume": 137000.0
-        },
         {
           "date": "2026-04-08",
           "open": 46.99,
@@ -11144,6 +11136,14 @@
           "low": 46.9,
           "close": 46.9,
           "volume": 19000.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 47.3,
+          "high": 47.44,
+          "low": 47.0,
+          "close": 47.0,
+          "volume": 31000.0
         }
       ]
     },
@@ -11151,26 +11151,18 @@
       "simbolo_byma": "PN35O 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 152278.36,
-        "var_7d_pct": 1.27,
-        "var_30d_pct": 5.3,
-        "var_desde_inicio_pct": 7.95,
-        "volatilidad_30d_pct": 0.65,
+        "volumen_promedio": 154371.2,
+        "var_7d_pct": 0.68,
+        "var_30d_pct": 5.68,
+        "var_desde_inicio_pct": 9.29,
+        "volatilidad_30d_pct": 0.61,
         "drawdown_max_pct": -1.26,
         "precio_max_ventana": 164000.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 163000.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 163590.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 152000.0,
-          "high": 152000.0,
-          "low": 148000.0,
-          "close": 150990.0,
-          "volume": 158739.0
-        },
         {
           "date": "2026-04-08",
           "open": 149010.0,
@@ -11650,6 +11642,14 @@
           "low": 161810.0,
           "close": 163000.0,
           "volume": 191727.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 163440.0,
+          "high": 164000.0,
+          "low": 161000.0,
+          "close": 163590.0,
+          "volume": 171782.0
         }
       ]
     },
@@ -11657,26 +11657,18 @@
       "simbolo_byma": "PNDCO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 35200.0,
-        "var_7d_pct": 4.66,
-        "var_30d_pct": 6.61,
-        "var_desde_inicio_pct": 10.58,
-        "volatilidad_30d_pct": 0.86,
-        "drawdown_max_pct": -1.51,
+        "volumen_promedio": 35760.0,
+        "var_7d_pct": 1.72,
+        "var_30d_pct": 3.37,
+        "var_desde_inicio_pct": 6.94,
+        "volatilidad_30d_pct": 1.02,
+        "drawdown_max_pct": -3.03,
         "precio_max_ventana": 66980.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 66980.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 64950.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 60424.984,
-          "high": 60676.111,
-          "low": 60424.984,
-          "close": 60573.084,
-          "volume": 43000.0
-        },
         {
           "date": "2026-04-08",
           "open": 60972.312,
@@ -12156,6 +12148,14 @@
           "low": 64880.0,
           "close": 66980.0,
           "volume": 39000.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 65510.0,
+          "high": 65510.0,
+          "low": 64950.0,
+          "close": 64950.0,
+          "volume": 27000.0
         }
       ]
     },
@@ -12170,19 +12170,11 @@
         "volatilidad_30d_pct": 0.0,
         "drawdown_max_pct": 0.0,
         "precio_max_ventana": 148037.832,
-        "fecha_inicio_serie": "2026-04-07",
+        "fecha_inicio_serie": "2026-04-08",
         "ultimo_cierre": 148037.832,
-        "ultima_fecha": "2026-07-03"
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 0.0,
-          "high": 0.0,
-          "low": 0.0,
-          "close": 147262.248,
-          "volume": 0.0
-        },
         {
           "date": "2026-04-08",
           "open": 0.0,
@@ -12662,6 +12654,14 @@
           "low": 0.0,
           "close": 148037.832,
           "volume": 0.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 148037.832,
+          "volume": 0.0
         }
       ]
     },
@@ -12669,26 +12669,18 @@
       "simbolo_byma": "RUCDO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 164790.76,
-        "var_7d_pct": 2.76,
-        "var_30d_pct": 7.1,
-        "var_desde_inicio_pct": 10.75,
-        "volatilidad_30d_pct": 0.86,
+        "volumen_promedio": 167405.68,
+        "var_7d_pct": 2.74,
+        "var_30d_pct": 7.75,
+        "var_desde_inicio_pct": 12.95,
+        "volatilidad_30d_pct": 0.85,
         "drawdown_max_pct": -1.44,
-        "precio_max_ventana": 163700.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 163700.0,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 164700.0,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 164700.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 146960.588,
-          "high": 147905.334,
-          "low": 144307.663,
-          "close": 147809.906,
-          "volume": 106946.0
-        },
         {
           "date": "2026-04-08",
           "open": 147809.906,
@@ -13168,6 +13160,14 @@
           "low": 161810.0,
           "close": 163700.0,
           "volume": 185354.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 164000.0,
+          "high": 168000.0,
+          "low": 160810.0,
+          "close": 164700.0,
+          "volume": 166437.0
         }
       ]
     },
@@ -13175,26 +13175,18 @@
       "simbolo_byma": "S17L6 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 36434319367.0,
-        "var_7d_pct": 0.39,
-        "var_30d_pct": 1.63,
-        "var_desde_inicio_pct": 6.82,
+        "volumen_promedio": 37939714639.08,
+        "var_7d_pct": 0.37,
+        "var_30d_pct": 1.68,
+        "var_desde_inicio_pct": 6.68,
         "volatilidad_30d_pct": 0.08,
         "drawdown_max_pct": -0.08,
-        "precio_max_ventana": 107.25,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 107.25,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 107.308,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 107.308,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 100.98,
-          "high": 100.98,
-          "low": 100.0,
-          "close": 100.405,
-          "volume": 61272686822.0
-        },
         {
           "date": "2026-04-08",
           "open": 100.99,
@@ -13674,6 +13666,14 @@
           "low": 107.063,
           "close": 107.25,
           "volume": 85935663179.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 107.45,
+          "high": 107.45,
+          "low": 107.25,
+          "close": 107.308,
+          "volume": 55359198815.0
         }
       ]
     },
@@ -13681,26 +13681,18 @@
       "simbolo_byma": "S30N6 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 1939236241.0,
-        "var_7d_pct": 0.42,
-        "var_30d_pct": 1.79,
-        "var_desde_inicio_pct": 8.74,
+        "volumen_promedio": 1916902935.44,
+        "var_7d_pct": 0.17,
+        "var_30d_pct": 1.83,
+        "var_desde_inicio_pct": 8.62,
         "volatilidad_30d_pct": 0.27,
         "drawdown_max_pct": -0.83,
-        "precio_max_ventana": 119.05,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 119.05,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 119.1,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 119.1,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 110.49,
-          "high": 110.99,
-          "low": 109.451,
-          "close": 109.48,
-          "volume": 1733899786.0
-        },
         {
           "date": "2026-04-08",
           "open": 109.89,
@@ -14180,6 +14172,14 @@
           "low": 118.8,
           "close": 119.05,
           "volume": 596253198.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 119.1,
+          "high": 119.4,
+          "low": 119.05,
+          "close": 119.1,
+          "volume": 1514391038.0
         }
       ]
     },
@@ -14187,26 +14187,18 @@
       "simbolo_byma": "S30O6 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 2199096558.88,
+        "volumen_promedio": 2100044785.64,
         "var_7d_pct": 0.44,
-        "var_30d_pct": 1.87,
-        "var_desde_inicio_pct": 8.32,
+        "var_30d_pct": 2.02,
+        "var_desde_inicio_pct": 8.09,
         "volatilidad_30d_pct": 0.23,
         "drawdown_max_pct": -0.75,
-        "precio_max_ventana": 126.06,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 126.06,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 126.252,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 126.252,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 117.287,
-          "high": 117.288,
-          "low": 116.377,
-          "close": 116.378,
-          "volume": 2170688832.0
-        },
         {
           "date": "2026-04-08",
           "open": 116.4,
@@ -14686,6 +14678,14 @@
           "low": 125.8,
           "close": 126.06,
           "volume": 3047619841.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 126.14,
+          "high": 126.49,
+          "low": 126.061,
+          "close": 126.252,
+          "volume": 1363657985.0
         }
       ]
     },
@@ -14693,26 +14693,18 @@
       "simbolo_byma": "S31G6 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 4892724572.68,
-        "var_7d_pct": 0.51,
-        "var_30d_pct": 1.78,
-        "var_desde_inicio_pct": 7.44,
+        "volumen_promedio": 4991788469.08,
+        "var_7d_pct": 0.39,
+        "var_30d_pct": 1.8,
+        "var_desde_inicio_pct": 7.16,
         "volatilidad_30d_pct": 0.19,
         "drawdown_max_pct": -0.33,
-        "precio_max_ventana": 123.15,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 123.15,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 123.18,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 123.18,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 115.249,
-          "high": 115.461,
-          "low": 114.601,
-          "close": 114.62,
-          "volume": 1604170470.0
-        },
         {
           "date": "2026-04-08",
           "open": 115.418,
@@ -15192,6 +15184,14 @@
           "low": 122.701,
           "close": 123.15,
           "volume": 10311132121.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 123.15,
+          "high": 123.4,
+          "low": 123.09,
+          "close": 123.18,
+          "volume": 7124391882.0
         }
       ]
     },
@@ -15199,26 +15199,18 @@
       "simbolo_byma": "S31L6 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 6890034608.08,
-        "var_7d_pct": 0.41,
-        "var_30d_pct": 1.74,
-        "var_desde_inicio_pct": 6.9,
+        "volumen_promedio": 6418554064.92,
+        "var_7d_pct": 0.43,
+        "var_30d_pct": 1.8,
+        "var_desde_inicio_pct": 6.61,
         "volatilidad_30d_pct": 0.11,
         "drawdown_max_pct": -0.18,
-        "precio_max_ventana": 116.09,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 116.09,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 116.15,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 116.15,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 109.4,
-          "high": 109.4,
-          "low": 108.4,
-          "close": 108.601,
-          "volume": 2355562435.0
-        },
         {
           "date": "2026-04-08",
           "open": 108.68,
@@ -15698,6 +15690,14 @@
           "low": 115.831,
           "close": 116.09,
           "volume": 3751794158.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 116.38,
+          "high": 116.38,
+          "low": 116.051,
+          "close": 116.15,
+          "volume": 6436127698.0
         }
       ]
     },
@@ -15706,25 +15706,17 @@
       "error": null,
       "metricas": {
         "volumen_promedio": 4822.2,
-        "var_7d_pct": 3.12,
+        "var_7d_pct": 1.02,
         "var_30d_pct": 2.79,
-        "var_desde_inicio_pct": 11.11,
+        "var_desde_inicio_pct": 8.54,
         "volatilidad_30d_pct": 1.75,
         "drawdown_max_pct": -4.19,
         "precio_max_ventana": 59400.0,
-        "fecha_inicio_serie": "2026-04-07",
+        "fecha_inicio_serie": "2026-04-08",
         "ultimo_cierre": 59400.0,
-        "ultima_fecha": "2026-07-03"
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 54792.653,
-          "high": 54792.653,
-          "low": 53458.172,
-          "close": 53458.172,
-          "volume": 6552.0
-        },
         {
           "date": "2026-04-08",
           "open": 53458.172,
@@ -16204,6 +16196,14 @@
           "low": 58200.0,
           "close": 59400.0,
           "volume": 10016.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 59400.0,
+          "volume": 0.0
         }
       ]
     },
@@ -16211,26 +16211,18 @@
       "simbolo_byma": "SPYD 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 115873.36,
-        "var_7d_pct": 2.67,
-        "var_30d_pct": 2.77,
-        "var_desde_inicio_pct": 15.03,
-        "volatilidad_30d_pct": 1.0,
+        "volumen_promedio": 118679.2,
+        "var_7d_pct": 0.54,
+        "var_30d_pct": 1.59,
+        "var_desde_inicio_pct": 11.02,
+        "volatilidad_30d_pct": 1.03,
         "drawdown_max_pct": -4.72,
         "precio_max_ventana": 13.126,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 13.09,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 12.94,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 11.397,
-          "high": 11.417,
-          "low": 11.271,
-          "close": 11.38,
-          "volume": 27366.0
-        },
         {
           "date": "2026-04-08",
           "open": 11.6,
@@ -16710,6 +16702,14 @@
           "low": 12.83,
           "close": 13.09,
           "volume": 85708.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 13.05,
+          "high": 13.05,
+          "low": 12.86,
+          "close": 12.94,
+          "volume": 166733.0
         }
       ]
     },
@@ -16720,23 +16720,15 @@
         "volumen_promedio": 24576010348.4,
         "var_7d_pct": 0.0,
         "var_30d_pct": 1.21,
-        "var_desde_inicio_pct": 6.04,
+        "var_desde_inicio_pct": 5.77,
         "volatilidad_30d_pct": 0.08,
         "drawdown_max_pct": -0.1,
         "precio_max_ventana": 144.795,
-        "fecha_inicio_serie": "2026-04-07",
+        "fecha_inicio_serie": "2026-04-08",
         "ultimo_cierre": 144.795,
         "ultima_fecha": "2026-06-26"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 136.75,
-          "high": 137.95,
-          "low": 136.45,
-          "close": 136.55,
-          "volume": 24194708901.0
-        },
         {
           "date": "2026-04-08",
           "open": 136.7,
@@ -17183,26 +17175,18 @@
       "simbolo_byma": "TLCMO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 272760.0,
-        "var_7d_pct": 1.34,
-        "var_30d_pct": 5.26,
-        "var_desde_inicio_pct": 10.79,
-        "volatilidad_30d_pct": 0.67,
+        "volumen_promedio": 278040.0,
+        "var_7d_pct": 1.02,
+        "var_30d_pct": 5.76,
+        "var_desde_inicio_pct": 11.13,
+        "volatilidad_30d_pct": 0.66,
         "drawdown_max_pct": -1.15,
-        "precio_max_ventana": 177970.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 177250.0,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 178100.0,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 178100.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 160500.0,
-          "high": 161080.0,
-          "low": 159750.0,
-          "close": 159990.0,
-          "volume": 485000.0
-        },
         {
           "date": "2026-04-08",
           "open": 160010.0,
@@ -17682,6 +17666,14 @@
           "low": 175670.0,
           "close": 177250.0,
           "volume": 334000.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 176980.0,
+          "high": 178370.0,
+          "low": 176980.0,
+          "close": 178100.0,
+          "volume": 327000.0
         }
       ]
     },
@@ -17689,26 +17681,18 @@
       "simbolo_byma": "TSC3O 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 97240.0,
-        "var_7d_pct": 1.0,
-        "var_30d_pct": 2.92,
-        "var_desde_inicio_pct": 7.07,
-        "volatilidad_30d_pct": 0.61,
+        "volumen_promedio": 104600.0,
+        "var_7d_pct": 0.58,
+        "var_30d_pct": 2.56,
+        "var_desde_inicio_pct": 7.56,
+        "volatilidad_30d_pct": 0.57,
         "drawdown_max_pct": -1.29,
         "precio_max_ventana": 172700.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 172700.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 172100.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 160170.0,
-          "high": 161340.0,
-          "low": 160170.0,
-          "close": 161300.0,
-          "volume": 242000.0
-        },
         {
           "date": "2026-04-08",
           "open": 159500.0,
@@ -18188,6 +18172,14 @@
           "low": 0.0,
           "close": 172700.0,
           "volume": 0.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 172000.0,
+          "high": 172300.0,
+          "low": 171740.0,
+          "close": 172100.0,
+          "volume": 330000.0
         }
       ]
     },
@@ -18195,26 +18187,18 @@
       "simbolo_byma": "TTC9O 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 40124.68,
-        "var_7d_pct": 2.34,
-        "var_30d_pct": 5.17,
-        "var_desde_inicio_pct": 8.91,
-        "volatilidad_30d_pct": 0.91,
+        "volumen_promedio": 41228.36,
+        "var_7d_pct": 0.15,
+        "var_30d_pct": 4.96,
+        "var_desde_inicio_pct": 7.04,
+        "volatilidad_30d_pct": 0.92,
         "drawdown_max_pct": -1.9,
         "precio_max_ventana": 161660.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 161070.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 160740.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 146899.225,
-          "high": 150193.798,
-          "low": 146899.225,
-          "close": 147897.287,
-          "volume": 748.0
-        },
         {
           "date": "2026-04-08",
           "open": 150193.798,
@@ -18694,6 +18678,14 @@
           "low": 159370.0,
           "close": 161070.0,
           "volume": 154296.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 158200.0,
+          "high": 160890.0,
+          "low": 158200.0,
+          "close": 160740.0,
+          "volume": 91148.0
         }
       ]
     },
@@ -18701,26 +18693,18 @@
       "simbolo_byma": "TTCDO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 92360.0,
-        "var_7d_pct": 1.95,
-        "var_30d_pct": 5.05,
-        "var_desde_inicio_pct": 9.65,
-        "volatilidad_30d_pct": 0.64,
+        "volumen_promedio": 94960.0,
+        "var_7d_pct": 0.92,
+        "var_30d_pct": 5.06,
+        "var_desde_inicio_pct": 10.48,
+        "volatilidad_30d_pct": 0.62,
         "drawdown_max_pct": -1.45,
-        "precio_max_ventana": 164960.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 164960.0,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 164970.0,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 164970.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 149512.971,
-          "high": 150776.353,
-          "low": 149435.818,
-          "close": 150448.452,
-          "volume": 102000.0
-        },
         {
           "date": "2026-04-08",
           "open": 149850.516,
@@ -19200,6 +19184,14 @@
           "low": 163500.0,
           "close": 164960.0,
           "volume": 194000.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 165000.0,
+          "high": 165340.0,
+          "low": 164500.0,
+          "close": 164970.0,
+          "volume": 134000.0
         }
       ]
     },
@@ -19207,26 +19199,18 @@
       "simbolo_byma": "TVPP 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 11474854.76,
-        "var_7d_pct": 4.24,
-        "var_30d_pct": 6.96,
-        "var_desde_inicio_pct": 5.17,
-        "volatilidad_30d_pct": 1.93,
-        "drawdown_max_pct": -8.49,
+        "volumen_promedio": 11601015.48,
+        "var_7d_pct": 3.7,
+        "var_30d_pct": 7.12,
+        "var_desde_inicio_pct": 5.84,
+        "volatilidad_30d_pct": 1.55,
+        "drawdown_max_pct": -4.93,
         "precio_max_ventana": 12.43,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 12.3,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 12.319,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 11.7,
-          "high": 11.7,
-          "low": 11.191,
-          "close": 11.695,
-          "volume": 4720584.0
-        },
         {
           "date": "2026-04-08",
           "open": 11.7,
@@ -19706,6 +19690,14 @@
           "low": 12.0,
           "close": 12.3,
           "volume": 6204465.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 12.668,
+          "high": 12.79,
+          "low": 11.98,
+          "close": 12.319,
+          "volume": 6218597.0
         }
       ]
     },
@@ -19713,26 +19705,18 @@
       "simbolo_byma": "TX26 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 1051919131.04,
-        "var_7d_pct": 0.53,
-        "var_30d_pct": 1.19,
-        "var_desde_inicio_pct": 7.13,
+        "volumen_promedio": 1090523341.52,
+        "var_7d_pct": 0.5,
+        "var_30d_pct": 1.27,
+        "var_desde_inicio_pct": 7.14,
         "volatilidad_30d_pct": 0.15,
         "drawdown_max_pct": -0.34,
-        "precio_max_ventana": 708.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 708.0,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 708.6,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 708.6,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 662.362,
-          "high": 670.589,
-          "low": 658.124,
-          "close": 660.867,
-          "volume": 558691565.0
-        },
         {
           "date": "2026-04-08",
           "open": 660.867,
@@ -20212,6 +20196,14 @@
           "low": 703.1,
           "close": 708.0,
           "volume": 511513838.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 708.0,
+          "high": 710.0,
+          "low": 705.0,
+          "close": 708.6,
+          "volume": 2124295009.0
         }
       ]
     },
@@ -20219,26 +20211,18 @@
       "simbolo_byma": "TX28 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 29422100.52,
+        "volumen_promedio": 25265406.32,
         "var_7d_pct": 1.22,
-        "var_30d_pct": 1.56,
-        "var_desde_inicio_pct": 7.91,
+        "var_30d_pct": 1.53,
+        "var_desde_inicio_pct": 7.65,
         "volatilidad_30d_pct": 0.49,
         "drawdown_max_pct": -2.25,
         "precio_max_ventana": 1696.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 1696.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 1695.5,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 1588.954,
-          "high": 1597.968,
-          "low": 1571.745,
-          "close": 1571.745,
-          "volume": 42884929.0
-        },
         {
           "date": "2026-04-08",
           "open": 1573.384,
@@ -20718,6 +20702,14 @@
           "low": 1666.5,
           "close": 1696.0,
           "volume": 17331564.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 1695.5,
+          "high": 1719.5,
+          "low": 1668.5,
+          "close": 1695.5,
+          "volume": 14367592.0
         }
       ]
     },
@@ -20728,23 +20720,15 @@
         "volumen_promedio": 12381785013.8,
         "var_7d_pct": 0.0,
         "var_30d_pct": 1.23,
-        "var_desde_inicio_pct": 6.49,
+        "var_desde_inicio_pct": 6.32,
         "volatilidad_30d_pct": 0.07,
         "drawdown_max_pct": 0.0,
         "precio_max_ventana": 394.65,
-        "fecha_inicio_serie": "2026-04-07",
+        "fecha_inicio_serie": "2026-04-08",
         "ultimo_cierre": 394.65,
         "ultima_fecha": "2026-06-26"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 372.95,
-          "high": 372.95,
-          "low": 370.35,
-          "close": 370.6,
-          "volume": 16539677885.0
-        },
         {
           "date": "2026-04-08",
           "open": 372.95,
@@ -21191,26 +21175,18 @@
       "simbolo_byma": "TZXD6 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 5834560863.04,
+        "volumen_promedio": 6105507915.48,
         "var_7d_pct": 0.61,
-        "var_30d_pct": 0.96,
-        "var_desde_inicio_pct": 7.65,
+        "var_30d_pct": 1.06,
+        "var_desde_inicio_pct": 7.64,
         "volatilidad_30d_pct": 0.14,
         "drawdown_max_pct": -0.45,
-        "precio_max_ventana": 289.95,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 289.95,
-        "ultima_fecha": "2026-07-03"
+        "precio_max_ventana": 290.25,
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 290.25,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 270.0,
-          "high": 271.8,
-          "low": 268.65,
-          "close": 269.35,
-          "volume": 12838578023.0
-        },
         {
           "date": "2026-04-08",
           "open": 271.0,
@@ -21690,6 +21666,14 @@
           "low": 288.8,
           "close": 289.95,
           "volume": 6936321164.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 288.7,
+          "high": 291.9,
+          "low": 288.7,
+          "close": 290.25,
+          "volume": 12082549171.0
         }
       ]
     },
@@ -21697,26 +21681,18 @@
       "simbolo_byma": "YFCJO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 120800.0,
-        "var_7d_pct": 1.89,
-        "var_30d_pct": 4.75,
-        "var_desde_inicio_pct": 7.55,
-        "volatilidad_30d_pct": 0.92,
+        "volumen_promedio": 123320.0,
+        "var_7d_pct": 1.49,
+        "var_30d_pct": 4.94,
+        "var_desde_inicio_pct": 8.85,
+        "volatilidad_30d_pct": 0.9,
         "drawdown_max_pct": -2.12,
         "precio_max_ventana": 166040.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 164100.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 164400.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 148087.853,
-          "high": 152692.419,
-          "low": 148087.853,
-          "close": 152586.456,
-          "volume": 38000.0
-        },
         {
           "date": "2026-04-08",
           "open": 150447.934,
@@ -22196,6 +22172,14 @@
           "low": 164100.0,
           "close": 164100.0,
           "volume": 22000.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 163160.0,
+          "high": 165230.0,
+          "low": 163160.0,
+          "close": 164400.0,
+          "volume": 100000.0
         }
       ]
     },
@@ -22203,26 +22187,18 @@
       "simbolo_byma": "YMCIO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 253221.48,
-        "var_7d_pct": 2.41,
-        "var_30d_pct": -12.95,
-        "var_desde_inicio_pct": -9.2,
+        "volumen_promedio": 273199.0,
+        "var_7d_pct": 1.49,
+        "var_30d_pct": -12.88,
+        "var_desde_inicio_pct": -9.03,
         "volatilidad_30d_pct": 3.39,
         "drawdown_max_pct": -17.86,
         "precio_max_ventana": 168400.0,
-        "fecha_inicio_serie": "2026-04-07",
-        "ultimo_cierre": 141890.0,
-        "ultima_fecha": "2026-07-03"
+        "fecha_inicio_serie": "2026-04-08",
+        "ultimo_cierre": 142000.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
-        {
-          "date": "2026-04-07",
-          "open": 156300.0,
-          "high": 158030.0,
-          "low": 155010.0,
-          "close": 156260.0,
-          "volume": 480910.0
-        },
         {
           "date": "2026-04-08",
           "open": 156010.0,
@@ -22702,6 +22678,14 @@
           "low": 137270.0,
           "close": 141890.0,
           "volume": 354593.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 141800.0,
+          "high": 143280.0,
+          "low": 140090.0,
+          "close": 142000.0,
+          "volume": 638360.0
         }
       ]
     },
@@ -22718,7 +22702,7 @@
         "precio_max_ventana": 124300.0,
         "fecha_inicio_serie": "2026-06-23",
         "ultimo_cierre": 124300.0,
-        "ultima_fecha": "2026-07-03"
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -22792,6 +22776,14 @@
           "low": 0.0,
           "close": 124300.0,
           "volume": 0.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 124300.0,
+          "volume": 0.0
         }
       ]
     },
@@ -22799,16 +22791,16 @@
       "simbolo_byma": "PNICO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 4033.12,
-        "var_7d_pct": 0.0,
+        "volumen_promedio": 3710.67,
+        "var_7d_pct": 0.59,
         "var_30d_pct": null,
         "var_desde_inicio_pct": -3.56,
-        "volatilidad_30d_pct": 0.65,
+        "volatilidad_30d_pct": 0.63,
         "drawdown_max_pct": -4.12,
         "precio_max_ventana": 132200.0,
         "fecha_inicio_serie": "2026-06-23",
         "ultimo_cierre": 127500.0,
-        "ultima_fecha": "2026-07-03"
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -22882,6 +22874,14 @@
           "low": 127500.0,
           "close": 127500.0,
           "volume": 1410.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 127500.0,
+          "high": 127500.0,
+          "low": 127500.0,
+          "close": 127500.0,
+          "volume": 1131.0
         }
       ]
     },
@@ -22890,15 +22890,15 @@
       "error": null,
       "metricas": {
         "volumen_promedio": 293285.25,
-        "var_7d_pct": 1.97,
+        "var_7d_pct": 1.79,
         "var_30d_pct": null,
         "var_desde_inicio_pct": 1.68,
-        "volatilidad_30d_pct": 0.87,
+        "volatilidad_30d_pct": 0.82,
         "drawdown_max_pct": -0.65,
         "precio_max_ventana": 146000.0,
         "fecha_inicio_serie": "2026-06-23",
         "ultimo_cierre": 145100.0,
-        "ultima_fecha": "2026-07-03"
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -22972,6 +22972,14 @@
           "low": 145100.0,
           "close": 145100.0,
           "volume": 11.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 145100.0,
+          "volume": 0.0
         }
       ]
     },
@@ -22979,16 +22987,16 @@
       "simbolo_byma": "YM39O 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 234572.11,
-        "var_7d_pct": 1.55,
+        "volumen_promedio": 221077.9,
+        "var_7d_pct": 0.57,
         "var_30d_pct": null,
-        "var_desde_inicio_pct": 1.74,
-        "volatilidad_30d_pct": 0.37,
+        "var_desde_inicio_pct": 1.36,
+        "volatilidad_30d_pct": 0.4,
         "drawdown_max_pct": -0.58,
         "precio_max_ventana": 174480.0,
         "fecha_inicio_serie": "2026-06-23",
-        "ultimo_cierre": 174480.0,
-        "ultima_fecha": "2026-07-03"
+        "ultimo_cierre": 173830.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -23062,6 +23070,14 @@
           "low": 173960.0,
           "close": 174480.0,
           "volume": 166070.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 178840.0,
+          "high": 178840.0,
+          "low": 173450.0,
+          "close": 173830.0,
+          "volume": 99630.0
         }
       ]
     },
@@ -23069,16 +23085,16 @@
       "simbolo_byma": "YM42O 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 119098.56,
-        "var_7d_pct": 2.36,
+        "volumen_promedio": 122865.6,
+        "var_7d_pct": 1.78,
         "var_30d_pct": null,
-        "var_desde_inicio_pct": 2.29,
-        "volatilidad_30d_pct": 0.86,
+        "var_desde_inicio_pct": 2.22,
+        "volatilidad_30d_pct": 0.82,
         "drawdown_max_pct": -0.76,
         "precio_max_ventana": 162250.0,
         "fecha_inicio_serie": "2026-06-23",
-        "ultimo_cierre": 161510.0,
-        "ultima_fecha": "2026-07-03"
+        "ultimo_cierre": 161400.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -23152,6 +23168,14 @@
           "low": 160850.0,
           "close": 161510.0,
           "volume": 107657.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 161510.0,
+          "high": 163350.0,
+          "low": 160290.0,
+          "close": 161400.0,
+          "volume": 156769.0
         }
       ]
     },
@@ -23159,16 +23183,16 @@
       "simbolo_byma": "YMCXO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 676557.78,
-        "var_7d_pct": 2.23,
+        "volumen_promedio": 632559.8,
+        "var_7d_pct": 0.8,
         "var_30d_pct": null,
-        "var_desde_inicio_pct": 2.65,
-        "volatilidad_30d_pct": 0.86,
+        "var_desde_inicio_pct": 2.88,
+        "volatilidad_30d_pct": 0.81,
         "drawdown_max_pct": -1.46,
-        "precio_max_ventana": 174000.0,
+        "precio_max_ventana": 174390.0,
         "fecha_inicio_serie": "2026-06-23",
-        "ultimo_cierre": 174000.0,
-        "ultima_fecha": "2026-07-03"
+        "ultimo_cierre": 174390.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -23242,6 +23266,14 @@
           "low": 172050.0,
           "close": 174000.0,
           "volume": 223117.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 173130.0,
+          "high": 174410.0,
+          "low": 170060.0,
+          "close": 174390.0,
+          "volume": 236578.0
         }
       ]
     },
@@ -23249,16 +23281,16 @@
       "simbolo_byma": "DNCAO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 379011.11,
-        "var_7d_pct": 2.09,
+        "volumen_promedio": 369080.0,
+        "var_7d_pct": 0.72,
         "var_30d_pct": null,
-        "var_desde_inicio_pct": 0.93,
-        "volatilidad_30d_pct": 0.96,
+        "var_desde_inicio_pct": 0.88,
+        "volatilidad_30d_pct": 0.91,
         "drawdown_max_pct": -1.59,
         "precio_max_ventana": 162300.0,
         "fecha_inicio_serie": "2026-06-23",
-        "ultimo_cierre": 161440.0,
-        "ultima_fecha": "2026-07-03"
+        "ultimo_cierre": 161350.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -23332,6 +23364,14 @@
           "low": 160350.0,
           "close": 161440.0,
           "volume": 196600.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 159090.0,
+          "high": 162000.0,
+          "low": 159090.0,
+          "close": 161350.0,
+          "volume": 279700.0
         }
       ]
     },
@@ -23339,16 +23379,16 @@
       "simbolo_byma": "IRCPO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 427226.11,
-        "var_7d_pct": 3.53,
+        "volumen_promedio": 435316.4,
+        "var_7d_pct": 1.22,
         "var_30d_pct": null,
-        "var_desde_inicio_pct": 3.04,
-        "volatilidad_30d_pct": 1.0,
-        "drawdown_max_pct": -1.18,
+        "var_desde_inicio_pct": 1.84,
+        "volatilidad_30d_pct": 1.06,
+        "drawdown_max_pct": -1.54,
         "precio_max_ventana": 170650.0,
         "fecha_inicio_serie": "2026-06-23",
-        "ultimo_cierre": 170000.0,
-        "ultima_fecha": "2026-07-03"
+        "ultimo_cierre": 168020.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -23422,6 +23462,14 @@
           "low": 167210.0,
           "close": 170000.0,
           "volume": 329754.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 170000.0,
+          "high": 170190.0,
+          "low": 166650.0,
+          "close": 168020.0,
+          "volume": 508129.0
         }
       ]
     },
@@ -23438,7 +23486,7 @@
         "precio_max_ventana": 130000.0,
         "fecha_inicio_serie": "2026-06-23",
         "ultimo_cierre": 130000.0,
-        "ultima_fecha": "2026-07-03"
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -23512,6 +23560,14 @@
           "low": 0.0,
           "close": 130000.0,
           "volume": 0.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 130000.0,
+          "volume": 0.0
         }
       ]
     },
@@ -23519,16 +23575,16 @@
       "simbolo_byma": "TLCPO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 465239.44,
-        "var_7d_pct": 0.68,
+        "volumen_promedio": 506248.2,
+        "var_7d_pct": 2.12,
         "var_30d_pct": null,
-        "var_desde_inicio_pct": 2.03,
-        "volatilidad_30d_pct": 1.22,
+        "var_desde_inicio_pct": 3.34,
+        "volatilidad_30d_pct": 1.19,
         "drawdown_max_pct": -1.82,
-        "precio_max_ventana": 173290.0,
+        "precio_max_ventana": 173600.0,
         "fecha_inicio_serie": "2026-06-23",
-        "ultimo_cierre": 171400.0,
-        "ultima_fecha": "2026-07-03"
+        "ultimo_cierre": 173600.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -23602,6 +23658,14 @@
           "low": 170300.0,
           "close": 171400.0,
           "volume": 324288.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 171400.0,
+          "high": 173600.0,
+          "low": 169930.0,
+          "close": 173600.0,
+          "volume": 875327.0
         }
       ]
     },
@@ -23609,16 +23673,16 @@
       "simbolo_byma": "TLCTO 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 383728.78,
-        "var_7d_pct": 2.67,
+        "volumen_promedio": 367255.1,
+        "var_7d_pct": 0.77,
         "var_30d_pct": null,
-        "var_desde_inicio_pct": 1.83,
-        "volatilidad_30d_pct": 0.89,
+        "var_desde_inicio_pct": 0.59,
+        "volatilidad_30d_pct": 0.95,
         "drawdown_max_pct": -1.85,
         "precio_max_ventana": 173100.0,
         "fecha_inicio_serie": "2026-06-23",
-        "ultimo_cierre": 173100.0,
-        "ultima_fecha": "2026-07-03"
+        "ultimo_cierre": 171000.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -23692,6 +23756,14 @@
           "low": 169020.0,
           "close": 173100.0,
           "volume": 276292.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 176000.0,
+          "high": 176000.0,
+          "low": 169810.0,
+          "close": 171000.0,
+          "volume": 218992.0
         }
       ]
     },
@@ -23699,16 +23771,16 @@
       "simbolo_byma": "TSC4O 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 172222.22,
-        "var_7d_pct": 1.69,
+        "volumen_promedio": 207600.0,
+        "var_7d_pct": 0.77,
         "var_30d_pct": null,
-        "var_desde_inicio_pct": 0.51,
-        "volatilidad_30d_pct": 1.19,
+        "var_desde_inicio_pct": 0.45,
+        "volatilidad_30d_pct": 1.13,
         "drawdown_max_pct": -2.71,
         "precio_max_ventana": 165410.0,
         "fecha_inicio_serie": "2026-06-23",
-        "ultimo_cierre": 164100.0,
-        "ultima_fecha": "2026-07-03"
+        "ultimo_cierre": 164000.0,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -23782,6 +23854,14 @@
           "low": 164100.0,
           "close": 164100.0,
           "volume": 99000.0
+        },
+        {
+          "date": "2026-07-06",
+          "open": 165990.0,
+          "high": 165990.0,
+          "low": 162450.0,
+          "close": 164000.0,
+          "volume": 526000.0
         }
       ]
     },
@@ -23789,16 +23869,16 @@
       "simbolo_byma": "AN29 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 2319699.89,
-        "var_7d_pct": 0.65,
+        "volumen_promedio": 2236725.1,
+        "var_7d_pct": 0.22,
         "var_30d_pct": null,
-        "var_desde_inicio_pct": 0.74,
-        "volatilidad_30d_pct": 0.47,
+        "var_desde_inicio_pct": 0.47,
+        "volatilidad_30d_pct": 0.46,
         "drawdown_max_pct": -0.8,
         "precio_max_ventana": 95996.0682,
         "fecha_inicio_serie": "2026-06-23",
-        "ultimo_cierre": 95996.0682,
-        "ultima_fecha": "2026-07-03"
+        "ultimo_cierre": 95738.114,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -23926,6 +24006,20 @@
           "close_ars": 146490.0,
           "mep_venta": 1526.0,
           "conversion_mep_fuente": "dolarapi.com"
+        },
+        {
+          "date": "2026-07-06",
+          "open": 96532.7029,
+          "high": 96585.2377,
+          "low": 95101.1295,
+          "close": 95738.114,
+          "volume": 1489952.0,
+          "open_ars": 147000.0,
+          "high_ars": 147080.0,
+          "low_ars": 144820.0,
+          "close_ars": 145790.0,
+          "mep_venta": 1522.8,
+          "conversion_mep_fuente": "dolarapi.com"
         }
       ],
       "conversion_ars_peso": {
@@ -23939,16 +24033,16 @@
       "simbolo_byma": "AO27 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 7968058.11,
-        "var_7d_pct": -0.25,
+        "volumen_promedio": 7956309.9,
+        "var_7d_pct": -0.15,
         "var_30d_pct": null,
-        "var_desde_inicio_pct": -0.52,
-        "volatilidad_30d_pct": 0.29,
+        "var_desde_inicio_pct": -0.15,
+        "volatilidad_30d_pct": 0.31,
         "drawdown_max_pct": -0.61,
         "precio_max_ventana": 102692.5609,
         "fecha_inicio_serie": "2026-06-23",
-        "ultimo_cierre": 102162.5164,
-        "ultima_fecha": "2026-07-03"
+        "ultimo_cierre": 102541.3712,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -24076,6 +24170,20 @@
           "close_ars": 155900.0,
           "mep_venta": 1526.0,
           "conversion_mep_fuente": "dolarapi.com"
+        },
+        {
+          "date": "2026-07-06",
+          "open": 102705.5424,
+          "high": 102961.6496,
+          "low": 102245.8629,
+          "close": 102541.3712,
+          "volume": 7850576.0,
+          "open_ars": 156400.0,
+          "high_ars": 156790.0,
+          "low_ars": 155700.0,
+          "close_ars": 156150.0,
+          "mep_venta": 1522.8,
+          "conversion_mep_fuente": "dolarapi.com"
         }
       ],
       "conversion_ars_peso": {
@@ -24089,16 +24197,16 @@
       "simbolo_byma": "AO28 24HS",
       "error": null,
       "metricas": {
-        "volumen_promedio": 11424004.44,
-        "var_7d_pct": 0.11,
+        "volumen_promedio": 11186385.0,
+        "var_7d_pct": 0.93,
         "var_30d_pct": null,
-        "var_desde_inicio_pct": 0.06,
-        "volatilidad_30d_pct": 0.52,
+        "var_desde_inicio_pct": 0.35,
+        "volatilidad_30d_pct": 0.5,
         "drawdown_max_pct": -0.83,
-        "precio_max_ventana": 97314.5158,
+        "precio_max_ventana": 97399.5272,
         "fecha_inicio_serie": "2026-06-23",
-        "ultimo_cierre": 97116.6448,
-        "ultima_fecha": "2026-07-03"
+        "ultimo_cierre": 97399.5272,
+        "ultima_fecha": "2026-07-06"
       },
       "serie": [
         {
@@ -24225,6 +24333,20 @@
           "low_ars": 147610.0,
           "close_ars": 148200.0,
           "mep_venta": 1526.0,
+          "conversion_mep_fuente": "dolarapi.com"
+        },
+        {
+          "date": "2026-07-06",
+          "open": 97780.4045,
+          "high": 97846.073,
+          "low": 96664.0399,
+          "close": 97399.5272,
+          "volume": 9047810.0,
+          "open_ars": 148900.0,
+          "high_ars": 149000.0,
+          "low_ars": 147200.0,
+          "close_ars": 148320.0,
+          "mep_venta": 1522.8,
           "conversion_mep_fuente": "dolarapi.com"
         }
       ],
