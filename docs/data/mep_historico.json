@@ -1,6 +1,6 @@
 {
   "fuente": "mep_historico",
-  "ultima_actualizacion": "2026-07-08T16:19:09-03:00",
+  "ultima_actualizacion": "2026-07-10T15:07:47-03:00",
   "registros": {
     "2026-06-28": {
       "venta_ars": 1502.5,
@@ -66,6 +66,11 @@
       "venta_ars": 1529.3,
       "fuente": "dolarapi.com",
       "timestamp_consulta": "2026-07-08T16:19:09-03:00"
+    },
+    "2026-07-10": {
+      "venta_ars": 1520.4,
+      "fuente": "dolarapi.com",
+      "timestamp_consulta": "2026-07-10T15:07:47-03:00"
     }
   }
 }
