@@ -1,6 +1,6 @@
 {
   "fuente": "mep_historico",
-  "ultima_actualizacion": "2026-07-08T16:19:09-03:00",
+  "ultima_actualizacion": "2026-10-08",
   "registros": {
     "2026-06-28": {
       "venta_ars": 1502.5,
@@ -66,6 +66,31 @@
       "venta_ars": 1529.3,
       "fuente": "dolarapi.com",
       "timestamp_consulta": "2026-07-08T16:19:09-03:00"
+    },
+    "2026-10-09": {
+      "venta_ars": 1540.2,
+      "fuente": "dolarapi.com",
+      "timestamp_consulta": "2026-10-09T15:53:57-03:00"
+    },
+    "2026-10-05": {
+      "venta_ars": 1551.9,
+      "fuente": "argentinadatos.com",
+      "fecha_cotizacion": "2026-10-05"
+    },
+    "2026-10-06": {
+      "venta_ars": 1537.9,
+      "fuente": "argentinadatos.com",
+      "fecha_cotizacion": "2026-10-06"
+    },
+    "2026-10-07": {
+      "venta_ars": 1544.4,
+      "fuente": "argentinadatos.com",
+      "fecha_cotizacion": "2026-10-07"
+    },
+    "2026-10-08": {
+      "venta_ars": 1539.0,
+      "fuente": "argentinadatos.com",
+      "fecha_cotizacion": "2026-10-08"
     }
   }
 }
